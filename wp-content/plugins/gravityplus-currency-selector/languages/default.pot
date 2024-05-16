@@ -1,0 +1,175 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Gravity Forms Currency Selector\n"
+"POT-Creation-Date: 2018-03-22 03:31-0400\n"
+"PO-Revision-Date: 2016-11-09 20:35-0500\n"
+"Last-Translator: Naomi C. Bush <hello@naomicbush.com>\n"
+"Language-Team: gravity+ <support@gravityplus.pro>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-KeywordsList: __;_e;esc_attr__;esc_attr_e;esc_html__;esc_html_e;_x;"
+"_ex;esc_attr_x;esc_html_x;_n;_nx;_n_noop;_nx_noop\n"
+"X-Poedit-Basepath: ../includes\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: class-addon.php:208
+msgid "Updates and Support"
+msgstr ""
+
+#: class-addon.php:209
+#, php-format
+msgid ""
+"Enter your license key to receive updates and support for this plugin. If "
+"you don't have one, you can get one %shere%s."
+msgstr ""
+
+#: class-addon.php:213
+msgid "License Key"
+msgstr ""
+
+#: class-addon.php:219
+msgid "Get early access to new versions"
+msgstr ""
+
+#: class-addon.php:234
+msgid "Open Exchange Rates API"
+msgstr ""
+
+#: class-addon.php:235
+#, php-format
+msgid ""
+"This connects your Open Exchange Rates account to provide automatic, real-"
+"time currency conversion. If you don't already have an Open Exchange Rates "
+"account, create a %sfree account%s."
+msgstr ""
+
+#: class-addon.php:239
+#, php-format
+msgid "Enter your app ID found in your %saccount dashboard%s"
+msgstr ""
+
+#: class-addon.php:240
+msgid "App ID"
+msgstr ""
+
+#: class-addon.php:324
+msgid "No response from Open Exchange Rates. Please try again."
+msgstr ""
+
+#: class-addon.php:334
+msgid "Please enter your Open Exchange Rates App ID"
+msgstr ""
+
+#: class-addon.php:387
+msgid "Select a Currency"
+msgstr ""
+
+#: class-auto-upgrader.php:126
+msgid "Gravity Forms "
+msgstr ""
+
+#: class-auto-upgrader.php:140
+#, php-format
+msgid ""
+"%sRegister%s your copy of %s to receive access to automatic updates and "
+"support. Need a license key? %sPurchase one now%s."
+msgstr ""
+
+#: class-auto-upgrader.php:281
+#, php-format
+msgid "View version %s Details"
+msgstr ""
+
+#: class-auto-upgrader.php:307
+msgid ""
+"An unexpected error occurred. Unable to find version details for this "
+"plugin. Please contact gravity+ Support."
+msgstr ""
+
+#: class-converter.php:64
+#, php-format
+msgid "There is already an instance of %s."
+msgstr ""
+
+#: class-converter.php:129
+msgid "Retrieving current conversion rates"
+msgstr ""
+
+#: class-converter.php:145
+msgid "Empty response"
+msgstr ""
+
+#: class-form-display.php:160
+msgid "Unable to add currency field JS"
+msgstr ""
+
+#: class-form-editor.php:48
+msgid "Currencies"
+msgstr ""
+
+#: class-form-processor.php:408
+msgid "Please enter a valid value."
+msgstr ""
+
+#: class-gf-field-currency.php:83 class-gf-field-currency.php:142
+#: class-gf-field-currency.php:418 class-gf-field-currency.php:419
+#: views/field-setting-currency-settings.php:5
+#: views/field-setting-currency-settings.php:25
+msgid "Currency"
+msgstr ""
+
+#: class-gf-field-currency.php:397
+msgid "Select a currency"
+msgstr ""
+
+#: class-gf-field-currency.php:398
+msgid "Only one Currency field can be added to the form"
+msgstr ""
+
+#: class-gf-field-currency.php:399
+msgid "You must select at least one currency"
+msgstr ""
+
+#: class-gf-field-currency.php:418
+msgid ""
+"Select the currency that will be used for the payments submitted by this "
+"form."
+msgstr ""
+
+#: class-gf-field-currency.php:419
+msgid ""
+"Select which currencies are displayed. You can choose to display all of "
+"them or select individual ones."
+msgstr ""
+
+#: class-helper.php:98
+msgid "Select a field"
+msgstr ""
+
+#: views/field-setting-currency-settings.php:13
+msgid "Field Type"
+msgstr ""
+
+#: views/field-setting-currency-settings.php:18
+msgid "Drop Down"
+msgstr ""
+
+#: views/field-setting-currency-settings.php:19
+msgid "Radio Buttons"
+msgstr ""
+
+#: views/field-setting-currency-settings.php:30
+msgid "All Currencies"
+msgstr ""
+
+#: views/field-setting-currency-settings.php:33
+msgid "Select Currencies"
+msgstr ""
+
+#: views/form-settings-currency.php:5
+msgid "Form Currency"
+msgstr ""

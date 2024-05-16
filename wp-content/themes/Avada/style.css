@@ -1,0 +1,240 @@
+/*
+Theme Name: Avada
+Description: The Avada Website Builder is the ultimate design and creation suite. Design Anything, Build Everything, Fast. The #1 selling product of all time on ThemeForest.
+Author: ThemeFusion
+Theme URI: https://avada.theme-fusion.com/
+Author URI: https://themeforest.net/user/ThemeFusion
+Version: 7.5
+Requires PHP: 5.6
+License: Themeforest Split Licence
+License URI: -
+Text Domain: Avada
+*/
+
+/* Classes needed by Theme Check */
+.wp-caption-text,
+.gallery-caption,
+.bypostauthor {
+}
+
+/*MAD*/
+.column_template ul.gfield_radio li {
+    width: 49%;
+    float: left;
+    min-height: 120px;
+    margin-right: 2%;
+    margin-bottom: 25px;
+}
+.column_template ul.gfield_radio li:nth-child(2n) {
+	margin-right: 0;
+}
+.column_template ul.gfield_radio li:last-child {
+    width: 100%;
+}
+.column_template ul.gfield_radio li input {
+    display: none !important;
+}
+.column_template ul.gfield_radio li label {
+	display: block;
+    margin: 0;
+    float: none;
+    width: 100% !important;
+    max-width: 100%;
+    border: 1px solid #378BCA;
+    min-height: 160px;
+    padding: 90px 30px 20px;
+    position: relative;
+}
+.column_template ul.gfield_radio li label h2 {
+	background-color: #378BCA;
+	line-height: 28px !important;
+    font-size: 24px !important;
+    color: #fff;
+    padding: 20px 30px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+.column_template ul.gfield_radio li input[type=radio]:checked+label {
+	border: 1px solid #F15B2A;
+}
+.column_template ul.gfield_radio li input[type=radio]:checked+label h2 {
+	background-color: #F15B2A;
+}
+
+.currency_template {
+	width: 100px;
+	right: 400px;
+	position: relative;
+	top: -172px;
+	float: right;
+	height: 0px;
+	margin: 0px !important;
+	display: block !important;
+}
+.price_template {
+	width: 400px;
+	top: -172px;
+	float: right;
+	position: relative;
+	height: 0px;
+	margin: 0px !important;
+	display: block !important;
+}
+.price_template label,
+.currency_template label {
+	display: none !important;
+}
+
+.payment_template ul.gfield_radio {
+	display: flex;
+}
+.payment_template ul.gfield_radio input {
+	display: none !important;
+}
+.payment_template ul.gfield_radio li label {
+	border: 1px solid #ccc;
+	border-radius: 7px;
+	overflow: hidden;
+}
+.payment_template ul.gfield_radio li input[type=radio]:checked+label {
+	border: 1px solid #F15B2A;
+}
+
+.dis_inline .ginput_product_price_label {
+	display: none;
+}
+.dis_inline label.gfield_label {
+	display: block !important;
+}
+.dis_inline .gfield_description {
+	display: inline-block !important;
+	width: auto !important;
+	margin-right: 10px;
+}
+.dis_inline .ginput_container {
+	display: inline-block !important;
+}
+
+.pagination {
+	margin-bottom: 40px;
+}
+.fusion-recent-posts .pagination {
+	margin-bottom: 0px;
+}
+
+/* Footer */
+#main {
+	padding-bottom: 0 !important;
+}
+.fusion-footer-widget-area {
+	border-top: none !important;
+}
+@media (max-width: 1200px) {
+	.currency_template {
+		right: 220px;
+	}
+	.price_template {
+	    width: 220px;
+	}
+
+}]
+@media (max-width: 980px) {
+	.currency_template {
+		right: 175px;
+	}
+	.price_template {
+	    width: 175px;
+	}
+}
+@media (max-width: 801px) {
+	#main {
+		padding-top: 0 !important;
+	}
+}
+@media (max-width: 800px) {
+	.ltr .fusion-footer footer .fusion-columns .fusion-column.fusion-has-widgets {
+		border-right: none !important;
+		text-align: center;
+	}
+	.col_padding {
+	    padding-top: 0 !important;
+	    padding-bottom: 0 !important;
+	}
+
+	.fusion-columns .fusion-column:last-child {
+	    margin-bottom: 0;
+	}
+
+	.column_template ul.gfield_radio li {
+	    width: 100%;
+	}
+	.column_template ul.gfield_radio li:last-child label h2 {
+		padding-bottom: 66px;
+	}
+	.column_template ul.gfield_radio li:last-child label {
+	    padding-top: 135px;
+	}
+	.currency_template {
+		right: 0;
+	    top: -140px;
+	    float: left;
+	    left: 30px;
+	}
+	.price_template {
+	    top: -140px;
+	    float: left;
+	    left: 130px;
+	}
+}
+
+@media (max-width: 653px) {
+	.column_template ul.gfield_radio li:last-child label {
+		padding-top: 170px;
+	}
+	.column_template ul.gfield_radio li:last-child label h2 {
+		padding-bottom: 100px;
+	}
+	.currency_template {
+	    top: -195px;
+	    left: 30px;
+	}
+	.price_template {
+	    top: -155px;
+	    left: 30px;
+	}
+
+}
+
+@media (max-width: 600px) {
+	#main .fusion-row {
+		max-width: 100% !important;
+	}
+	.single-post #main {
+		padding: 0 !important;
+	}
+	.single-post #main .fusion-row {
+		max-width: 100% !important;
+	}
+	.single-post #main .fusion-row .fusion-row  {
+		max-width: 80% !important;
+	}
+	.single-post .single-navigation {
+		max-width: 80% !important;
+		margin: 0 auto 40px;
+	}
+	.single-post .fusion-post-title-meta-wrap {
+		max-width: 80% !important;
+		margin: 0 auto 28px;
+	}
+	.header_text {
+	    font-size: 50px !important;
+	}
+	#sidebar {
+	    width: 80%!important;
+	    margin: 0 auto !important;
+	}
+
+}
