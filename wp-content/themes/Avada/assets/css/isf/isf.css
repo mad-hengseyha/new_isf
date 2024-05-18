@@ -1313,7 +1313,9 @@ span.ginput_total {
 .custom-amount-field label {
   margin-top: 0 !important;
 }
-
+input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not(
+    [type="button"]
+  ):not([type="image"]):not([type="file"]),
 .gform_wrapper
   .gfield
   input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not(
@@ -1327,4 +1329,7 @@ span.ginput_total {
 .fusion-social-networks-wrapper {
   max-width: 560px !important;
   margin: auto !important;
+}
+.fusion-standard-logo {
+  height: 63.3594px !important;
 }

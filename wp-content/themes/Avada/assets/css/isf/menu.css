@@ -19,7 +19,7 @@
   padding-top: 0.9em !important;
   background: none !important;
   width: 1240px !important;
-  left: -46% !important;
+  left: -46.4% !important;
   position: absolute;
   z-index: -1 !important;
 }
@@ -240,8 +240,7 @@
   width: 204px !important;
   height: 50px !important;
   border-radius: 38px !important;
-  background: #01295c !important;
-  /* margin-left: 3em !important; */
+  background: #05357b !important;
   display: flex !important;
   align-items: center;
   justify-content: center;

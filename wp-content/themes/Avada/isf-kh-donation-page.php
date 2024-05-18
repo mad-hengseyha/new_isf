@@ -32,8 +32,12 @@ $post_id = "";
         <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
             <div class="content section-adding-x col-12">
                 <div class="fusion-row">
-                    <?php
-                    avada_singular_featured_image(); ?>
+                    <?php if (has_post_thumbnail($post_id)) : ?>
+                        <?php $image = wp_get_attachment_image_src(get_post_thumbnail_id($post_id), 'full'); ?>
+                        <div class="feature-image mb-20">
+                            <img src="<?php echo  $image[0]; ?>" alt="">
+                        </div>
+                    <?php endif; ?>
                     <div class="post-content col-12">
                         <div class="w-778 m-auto text-center">
                             <?php
