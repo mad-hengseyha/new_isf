@@ -18,4 +18,4 @@ jobs:
           server: gvam1035.siteground.biz
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /isfcambodia.org/public_html
+          server-dir: /isfcambodia.org/public_html/
