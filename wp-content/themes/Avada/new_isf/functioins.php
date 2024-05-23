@@ -2351,11 +2351,6 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class="col"> -->
-                            <?php
-                            echo video_component($hero_video, $id = "playvideo_hero", $mobile = '#playvideo_hero_mobile');
-                            ?>
-                            <!-- </div> -->
                         </div>
                     </div>
                     <div class="video-background w-100" id="hero_background">
@@ -2405,6 +2400,11 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                     <!-- <img class="img-fluid" src="<?php echo $hero_mobile_image ?>" /> -->
                 </div>
             </div>
+            <!-- <div class="col"> -->
+            <?php
+            echo video_component($hero_video, $id = "playvideo_hero", $mobile = '#playvideo_hero_mobile');
+            ?>
+            <!-- </div> -->
         <?php
         }
         $modal = get_field("select_modal", $post_id);
@@ -2606,15 +2606,14 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                 if (mobilebtn) {
                     button = button + ', ' + mobilebtn;
                 }
+
                 $(button).on('click', function() {
                     buttonname = $(this).attr('id');
-
                     if (buttonname == 'playvideo_hero_mobile') {
                         buttonname = 'playvideo_hero';
-                        if (!isSafari) {
-                            $('.hero-desktop').removeClass('d-none');
-                        }
-
+                        // if (!isSafari) {
+                        //     $('.hero-desktop').removeClass('d-none');
+                        // }
                     }
                     var iframe = document.querySelector('#' + buttonname + '-wrapper iframe');
                     if (iframe) {
@@ -2646,9 +2645,9 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
 
                             if (buttonname == 'playvideo_hero' || buttonname == 'playvideo_hero_mobile') {
                                 showModalCallAction("isfModal");
-                                if (!isSafari) {
-                                    $('.hero-desktop').addClass('d-none');
-                                }
+                                // if (!isSafari) {
+                                //     $('.hero-desktop').addClass('d-none');
+                                // }
                             }
                             buttonname = '';
                         });
