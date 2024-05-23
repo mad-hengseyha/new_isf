@@ -755,8 +755,8 @@ function isf_video_sectioni_list($post_id = '', $bg = '')
                         }
                         ?>
                     </div>
-                    <div class="m-auto d-flex justify-content-center" data-aos="fade-up">
-                        <a class="custom-btn primary-btn btn-read-more primary-bg-orrange" disabled="false" ajaxurl='<?php echo admin_url('admin-ajax.php'); ?>' href="#" data-perpage="<?php echo $per_page; ?>" id="load-more-video">
+                    <div class="mt-40 d-flex justify-content-center" data-aos="fade-up">
+                        <a class="m-auto custom-btn primary-btn btn-read-more primary-bg-orrange" disabled="false" ajaxurl='<?php echo admin_url('admin-ajax.php'); ?>' href="#" data-perpage="<?php echo $per_page; ?>" id="load-more-video">
                             See more video
                         </a>
                     </div>
@@ -795,8 +795,8 @@ function isf_story_section_list($post_id, $exclude = "")
                         ?>
                     </div>
                 </div>
-                <div class="m-auto d-flex justify-content-center" data-aos="fade-up">
-                    <a class="custom-btn primary-btn btn-read-more primary-bg-orrange" disabled="false" ajaxurl='<?php echo admin_url('admin-ajax.php'); ?>' data-perpage="<?php echo $per_page; ?>" href="#" id="load-more-stories">
+                <div class="mt-40 d-flex justify-content-center" data-aos="fade-up">
+                    <a class="m-auto custom-btn primary-btn btn-read-more primary-bg-orrange" disabled="false" ajaxurl='<?php echo admin_url('admin-ajax.php'); ?>' data-perpage="<?php echo $per_page; ?>" href="#" id="load-more-stories">
                         Read more stories
                     </a>
                 </div>

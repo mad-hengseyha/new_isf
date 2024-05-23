@@ -1309,10 +1309,16 @@
   .story-title {
     margin-bottom: 10px !important;
   }
+  .btn-read-more {
+    width: auto !important;
+  }
 }
 
 /* phone  */
 @media screen and (max-width: 575px) {
+  .btn-read-more {
+    width: auto !important;
+  }
   .story-title {
     margin-bottom: 10px !important;
   }
