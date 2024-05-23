@@ -66,12 +66,12 @@ isf_partnership_section($post_id);
 isf_remark_story_section($post_id, 'section-padding-mobile pb-40', 'no_quot');
 
 
-isf_two_columns_section($post_id, 'align-items-center mb-20', 'section-padding-top-mobile section-padding-mobile pt-40', '', '', 'custom-read-more-btn');
+isf_two_columns_section($post_id, 'align-items-center mb-20', 'section-padding-top-mobile section-padding-mobile', '', '', 'custom-read-more-btn');
 
 //community_section_id
 // isf_community_section($post_id);
 
-sponsor_football_section($post_id, '', '', 'section-padding-top-mobile');
+sponsor_football_section($post_id, '', '', 'section-padding-top-mobile pt-0');
 
 //impact_section_id
 isf_impact_section($post_id);

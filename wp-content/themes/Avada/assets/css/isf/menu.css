@@ -21,7 +21,7 @@
   width: 1240px !important;
   left: -46.4% !important;
   position: absolute;
-  z-index: -1 !important;
+  z-index: 1 !important;
 }
 #mega-menu-wrap-main_navigation
   > #mega-menu-main_navigation
@@ -73,7 +73,7 @@
   padding-top: 2em !important;
   background: #fffff6;
   border-radius: 0px 0px 12px 12px;
-  z-index: -1 !important;
+  z-index: 1 !important;
 }
 #mega-menu-wrap-main_navigation
   #mega-menu-main_navigation
@@ -215,7 +215,7 @@
 .fusion-is-sticky .fusion-sticky-menu-1 .fusion-main-menu {
   display: block !important;
 }
-.mega-menu-call-action li a,
+
 #mega-menu-wrap-main_navigation
   #mega-menu-main_navigation
   > li.mega-menu-item
@@ -244,6 +244,16 @@
   display: flex !important;
   align-items: center;
   justify-content: center;
+  font-family: Lato-700;
+  font-size: 16px !important;
+  font-weight: 700;
+  line-height: 170%;
+  padding: 12px 56px;
+  gap: 10px;
+}
+.mega-menu-call-action a {
+  display: flex;
+  gap: 10px;
 }
 .mega-menu-call-action li a,
 #mega-menu-wrap-main_navigation
@@ -251,6 +261,7 @@
   > li.mega-menu-item.mega-menu-call-action
   > a.mega-menu-link {
   color: #fff !important;
+  text-decoration: none;
 }
 #mega-menu-main_navigation {
   display: flex !important;
@@ -259,7 +270,7 @@
 .mega-menu-call-action .mega-sub-menu {
   top: 3em !important;
   right: 0 !important;
-  z-index: -1 !important;
+  z-index: 1 !important;
 }
 .fusion-mobile-nav-item a:hover,
 .fusion-footer-widget-area a:hover {
@@ -405,9 +416,11 @@
     height: auto;
     width: auto;
   }
+  .menu-mobile-menu-container .menu .menu-item-has-children a::after,
   .fusion-mobile-menu .fusion-mobile-nav-item.menu-item-has-children a::before {
     transition: width 2s, height 2s, transform 0.5s;
   }
+  .menu-mobile-menu-container .menu .menu-item-has-children.active > a::after,
   .fusion-mobile-menu
     .fusion-mobile-nav-item.menu-item-has-children.active
     > a::before {
@@ -488,10 +501,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 16px !important;
+    padding: 10px 26px;
+    gap: 10px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-family: Lato-700;
   }
+
   .fusion-flyout-menu-toggle .fusion-toggle-icon-line {
-    background-color: #333 !important;
+    background-color: #05357b !important;
+  }
+  .fusion-header-has-flyout-menu.fusion-mobile-menu-design-flyout.fusion-flyout-active
+    .fusion-flyout-menu-icons
+    .fusion-icon:before {
+    color: #05357b !important;
   }
   .fusion-header-has-flyout-menu
     .fusion-flyout-menu-icons
@@ -718,9 +742,11 @@
     height: auto;
     width: auto;
   }
+  .menu-mobile-menu-container .menu .menu-item-has-children a::after,
   .fusion-mobile-menu .fusion-mobile-nav-item.menu-item-has-children a::before {
     transition: width 2s, height 2s, transform 0.5s;
   }
+  .menu-mobile-menu-container .menu .menu-item-has-children.active > a::after,
   .fusion-mobile-menu
     .fusion-mobile-nav-item.menu-item-has-children.active
     > a::before {
@@ -780,6 +806,7 @@
   #menu-donation-button-mobile-link li a {
     text-decoration: none;
     color: #fff;
+    text-transform: uppercase;
   }
   .home-header #menu-donation-button-mobile-link li {
     background: #f25b2a;
@@ -796,15 +823,24 @@
   #menu-donation-button-mobile-link li {
     width: 100px;
     height: 38px;
-    border-radius: 20px;
     background: #05357b;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 12px !important;
+    padding: 10px 26px;
+    gap: 10px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-family: Lato-700;
   }
   .fusion-flyout-menu-toggle .fusion-toggle-icon-line {
-    background-color: #333 !important;
+    background-color: #05357b !important;
+  }
+  .fusion-header-has-flyout-menu.fusion-mobile-menu-design-flyout.fusion-flyout-active
+    .fusion-flyout-menu-icons
+    .fusion-icon:before {
+    color: #05357b !important;
   }
 
   .fusion-header-has-flyout-menu
@@ -885,7 +921,7 @@
     .fusion-flyout-menu-icons
     .fusion-flyout-search-toggle:hover
     .fusion-toggle-icon-line {
-    background-color: #333 !important;
+    background-color: #05357b !important;
   }
   a.fusion-icon.awb-icon-search {
     text-decoration: none;

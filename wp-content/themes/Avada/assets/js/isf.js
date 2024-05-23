@@ -63,12 +63,12 @@ jQuery(document).ready(function ($) {
   );
 
   $(".menu-mobile-menu-container li").on("click", function () {
-    if ($(this).hasClass("active")) {
-      $(this).toggleClass("active");
-    } else {
-      $(".menu-mobile-menu-container li").removeClass("active");
-      $(this).toggleClass("active");
-    }
+    // if ($(this).hasClass("active")) {
+    //   $(this).toggleClass("active");
+    // } else {
+    //   $(".menu-mobile-menu-container li").removeClass("active");
+    $(this).toggleClass("active");
+    // }
   });
 
   $(".menu-mobile-menu-container li.menu-item-has-children").on(
@@ -99,18 +99,37 @@ jQuery(document).ready(function ($) {
   $(".play-button").on("click", function (e) {
     let classID = $(this).attr("post-data");
     let postTitle = $("#title_" + classID).text();
-    var iframe = document.querySelector("#iframe_" + classID + " iframe");
-    var symbol = $(iframe)[0].src.indexOf("?") > -1 ? "&" : "?";
-    $(iframe)[0].src += symbol + "autoplay=1&auto_play=true";
-    $(iframe).width("100%");
-    $(iframe).height("540px");
-    $("#videoModalContentYouTube").append(iframe);
+    let video = $("#iframe_" + classID).find("iframe");
+    let url = $(video[0]).attr("src");
+    let symbol = url.indexOf("?") > -1 ? "&" : "?";
+    if (url.indexOf("autoplay") > -1) {
+      let newURL = url.split("autoplay");
+      symbol = "&";
+      url = newURL[0];
+    }
+    let params = { autoplay: 1, auto_play: true };
+    let new_url = url + symbol + jQuery.param(params);
+    $(video[0]).attr("src", new_url);
+    $(video[0]).width("100%");
+    $(video[0]).height("540px");
+    $("#videoModalContentYouTube").html(video[0]);
     $("#videoModalTitle").text(postTitle);
+    $("#videoModalContentYouTube").attr("data-class", classID);
   });
 
-  $(".close_modal").on("click", function () {
-    $("#videoModalContentYouTube").html("");
-    $("#videoModalTitle").text("");
+  $(".close_modal_custome").on("click", function () {
+    setTimeout(() => {
+      let video = $("#videoModalContentYouTube").find("iframe");
+      let url = $(video[0]).attr("src");
+      url = url.split("autoplay");
+      let params = { autoplay: 0, auto_play: false };
+      let new_url = url[0] + jQuery.param(params);
+      $(video[0]).attr("src", new_url);
+      let classID = $("#videoModalContentYouTube").attr("data-class");
+      $("#iframe_" + classID).append(video[0]);
+      $("#videoModalContentYouTube").html("");
+      $("#videoModalTitle").text("");
+    }, 700);
   });
 
   if ($(window).width() > 1024) {
@@ -251,4 +270,78 @@ jQuery(document).ready(function ($) {
     }
     $(".ginput_container_total #label-donation-option").text(donationTypeText);
   });
+
+  // ajax load more stories
+  $("#load-more-stories").on("click", function (event) {
+    event.preventDefault();
+    let per_page = $(this).attr("data-perpage");
+    let ajaxurl = $(this).attr("ajaxurl");
+    $("#load-more-stories").attr("disabled", true);
+    load_posts(per_page, ajaxurl);
+  });
+
+  var pageNumber = 1;
+  function load_posts(per_page, ajaxurl) {
+    pageNumber++;
+    var data = {
+      pageNumber: pageNumber,
+      per_page: per_page ? per_page : 6,
+      action: "more_stories_post_ajax",
+    };
+    $.ajax({
+      type: "POST",
+      dataType: "html",
+      url: ajaxurl,
+      data: data,
+      success: function (data) {
+        var $data = $(data);
+        if ($data.length) {
+          $("#stories-list-wrapper").append($data);
+          $("#load-more-stories").attr("disabled", false);
+        } else {
+          $("#load-more-stories").attr("disabled", true);
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        $loader.html(jqXHR + " :: " + textStatus + " :: " + errorThrown);
+      },
+    });
+    return false;
+  }
+
+  $("#load-more-video").on("click", function (event) {
+    event.preventDefault();
+    let per_page = $(this).attr("data-perpage");
+    let ajaxurl = $(this).attr("ajaxurl");
+    $("#load-more-video").attr("disabled", true);
+    load_video_posts(per_page, ajaxurl);
+  });
+  var page_Number = 1;
+  function load_video_posts(per_page, ajaxurl) {
+    page_Number++;
+    var data = {
+      pageNumber: page_Number,
+      per_page: per_page ? per_page : 6,
+      action: "more_video_post_ajax",
+    };
+    $.ajax({
+      type: "POST",
+      dataType: "html",
+      url: ajaxurl,
+      data: data,
+      success: function (data) {
+        var $data = $(data);
+        if ($data.length) {
+          $("#videos-wrapper").append($data);
+          $("#load-more-video").attr("disabled", false);
+        } else {
+          $("#load-more-videos").attr("disabled", true);
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        $loader.html(jqXHR + " :: " + textStatus + " :: " + errorThrown);
+      },
+    });
+    return false;
+  }
 });

@@ -54,6 +54,7 @@ if (!defined('ABSPATH')) {
 			<div class="fusion-toggle-icon-line"></div>
 			<div class="fusion-toggle-icon-line"></div>
 			<div class="fusion-toggle-icon-line"></div>
+			<div class="fusion-toggle-icon-line"></div>
 		</a>
 	<?php endif; ?>
 </div>

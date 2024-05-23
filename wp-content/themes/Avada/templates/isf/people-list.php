@@ -2,21 +2,21 @@
 $parrams = $args['parrams'];
 $wrapper = 'people-max-height';
 ?>
-<div class="col-lg-3 col-md-12 col-sm-12 mb-40" data-aos="fade-up">
+<div class="col-lg-3 people-lists col-md-12 col-sm-12 mb-40" data-aos="fade-up">
     <div class="profile-photo row">
         <div class="col-12 photo">
             <?php
-            echo get_the_post_thumbnail(get_the_ID(), 'full', array('class' => 'img-fluid img-border-radius'));
+            echo get_the_post_thumbnail(get_the_ID(), 'full', array('class' => 'img-fluid team-profile'));
             ?>
         </div>
     </div>
-    <h3 class="mb-10 mt-20 team-header">
+    <h4 class="mb-10 mt-20 team-header">
         <?php
         echo get_the_title(get_the_ID());
         ?>
-    </h3>
+    </h4>
     <?php
-    echo '<h4 class="mb-10">' . get_field('people_position', get_the_ID()) . ' </h4>';
+    echo '<p class="job-title mb-10">' . get_field('people_position', get_the_ID()) . ' </p>';
 
     // the_excerpt();
     ?>
