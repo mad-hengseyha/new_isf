@@ -41,7 +41,7 @@ function isf_custome_template_section_function($post_id)
     isf_four_columns_section($post_id, 'section-padding-top-mobile pt-40');
 
     //partner ship section
-    isf_partnership_section($post_id);
+    isf_partnership_section($post_id, '', '', '', 'ishome');
 
     // story section
     isf_remark_story_section($post_id);
@@ -105,8 +105,8 @@ function sponsor_football_section($post_id, $form = '', $class = '', $mobile_cla
                             <?php if ($sponsor_football_button) { ?>
                                 <div class="d-flex mt-40">
 
-                                    <a href="<?php echo $sponsor_football_button_link['url']; ?>" target="<?php echo $sponsor_football_button_link['target']; ?>" title="<?php echo $sponsor_football_button_link['title']; ?>" class="primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
-                                        <?php echo $sponsor_football_button_icon ? $sponsor_football_button_icon . '&nbsp;' : ''; ?> <?php echo $sponsor_football_button; ?>
+                                    <a href="<?php echo $sponsor_football_button_link['url']; ?>" target="<?php echo $sponsor_football_button_link['target']; ?>" title="<?php echo $sponsor_football_button_link['title']; ?>" class="primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
+                                        <?php echo $sponsor_football_button_icon ? $sponsor_football_button_icon . '' : ''; ?> <?php echo $sponsor_football_button; ?>
                                     </a>
                                 </div>
                                 <?php
@@ -131,9 +131,8 @@ function sponsor_football_section($post_id, $form = '', $class = '', $mobile_cla
                                         }
                                 ?>
                                         <div class="d-flex mt-40">
-
-                                            <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" class="mt-3 primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
-                                                <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] . '&nbsp;' : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
+                                            <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" class="primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
+                                                <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] . '' : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
                                             </a>
                                         </div>
                                     <?php
@@ -180,7 +179,7 @@ function sponsor_football_section($post_id, $form = '', $class = '', $mobile_cla
                             <div class="col position-relative">
 
                                 <?php if ($sponsor_football_video) {
-                                    video_bg_autoplay(str_replace(" ", "", $sponsor_football_video));
+                                    video_bg_autoplay(str_replace(" ", "", $sponsor_football_video), 'sponsor-football');
                                 ?>
                                     <div id="sponsor_football_video" class="video-icon d-flex justify-content-center align-items-center">
                                         <div class="icon">
@@ -232,9 +231,9 @@ function isf_more_about_isf_australia($post_id, $class = '')
                                     <?php
                                     if ($sub_section_block[$i]['title']) {
                                     ?>
-                                        <h3 class="title-and-p-padding heading-btn_<?php echo $i; ?>">
+                                        <h4 class="title-and-p-padding heading-btn_<?php echo $i; ?>">
                                             <?php echo $sub_section_block[$i]['title']; ?>
-                                        </h3>
+                                        </h4>
                                     <?php
                                     }
                                     ?>
@@ -244,7 +243,7 @@ function isf_more_about_isf_australia($post_id, $class = '')
                                     } else {
                                         $body_accordion
                                             = $sub_section_block[$i]['body_accordion'];
-                                        sport_feild_accordian($body_accordion, '');
+                                        isf_australia_team($body_accordion, '');
                                     }
                                     ?>
                                 </div>
@@ -258,6 +257,64 @@ function isf_more_about_isf_australia($post_id, $class = '')
         </section>
     <?php
     }
+}
+
+function isf_australia_team($post_id, $section = 'isf-team')
+{
+    //section Field
+    $accordion_title = get_field("accordion_title", $post_id);
+    $accordion_description = get_field("accordion_description", $post_id);
+    $accordion_list = get_field("accordion_list", $post_id);
+    ?>
+    <div class="col-12">
+        <?php
+        if ($accordion_title) {
+        ?>
+            <h3 class="title-and-p-padding">
+                <?php echo $accordion_title; ?>
+            </h3>
+        <?php
+        }
+        ?>
+        <?php
+        echo $accordion_description;
+        ?>
+    </div>
+    <div class="col-12">
+        <!-- $accordion_list -->
+        <?php
+        if ($accordion_list) {
+        ?>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                <?php
+                for ($i = 0; $i < count($accordion_list); $i++) {
+                ?>
+                    <div class="accordion-item accordion-spac">
+
+                        <h4 class="accordion-header isf-australia-team" id="flush-heading<?php echo $i . $section; ?>">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?php echo $i . $section; ?>" aria-expanded="false" aria-controls="flush-collapse<?php echo $i . $section; ?>">
+
+                                <?php echo $accordion_list[$i]['title']; ?>
+
+                            </button>
+                        </h4>
+                        <div id="flush-collapse<?php echo $i . $section; ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?php echo $i . $section; ?>" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                <p>
+                                    <?php echo $accordion_list[$i]['description']; ?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                <?php
+                }
+                ?>
+            </div>
+        <?php
+        }
+        ?>
+    </div>
+    <?php
 }
 
 function isf_sponsor_football_team_faq($post_id, $mobile = "")
@@ -401,8 +458,8 @@ function state_number_four_columns_section($post_id)
                     <?php
                     if ($state_button) { ?>
                         <div class="isf-mt d-flex">
-                            <a href="<?php echo $state_button_link['url']; ?>" target="<?php echo $state_button_link['target']; ?>" title="<?php echo $state_button_link['title']; ?>" class="m-auto primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
-                                <?php echo $state_button_icon ? $state_button_icon . '&nbsp;' : ''; ?> <?php echo $state_button; ?>
+                            <a href="<?php echo $state_button_link['url']; ?>" target="<?php echo $state_button_link['target']; ?>" title="<?php echo $state_button_link['title']; ?>" class="m-auto primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
+                                <?php echo $state_button_icon ? $state_button_icon . '' : ''; ?> <?php echo $state_button; ?>
                             </a>
                         </div>
                     <?php } ?>
@@ -455,7 +512,7 @@ function how_we_are_run_body_section($post_id)
 
                             <?php if ($how_we_are_run_button_link) { ?>
                                 <div class="d-flex mt-40">
-                                    <a href="<?php echo $how_we_are_run_button_link['url']; ?>" target="<?php echo $how_we_are_run_button_link['target']; ?>" title="<?php echo $how_we_are_run_button_link['title']; ?>" class="primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>> <?php echo $how_we_are_run_button_icon . '&nbsp;'; ?> <?php echo $how_we_are_run_button; ?></a>
+                                    <a href="<?php echo $how_we_are_run_button_link['url']; ?>" target="<?php echo $how_we_are_run_button_link['target']; ?>" title="<?php echo $how_we_are_run_button_link['title']; ?>" class="primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>> <?php echo $how_we_are_run_button_icon . ''; ?> <?php echo $how_we_are_run_button; ?></a>
                                 </div>
                             <?php
                             }
@@ -469,7 +526,7 @@ function how_we_are_run_body_section($post_id)
                             <div class="position-relative">
                                 <?php
                                 if ($how_we_are_run_video) {
-                                    video_bg_autoplay(str_replace(" ", "", $how_we_are_run_video));
+                                    video_bg_autoplay(str_replace(" ", "", $how_we_are_run_video), 'how_we_run_mobile');
                                 ?>
                                     <div id="how_we_are_run_video" class="video-icon d-flex justify-content-center align-items-center">
                                         <div class="icon">
@@ -558,8 +615,8 @@ function how_we_are_run_section_leave_legacy($post_id, $post, $header = '', $mob
                             ?>
                                 <div class="d-flex mt-40">
 
-                                    <a href="<?php echo $how_we_are_run_button_link['url']; ?>" target="<?php echo $how_we_are_run_button_link['target']; ?>" title="<?php echo $how_we_are_run_button_link['title']; ?>" class="d-none d-sm-block primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
-                                        <?php echo $how_we_are_run_button_icon . '&nbsp;'; ?> <?php echo $how_we_are_run_button; ?>
+                                    <a href="<?php echo $how_we_are_run_button_link['url']; ?>" target="<?php echo $how_we_are_run_button_link['target']; ?>" title="<?php echo $how_we_are_run_button_link['title']; ?>" class="d-none d-sm-block primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
+                                        <?php echo $how_we_are_run_button_icon . ''; ?> <?php echo $how_we_are_run_button; ?>
                                     </a>
                                 </div>
                             <?php
@@ -571,7 +628,7 @@ function how_we_are_run_section_leave_legacy($post_id, $post, $header = '', $mob
                             <div class="position-relative">
                                 <?php
                                 if ($how_we_are_run_video) {
-                                    video_bg_autoplay(str_replace(" ", "", $how_we_are_run_video));
+                                    video_bg_autoplay(str_replace(" ", "", $how_we_are_run_video), 'leave_lagacy');
                                 ?>
                                     <div id="how_we_are_run_video" class="video-icon d-flex justify-content-center align-items-center">
                                         <div class="icon">
@@ -680,10 +737,11 @@ function isf_video_sectioni_list($post_id = '', $bg = '')
                         <div class="col-md-7 col-sm-12"></div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" id="videos-wrapper">
                         <?php
+                        $per_page = $video_section_post_limit ? $video_section_post_limit : 6;
                         $args = array(
-                            'posts_per_page' => $video_section_post_limit ? $video_section_post_limit : 3,
+                            'posts_per_page' => $per_page,
                             'post_type' => 'video-library',
                             'post_status' => 'publish',
                         );
@@ -697,8 +755,8 @@ function isf_video_sectioni_list($post_id = '', $bg = '')
                         }
                         ?>
                     </div>
-                    <div class="m-auto d-flex justify-content-center" data-aos="fade-up">
-                        <a class="btn primary-button primary-bg-orrange" href="<?php echo get_post_type_archive_link('video-library'); ?>">
+                    <div class="mt-40 d-flex justify-content-center" data-aos="fade-up">
+                        <a class="m-auto custom-btn primary-btn btn-read-more primary-bg-orrange" disabled="false" ajaxurl='<?php echo admin_url('admin-ajax.php'); ?>' href="#" data-perpage="<?php echo $per_page; ?>" id="load-more-video">
                             See more video
                         </a>
                     </div>
@@ -718,20 +776,13 @@ function isf_story_section_list($post_id, $exclude = "")
         <section class="pt-0 section-padding stories-list">
             <div class="content section-adding-x col-12">
                 <div class="fusion-row">
-                    <div class="row mb-20">
+                    <div class="row mb-20" id="stories-list-wrapper">
                         <?php
+                        $per_page = $post_list_type_limit ? $post_list_type_limit : 6;
                         $args = array(
-                            'posts_per_page' => $post_list_type_limit ? $post_list_type_limit : 6,
+                            'posts_per_page' => $per_page,
                             'post_type' => 'post',
                             'post_status' => 'publish',
-                            // 'tax_query' => array(
-                            //     array(
-                            //         'taxonomy' => 'category',
-                            //         'field' => 'term_id',
-                            //         'terms' => $cate_id,
-                            //         'operator' => 'IN'
-                            //     )
-                            // )
                         );
 
                         $posts = new WP_Query($args);
@@ -742,14 +793,12 @@ function isf_story_section_list($post_id, $exclude = "")
                             wp_reset_postdata();
                         }
                         ?>
-
                     </div>
-                    <div class="m-auto d-flex justify-content-center" data-aos="fade-up">
-                        <a class="primary-button primary-bg-orrange" href="<?php echo get_term_link($cate_id, 'category'); ?>">
-                            Read more stories
-                        </a>
-                    </div>
-
+                </div>
+                <div class="mt-40 d-flex justify-content-center" data-aos="fade-up">
+                    <a class="m-auto custom-btn primary-btn btn-read-more primary-bg-orrange" disabled="false" ajaxurl='<?php echo admin_url('admin-ajax.php'); ?>' data-perpage="<?php echo $per_page; ?>" href="#" id="load-more-stories">
+                        Read more stories
+                    </a>
                 </div>
             </div>
         </section>
@@ -1253,7 +1302,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                 'post_type' => 'fundraiser',
             );
             $post = new WP_Query($args);
-            $class = 'd-block d-md-block d-sm-flex align-items-center mb-40';
+            $class = 'd-lg-flex d-md-block d-sm-block align-items-center mb-40';
             ?>
             <section class="section-padding fund-raiser <?php echo $class_mobile; ?>" <?php echo $section_background; ?>>
                 <div class="content section-adding-x col-12">
@@ -1329,7 +1378,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                             <div>
                                                 <h3 class="title-and-p-padding">
                                                     <?php
-                                                    echo $contribute_ways_section_box[$i]['icon'] ? $contribute_ways_section_box[$i]['icon'] . '&nbsp;' : '';
+                                                    echo $contribute_ways_section_box[$i]['icon'] ? $contribute_ways_section_box[$i]['icon'] . '' : '';
                                                     echo $contribute_ways_section_box[$i]['title'];
                                                     ?>
                                                 </h3>
@@ -1374,14 +1423,21 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
         if ($learn_more_text) {
             $learn_more_button = get_field('learn_more_button', $post_id);
         ?>
-            <div class="col-12 mt-40 mt-sm-20 justify-content-center  <?php echo $mobile == 'mobile-only' ? 'd-flex d-sm-none ' : 'd-flex ';
-                                                                        echo $mb; ?> " data-aos="fade-up">
+            <div class="col-12 justify-content-center  <?php echo $mobile == 'mobile-only' ? 'd-flex d-sm-none ' : 'd-flex ';
+                                                        echo $mb; ?> " data-aos="fade-up">
                 <div class="col-md-5 col-sm-12 <?php echo $class; ?>">
-                    <h5 class="learn-more title-and-p-padding">
-                        <strong><?php echo $learn_more_text; ?></strong>
-                    </h5>
+                    <div class="my-30">
+                        <h5 class="learn-more title-and-p-padding">
+                            <strong><?php echo $learn_more_text; ?></strong>
+                        </h5>
+                    </div>
                     <?php
                     if ($learn_more_button) {
+                        $specific_width_btn = '';
+                        if (count($learn_more_button) > 1) {
+                            $specific_width_btn = 'specific-width-btn';
+                        }
+
                         for ($i = 0; $i < count($learn_more_button); $i++) {
                             $color = $learn_more_button[$i]['button_text_color'] ? 'color:' . $learn_more_button[$i]['button_text_color'] . ';' : '';
                             $bg = $learn_more_button[$i]['button_color'] ? 'background:' . $learn_more_button[$i]['button_color'] . ';' : '';
@@ -1403,13 +1459,13 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 $button_style = '';
                             }
                     ?>
-                            <div class="d-flex">
-                                <a href="<?php echo $learn_more_button[$i]['button_url']['url']; ?>" target="<?php echo $learn_more_button[$i]['button_url']['target']; ?>" title="<?php echo $learn_more_button[$i]['button_url']['title']; ?>" class="m-auto d-none d-sm-block mt-3 primary-button <?php echo $button_color . ' ' . $custom_read_more_btn; ?>" <?php echo $button_style; ?>>
+                            <div class="d-none d-sm-flex <?php echo $specific_width_btn . '-mb'; ?>">
+                                <a href="<?php echo $learn_more_button[$i]['button_url']['url']; ?>" target="<?php echo $learn_more_button[$i]['button_url']['target']; ?>" title="<?php echo $learn_more_button[$i]['button_url']['title']; ?>" class="m-auto primary-btn custom-btn <?php echo  $specific_width_btn . ' ' . $button_color . ' ' . $custom_read_more_btn; ?>" <?php echo $button_style; ?>>
                                     <?php echo $learn_more_button[$i]['button_text']; ?>
                                 </a>
                             </div>
-                            <div class="d-flex">
-                                <a href="<?php echo $learn_more_button[$i]['button_url']['url']; ?>" target="<?php echo $learn_more_button[$i]['button_url']['target']; ?>" title="<?php echo $learn_more_button[$i]['button_url']['title']; ?>" class="m-auto d-block d-sm-none mt-3 primary-button <?php echo $button_color . ' ' . $custom_read_more_btn; ?>" <?php echo $button_mobile_style; ?>>
+                            <div class="d-flex d-sm-none <?php echo $specific_width_btn . '-mb'; ?>">
+                                <a href="<?php echo $learn_more_button[$i]['button_url']['url']; ?>" target="<?php echo $learn_more_button[$i]['button_url']['target']; ?>" title="<?php echo $learn_more_button[$i]['button_url']['title']; ?>" class="m-auto primary-btn custom-btn <?php echo  $specific_width_btn . ' ' . $button_color . ' ' . $custom_read_more_btn; ?>" <?php echo $button_mobile_style; ?>>
                                     <?php echo $learn_more_button[$i]['button_text']; ?>
                                 </a>
                             </div>
@@ -1488,9 +1544,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 if ($how_we_work_button) {
                                 ?>
                                     <div class="d-flex mt-40">
-
-                                        <a href="<?php echo $how_we_work_button_link['url']; ?>" target="<?php echo $how_we_work_button_link['target']; ?>" title="<?php echo $how_we_work_button_link['title']; ?>" class="primary-button <?php echo $button_color; ?> d-none d-sm-block" <?php echo $custom_button; ?>>
-                                            <?php echo $how_we_work_button_icon ? $how_we_work_button_icon . '&nbsp;' : ''; ?> <?php echo $how_we_work_button; ?>
+                                        <a href="<?php echo $how_we_work_button_link['url']; ?>" target="<?php echo $how_we_work_button_link['target']; ?>" title="<?php echo $how_we_work_button_link['title']; ?>" class="primary-btn custom-btn <?php echo $button_color; ?> d-none d-sm-block" <?php echo $custom_button; ?>>
+                                            <?php echo $how_we_work_button_icon ? $how_we_work_button_icon . '' : ''; ?> <?php echo $how_we_work_button; ?>
                                         </a>
                                     </div>
                                 <?php
@@ -1519,9 +1574,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                                 }
                                     ?>
                                                 <div class="d-flex mt-40">
-
-                                                    <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" class="mt-3 primary-button <?php echo $button_color ?>" <?php echo $custom_button; ?>>
-                                                        <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] . '&nbsp;' : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
+                                                    <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" class="mt-3 primary-btn custom-btn <?php echo $button_color ?>" <?php echo $custom_button; ?>>
+                                                        <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] . '' : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
                                                     </a>
                                                 </div>
                                             <?php
@@ -1564,11 +1618,15 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     echo '<div class="d-block d-sm-none col m-40 mb-40 position-relative">';
                                     if ($learn_more_section['description']) {
 
-                                        echo '<div class="col-11">
+                                        echo '<div class="col-12">
                                                         <h5 class="learn-more-title title-and-p-padding">' . $learn_more_section['description'] . '</h5> 
                                                     </div>';
                                     }
                                     if ($learn_more_section['button_actions']) {
+                                        $specific_width_btn = '';
+                                        if (count($learn_more_section['button_actions']) > 1) {
+                                            $specific_width_btn = 'specific-width-btn';
+                                        }
                                         for ($i = 0; $i < count($learn_more_section['button_actions']); $i++) {
                                             $text_color = $learn_more_section['button_actions'][$i]['button_text_color'] ? 'color:' . $learn_more_section['button_actions'][$i]['button_text_color'] : "";
                                             $custom_button = $learn_more_section['button_actions'][$i]['button_color'] ?
@@ -1582,9 +1640,9 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                                 $custom_button = 'style="' . $text_color . '"';
                                             }
                             ?>
-                                            <div class="d-flex mt-40">
-                                                <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" class="mt-3 primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
-                                                    <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] . '&nbsp;' : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
+                                            <div class="d-flex">
+                                                <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" class="primary-btn custom-btn <?php echo $specific_width_btn . ' ' . $button_color; ?>" <?php echo $custom_button; ?>>
+                                                    <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] . '' : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
                                                 </a>
                                             </div>
                                         <?php
@@ -1611,7 +1669,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
 
                                         <?php
                                         if ($how_we_work_video) {
-                                            video_bg_autoplay(str_replace(" ", "", $how_we_work_video));
+                                            video_bg_autoplay(str_replace(" ", "", $how_we_work_video), 'how_we_work');
                                         ?>
                                             <div id="how_we_work_video" class="video-icon d-flex justify-content-center align-items-center">
                                                 <div class="icon">
@@ -1628,8 +1686,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     </div>
                                     <?php if ($how_we_work_button) { ?>
                                         <div class="d-flex mt-40">
-                                            <a href="<?php echo $how_we_work_button_link['url']; ?>" title="<?php echo $how_we_work_button_link['title']; ?>" target="<?php echo $how_we_work_button_link['target']; ?>" class="primary-button <?php echo $button_color; ?> d-block d-sm-none mt-40" <?php echo $custom_button; ?>>
-                                                <?php echo $how_we_work_button_icon ? $how_we_work_button_icon . '&nbsp;' : ''; ?> <?php echo $how_we_work_button; ?>
+                                            <a href="<?php echo $how_we_work_button_link['url']; ?>" title="<?php echo $how_we_work_button_link['title']; ?>" target="<?php echo $how_we_work_button_link['target']; ?>" class="primary-btn custom-btn <?php echo $button_color; ?> d-block d-sm-none" <?php echo $custom_button; ?>>
+                                                <?php echo $how_we_work_button_icon ? $how_we_work_button_icon . '' : ''; ?> <?php echo $how_we_work_button; ?>
                                             </a>
                                         </div>
                                     <?php
@@ -1641,7 +1699,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                             echo '<div class="d-block d-sm-none col mt-40 position-relative">';
                                             if ($learn_more_section['description']) {
 
-                                                echo '<div class="col-11"><h5 class="learn-more-title title-and-p-padding">' . $learn_more_section['description'] . '</h5> </div>';
+                                                echo '<div class="col-12"><h5 class="learn-more-title title-and-p-padding">' . $learn_more_section['description'] . '</h5> </div>';
                                             }
                                             if ($learn_more_section['button_actions']) {
                                                 for ($i = 0; $i < count($learn_more_section['button_actions']); $i++) {
@@ -1657,8 +1715,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                                     }
                                         ?>
                                                     <div class="d-flex mt-40">
-                                                        <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" class="mt-3 primary-button" <?php echo $custom_button; ?>>
-                                                            <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] . '&nbsp;' : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
+                                                        <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" class="primary-btn custom-btn " <?php echo $custom_button; ?>>
+                                                            <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] . '' : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
                                                         </a>
                                                     </div>
                                                 <?php
@@ -1718,7 +1776,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                             </div>
                             <div class="col-1"></div>
                             <div class="col-md-6 col-sm-12 d-flex justify-content-center" data-aos="fade-up">
-                                <div class="lol-lg-8 col-md-12 meduim-hide d-none d-sm-flex sdg-item-wrap gap-12 flex-wrap justify-content-center">
+                                <div class="col-lg-8 col-md-12 meduim-hide d-none d-sm-flex sdg-item-wrap gap-12 flex-wrap justify-content-center">
                                     <?php
                                     if ($icons) {
                                         grid_sastanable_icons($icons);
@@ -1842,14 +1900,14 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row three-box-lists">
                         <div class="col-lg-4 col-md-12 col-sm-12 d-lg-block d-md-flex box-wrapper d-sm-flex  align-items-center p-0" data-aos="fade-up">
                             <?php if ($state_columns_1) { ?>
                                 <div class="col-lg-4 col-md-3 col-sm-4 state_icon">
                                     <img class="img-fluid" src="<?php echo $state_columns_1['icon']; ?>" />
                                 </div>
                                 <div class="col-lg-8 col-md-9 col-sm-8">
-                                    <h1 class="m-0 number" data-count="<?php echo $state_columns_1['number']; ?>" data-symbol="<?php echo $state_columns_1['number_symbol']; ?>">0</h1>
+                                    <h1 class="m-0 number state-number_field" data-count="<?php echo $state_columns_1['number']; ?>" data-symbol="<?php echo $state_columns_1['number_symbol']; ?>">0</h1>
                                     <p class="m-0"><?php echo $state_columns_1['description']; ?></p>
                                 </div>
                             <?php } ?>
@@ -1860,7 +1918,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     <img class="img-fluid" src="<?php echo $state_columns_2['icon']; ?>" />
                                 </div>
                                 <div class="col-lg-8 col-md-9 col-sm-8">
-                                    <h1 class="m-0 number" data-count="<?php echo $state_columns_2['number']; ?>" data-symbol="<?php echo $state_columns_2['number_symbol']; ?>">0</h1>
+                                    <h1 class="m-0 number state-number_field" data-count="<?php echo $state_columns_2['number']; ?>" data-symbol="<?php echo $state_columns_2['number_symbol']; ?>">0</h1>
                                     <p class="m-0"><?php echo $state_columns_2['description']; ?></p>
                                 </div>
                             <?php } ?>
@@ -1871,7 +1929,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     <img class="img-fluid" src="<?php echo $state_columns_3['icon']; ?>" />
                                 </div>
                                 <div class="col-lg-8 col-md-9 col-sm-8">
-                                    <h1 class="m-0 number" data-count="<?php echo $state_columns_3['number']; ?>" data-symbol="<?php echo $state_columns_3['number_symbol']; ?>">0</h1>
+                                    <h1 class="m-0 number state-number_field" data-count="<?php echo $state_columns_3['number']; ?>" data-symbol="<?php echo $state_columns_3['number_symbol']; ?>">0</h1>
                                     <p class="m-0"><?php echo $state_columns_3['description']; ?></p>
                                 </div>
                             <?php } ?>
@@ -1880,8 +1938,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                     <?php
                     if ($state_button) { ?>
                         <div class="d-flex meduim-show isf-mt <?php echo $btn_class; ?>" data-aos="fade-up">
-                            <a href="<?php echo $state_button_link['url']; ?>" target="<?php echo $state_button_link['target']; ?>" title="<?php echo $state_button_link['title']; ?>" class="m-auto primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
-                                <?php echo $state_button_icon ? $state_button_icon . '&nbsp;' : ''; ?> <?php echo $state_button; ?>
+                            <a href="<?php echo $state_button_link['url']; ?>" target="<?php echo $state_button_link['target']; ?>" title="<?php echo $state_button_link['title']; ?>" class="m-auto primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
+                                <?php echo $state_button_icon ? $state_button_icon . '' : ''; ?> <?php echo $state_button; ?>
                             </a>
                         </div>
                     <?php } ?>
@@ -1914,7 +1972,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                         </div>
                     </div>
                     <div class="col-1"></div>
-                    <div class="col-md-5 col-sm-12" data-aos="fade-up">
+                    <div class="col-md-5 col-sm-12 mt-sm-20" data-aos="fade-up">
 
                         <!-- $accordion_list -->
                         <?php
@@ -2043,7 +2101,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 }
                         ?>
                                 <div class="d-flex d-sm-none">
-                                    <a href="<?php echo $how_it_start_buttons[$i]['url']['url']; ?>" title="<?php echo $how_it_start_buttons[$i]['url']['title']; ?>" target="<?php echo $how_it_start_buttons[$i]['url']['target']; ?>" class="primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>> <?php echo $how_it_start_buttons[$i]['icon'] ? $how_it_start_buttons[$i]['name'] . '&nbsp;' : ''; ?> <?php echo $how_it_start_buttons[$i]['name']; ?></a>
+                                    <a href="<?php echo $how_it_start_buttons[$i]['url']['url']; ?>" title="<?php echo $how_it_start_buttons[$i]['url']['title']; ?>" target="<?php echo $how_it_start_buttons[$i]['url']['target']; ?>" class="primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>> <?php echo $how_it_start_buttons[$i]['icon'] ? $how_it_start_buttons[$i]['name'] . '' : ''; ?> <?php echo $how_it_start_buttons[$i]['name']; ?></a>
                                 </div>
                         <?php
                             }
@@ -2277,9 +2335,9 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                         ?>
                                     </p>
                                     <div class="mt-60">
-                                        <button id="playvideo_hero" type="button" class="primary-orrange secondary-bg-sand primary-button hero-btn d-flex align-items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
-                                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
+                                        <button id="playvideo_hero" type="button" class="hero-btn custom-btn">
+                                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M6.5625 26.25C6.31386 26.25 6.0754 26.1512 5.89959 25.9754C5.72377 25.7996 5.625 25.5611 5.625 25.3125V4.68749C5.62503 4.52458 5.66751 4.36449 5.74825 4.223C5.82899 4.08151 5.94521 3.9635 6.08546 3.8806C6.2257 3.7977 6.38512 3.75278 6.54801 3.75026C6.7109 3.74775 6.87164 3.78772 7.01438 3.86624L25.7644 14.1787C25.9114 14.2597 26.0339 14.3786 26.1193 14.523C26.2047 14.6675 26.2497 14.8322 26.2497 15C26.2497 15.1678 26.2047 15.3325 26.1193 15.477C26.0339 15.6214 25.9114 15.7403 25.7644 15.8212L7.01438 26.1337C6.87595 26.2099 6.72052 26.2499 6.5625 26.25Z" fill="#F25B2A" />
                                             </svg>
                                             <div class="slide-in-bottom">
                                                 <div class="" data-hover="<?php echo $hero_button_text; ?>">
@@ -2287,17 +2345,17 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                                     echo $hero_button_text;
                                                     ?>
                                                 </div>
-                                                <div class=" custom-styles w-embed"></div>
+                                                <!-- <div class=" custom-styles w-embed"></div> -->
                                             </div>
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <?php
-                                echo video_component($hero_video, $id = "playvideo_hero");
-                                ?>
-                            </div>
+                            <!-- <div class="col"> -->
+                            <?php
+                            echo video_component($hero_video, $id = "playvideo_hero", $mobile = '#playvideo_hero_mobile');
+                            ?>
+                            <!-- </div> -->
                         </div>
                     </div>
                     <div class="video-background w-100" id="hero_background">
@@ -2334,7 +2392,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                             </div>
                             <div class="col">
                                 <?php
-                                echo video_component($hero_video, $id = "playvideo_hero_mobile");
+                                // echo video_component($hero_video, $id = "playvideo_hero_mobile");
                                 ?>
                             </div>
                         </div>
@@ -2428,7 +2486,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                                 }
                                             }
                                             if ($two_columns_column[$a]['column_1']['video']) {
-                                                video_bg_autoplay(str_replace(" ", "", $two_columns_column[$a]['column_1']['video']));
+                                                video_bg_autoplay(str_replace(" ", "", $two_columns_column[$a]['column_1']['video']), 'custom_col_1');
                                             } else {
                                                 if ($two_columns_column[$a]['column_1']['image']) {
                                                 ?>
@@ -2470,7 +2528,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                                     }
                                                 }
                                                 if ($two_columns_column[$a]['column_2']['video']) {
-                                                    video_bg_autoplay(str_replace(" ", "", $two_columns_column[$a]['column_2']['video']));
+                                                    video_bg_autoplay(str_replace(" ", "", $two_columns_column[$a]['column_2']['video']), 'column-2');
                                                 } else {
                                                     if ($two_columns_column[$a]['column_2']['image']) {
                                                     ?>
@@ -2515,23 +2573,23 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
         <?php
         }
     }
-    function video_bg_autoplay($video)
+    function video_bg_autoplay($video, $id = "")
     {
         ?>
         <div class="img-fluid img-border-radius">
             <div style="padding:56.25% 0 0 0;position:relative;">
-                <iframe src="<?php echo $video; ?>?muted=1&amp;loop=1&amp;controls=0&amp;autoplay=1&amp;autopause=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen="" id="player_6" data-ready="true">
+                <iframe src="<?php echo $video; ?>?muted=1&amp;loop=1&amp;controls=0&amp;autoplay=1&amp;autopause=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen="" id="<?php echo $id; ?>" data-ready="true">
                 </iframe>
             </div>
         </div>
     <?php
     }
-    function video_component($video, $button)
+    function video_component($video, $button, $mobilebtn = '')
     {
-        echo '<div id="' . $button . '-wrapper" class="opacity-0 custom-video-wrapper">';
+        echo '<div id="' . $button . '-wrapper" class="custom-video-wrapper">';
     ?>
         <div style="padding:56.25% 0 0 0;position:relative;">
-            <iframe src="<?php echo $video; ?>?muted=0&amp;loop=0&amp;controls=1&amp;autoplay=0&amp;autopause=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen="" id="player_6" data-ready="true">
+            <iframe class="vimeo_video_ifram" src="<?php echo $video; ?>?muted=0&loop=0&controls=1&autoplay=0&autopause=0&playsinline=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen allowfullscreen="true" id="<?php echo $button; ?>" data-ready="true">
             </iframe>
         </div>
         <?php
@@ -2540,68 +2598,75 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
         <script>
             jQuery(document).ready(function($) {
                 //call video bg play
-
                 // showModalCallAction("isfModal");
+                var isSafari = window.safari !== undefined;
                 var button = '#<?php echo $button; ?>';
                 var buttonname = '';
-                var iframe = document.querySelector(button + '-wrapper iframe');
-                if (iframe) {
-                    var player = new Vimeo.Player(iframe);
-                    $(button).on('click', function() {
+                var mobilebtn = '<?php echo $mobilebtn; ?>';
+                if (mobilebtn) {
+                    button = button + ', ' + mobilebtn;
+                }
+                $(button).on('click', function() {
+                    buttonname = $(this).attr('id');
 
-                        buttonname = $(this).attr('id');
+                    if (buttonname == 'playvideo_hero_mobile') {
+                        buttonname = 'playvideo_hero';
+                        if (!isSafari) {
+                            $('.hero-desktop').removeClass('d-none');
+                        }
+
+                    }
+                    var iframe = document.querySelector('#' + buttonname + '-wrapper iframe');
+                    if (iframe) {
+                        var player = new Vimeo.Player(iframe);
                         player.play();
-
                         if (isFullScreen()) {
                             return false;
                         }
-
-                        if (!document.fullscreenElement && // alternative standard method
-                            !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) { // current working methods
-                            if (document.documentElement.requestFullscreen) {
-                                player.requestFullscreen();
-                            } else if (document.documentElement.msRequestFullscreen) {
-                                player.msRequestFullscreen();
-                            } else if (document.documentElement.mozRequestFullScreen) {
-                                player.mozRequestFullScreen();
-                            } else if (document.documentElement.webkitRequestFullscreen) {
-                                player.webkitRequestFullscreen();
+                        if (player.requestFullscreen) {
+                            player.requestFullscreen();
+                        } else if (player.msRequestFullscreen) {
+                            player.msRequestFullscreen();
+                        } else if (player.mozRequestFullScreen) {
+                            player.mozRequestFullScreen();
+                        } else if (player.webkitRequestFullscreen) {
+                            player.webkitRequestFullscreen();
+                        }
+                        player.on("ended", function(e) {
+                            // player.destroy();
+                            if (document.exitFullscreen) {
+                                document.exitFullscreen();
+                            } else if (document.msExitFullscreen) {
+                                document.msExitFullscreen();
+                            } else if (document.mozCancelFullScreen) {
+                                document.mozCancelFullScreen();
+                            } else if (document.webkitExitFullscreen) {
+                                document.webkitExitFullscreen();
                             }
-                        }
-                        // player.requestFullscreen();
-                        // player.webkitRequestFullscreen();
-                        // player.mozRequestFullScreen();
-                        // player.msRequestFullscreen();
-                    });
 
-                    player.on("ended", function(e) {
-                        // player.destroy();
-                        if (document.exitFullscreen) {
-                            document.exitFullscreen();
-                        } else if (document.msExitFullscreen) {
-                            document.msExitFullscreen();
-                        } else if (document.mozCancelFullScreen) {
-                            document.mozCancelFullScreen();
-                        } else if (document.webkitExitFullscreen) {
-                            document.webkitExitFullscreen();
-                        }
-
-                        if (buttonname == 'playvideo_hero' || buttonname == 'playvideo_hero_mobile') {
-                            showModalCallAction("isfModal");
-                        }
-                        buttonname = '';
-                    });
-
-                    player.on("fullscreenchange", function(e) {
-                        if (!e.fullscreen) {
                             if (buttonname == 'playvideo_hero' || buttonname == 'playvideo_hero_mobile') {
                                 showModalCallAction("isfModal");
+                                if (!isSafari) {
+                                    $('.hero-desktop').addClass('d-none');
+                                }
                             }
                             buttonname = '';
-                            player.pause();
-                        }
-                    })
-                }
+                        });
+
+                        player.on("fullscreenchange", function(e) {
+                            if (!e.fullscreen) {
+                                if (buttonname == 'playvideo_hero' || buttonname == 'playvideo_hero_mobile') {
+                                    showModalCallAction("isfModal");
+                                    if (!isSafari) {
+                                        $('.hero-desktop').addClass('d-none');
+                                    }
+                                }
+                                buttonname = '';
+                                player.pause();
+                            }
+                        })
+                    }
+                });
 
                 function isFullScreen() {
                     return Boolean(
@@ -2656,10 +2721,10 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                             ?>
                         </p>
                         <div class="m-40 d-flex">
-                            <a href="<?php echo $modal_url['url']; ?>" title="<?php echo $modal_url['title']; ?>" target="<?php echo $modal_url['target']; ?>" class="primary-button m-auto" style="background:<?php echo $modal_button_color; ?>">
+                            <!-- style="background:<?php echo $modal_button_color; ?>" -->
+                            <a href="<?php echo $modal_url['url']; ?>" title="<?php echo $modal_url['title']; ?>" target="<?php echo $modal_url['target']; ?>" class="btn-donation-modal primary-btn custom-btn m-auto">
                                 <?php
                                 echo $modal_icon;
-                                echo "&nbsp;";
                                 echo $modal_button;
                                 ?>
                             </a>
@@ -2729,7 +2794,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     <div class="col-md-6 col-sm-12 d-block d-sm-none p-0 mb-40">
                                         <div class="col position-relative">
                                             <?php if ($how_we_work_video) {
-                                                video_bg_autoplay($how_we_work_video);
+                                                video_bg_autoplay($how_we_work_video, $id = 'how_we_work');
                                             ?>
 
                                             <?php
@@ -2757,8 +2822,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 if ($how_we_work_button) {
                                 ?>
                                     <div class="mt-40 d-none d-sm-flex meduim-hide">
-                                        <a href="<?php echo $how_we_work_button_link['url']; ?>" title="<?php echo $how_we_work_button_link['title']; ?>" target="<?php echo $how_we_work_button_link['target']; ?>" class="primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
-                                            <?php echo $how_we_work_button_icon ? $how_we_work_button_icon . '&nbsp;' : ''; ?> <?php echo $how_we_work_button; ?>
+                                        <a href="<?php echo $how_we_work_button_link['url']; ?>" title="<?php echo $how_we_work_button_link['title']; ?>" target="<?php echo $how_we_work_button_link['target']; ?>" class="primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
+                                            <?php echo $how_we_work_button_icon ? $how_we_work_button_icon . '' : ''; ?> <?php echo $how_we_work_button; ?>
                                         </a>
                                     </div>
                                 <?php
@@ -2769,10 +2834,15 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     <?php
                                     if ($learn_more_section) {
                                         if ($learn_more_section['description']) {
-
+                                            echo "<div class='my-30'>";
                                             echo "<h5 class='learn-more-title title-and-p-padding'>" . $learn_more_section['description'] . "</h5>";
+                                            echo "</div>";
                                         }
                                         if ($learn_more_section['button_actions']) {
+                                            $specific_width_btn = '';
+                                            if (count($learn_more_section['button_actions']) > 1) {
+                                                $specific_width_btn = 'specific-width-btn';
+                                            }
                                             for ($i = 0; $i < count($learn_more_section['button_actions']); $i++) {
                                                 $text_color = $learn_more_section['button_actions'][$i]['button_text_color'] ? 'color:' . $learn_more_section['button_actions'][$i]['button_text_color'] : "";
                                                 $custom_button = $learn_more_section['button_actions'][$i]['button_color'] ?
@@ -2786,9 +2856,9 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                                     $custom_button = 'style="' . $text_color . '"';
                                                 }
                                     ?>
-                                                <div class="d-flex">
-                                                    <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" class="mt-3 primary-button <?php echo $button_color . ' ' . $btn_read_more; ?>" <?php echo $custom_button; ?>>
-                                                        <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] . '&nbsp;' : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
+                                                <div class="d-flex <?php echo $specific_width_btn . '-mb'; ?>">
+                                                    <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" class="primary-btn custom-btn <?php echo  $specific_width_btn . ' ' . $button_color . ' ' . $btn_read_more; ?>" <?php echo $custom_button; ?>>
+                                                        <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] . '' : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
                                                     </a>
                                                 </div>
                                             <?php
@@ -2808,7 +2878,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     <div class="col-md-6 col-sm-12 d-block d-sm-none meduim-show p-0 mb-40" data-aos="fade-up">
                                         <div class="col position-relative">
                                             <?php if ($how_we_work_video) {
-                                                video_bg_autoplay($how_we_work_video);
+                                                video_bg_autoplay($how_we_work_video, $id = "how_we_work_mobile");
                                             } else {
                                             ?>
                                                 <img src="<?php echo $how_we_work_video_thumbnail; ?>" class="img-fluid img-border-radius" />
@@ -2845,11 +2915,15 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     echo '<div class="meduim-show ' . $md_column . ' d-block d-sm-none col m-40 mb-40 position-relative">';
                                     if ($learn_more_section['description']) {
 
-                                        echo '<div class="col-11">
+                                        echo '<div class="col-12">
                                                         <h5 class="learn-more-title title-and-p-padding">' . $learn_more_section['description'] . '</h5> 
                                                     </div>';
                                     }
                                     if ($learn_more_section['button_actions']) {
+                                        $specific_width_btn = '';
+                                        if (count($learn_more_section['button_actions']) > 1) {
+                                            $specific_width_btn = 'specific-width-btn';
+                                        }
                                         for ($i = 0; $i < count($learn_more_section['button_actions']); $i++) {
                                             $text_color = $learn_more_section['button_actions'][$i]['button_text_color'] ? 'color:' . $learn_more_section['button_actions'][$i]['button_text_color'] : "";
                                             $custom_button = $learn_more_section['button_actions'][$i]['button_color'] ?
@@ -2863,9 +2937,9 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                                 $custom_button = 'style="' . $text_color . '"';
                                             }
                             ?>
-                                            <div class="d-flex">
-                                                <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" class="mt-3 primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
-                                                    <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] . '&nbsp;' : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
+                                            <div class="d-flex <?php echo $specific_width_btn . '-mb'; ?>">
+                                                <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" class="primary-btn custom-btn <?php echo  $specific_width_btn . ' ' . $button_color; ?>" <?php echo $custom_button; ?>>
+                                                    <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] . '' : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
                                                 </a>
                                             </div>
                                         <?php
@@ -2888,7 +2962,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 <div class="col-md-6 col-sm-12 <?php echo $display; ?>" data-aos="fade-up">
                                     <div class="col position-relative">
                                         <?php if ($how_we_work_video) {
-                                            video_bg_autoplay($how_we_work_video);
+                                            video_bg_autoplay($how_we_work_video, "how_we_work_meduim");
                                         } else {
                                         ?>
                                             <img src="<?php echo $how_we_work_video_thumbnail; ?>" class="img-fluid img-border-radius" />
@@ -2905,8 +2979,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     </div>
                                     <?php if ($how_we_work_button) { ?>
                                         <div class="mt-40 d-flex meduim-show d-sm-none justify-content-center">
-                                            <a href="<?php echo $how_we_work_button_link['url']; ?>" target="<?php echo $how_we_work_button_link['target']; ?>" title="<?php echo $how_we_work_button_link['title']; ?>" class="primary-button <?php echo $button_color; ?> " <?php echo $custom_button; ?>>
-                                                <?php echo $how_we_work_button_icon ? $how_we_work_button_icon . '&nbsp;' : ''; ?> <?php echo $how_we_work_button; ?>
+                                            <a href="<?php echo $how_we_work_button_link['url']; ?>" target="<?php echo $how_we_work_button_link['target']; ?>" title="<?php echo $how_we_work_button_link['title']; ?>" class="primary-btn custom-btn <?php echo $button_color; ?> " <?php echo $custom_button; ?>>
+                                                <?php echo $how_we_work_button_icon ? $how_we_work_button_icon . '' : ''; ?> <?php echo $how_we_work_button; ?>
                                             </a>
                                         </div>
                                     <?php
@@ -2918,9 +2992,13 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                             echo '<div class="readmore d-block d-sm-none meduim-show col mt-40 position-relative">';
                                             if ($learn_more_section['description']) {
 
-                                                echo '<div class="col-11"><h5 class="learn-more-title title-and-p-padding">' . $learn_more_section['description'] . '</h2> </div>';
+                                                echo '<div class="col-12"><h5 class="learn-more-title title-and-p-padding">' . $learn_more_section['description'] . '</h2> </div>';
                                             }
                                             if ($learn_more_section['button_actions']) {
+                                                $specific_width_btn = '';
+                                                if (count($learn_more_section['button_actions']) > 1) {
+                                                    $specific_width_btn = 'specific-width-btn';
+                                                }
                                                 for ($i = 0; $i < count($learn_more_section['button_actions']); $i++) {
                                                     $text_color = $learn_more_section['button_actions'][$i]['button_text_color'] ? 'color:' . $learn_more_section['button_actions'][$i]['button_text_color'] : "";
                                                     $custom_button = $learn_more_section['button_actions'][$i]['button_color'] ?
@@ -2933,9 +3011,9 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                                         $custom_button = 'style="' . $text_color . '"';
                                                     }
                                         ?>
-                                                    <div class="d-flex">
-                                                        <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" class="mt-3 primary-button" <?php echo $custom_button; ?>>
-                                                            <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] . '&nbsp;' : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
+                                                    <div class="d-flex <?php echo $specific_width_btn . '-mb'; ?>">
+                                                        <a href="<?php echo $learn_more_section['button_actions'][$i]['button_url']['url']; ?>" target="<?php echo $learn_more_section['button_actions'][$i]['button_url']['target']; ?>" title="<?php echo $learn_more_section['button_actions'][$i]['button_url']['title']; ?>" class="primary-btn custom-btn <?php echo $specific_width_btn; ?> " <?php echo $custom_button; ?>>
+                                                            <?php echo $learn_more_section['button_actions'][$i]['button_icon'] ? $learn_more_section['button_actions'][$i]['button_icon'] : ''; ?> <?php echo $learn_more_section['button_actions'][$i]['button_text']; ?>
                                                         </a>
                                                     </div>
                                                 <?php
@@ -3005,7 +3083,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                             <div class="col-md-6 col-sm-12" data-aos="fade-up">
                                 <div class="position-relative">
                                     <?php if ($how_we_are_run_video) {
-                                        video_bg_autoplay(str_replace(" ", "", $how_we_are_run_video));
+                                        video_bg_autoplay(str_replace(" ", "", $how_we_are_run_video), 'how_we_run');
                                     } else {
                                         if ($how_we_are_run_video_thumbnail) {
                                     ?>
@@ -3038,8 +3116,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     </div>
                                 <?php } ?>
                                 <div class="d-flex mt-40 d-sm-none meduim-show">
-                                    <a href="<?php echo $how_we_are_run_button_link['url']; ?>" target="<?php echo $how_we_are_run_button_link['target']; ?>" title="<?php echo $how_we_are_run_button_link['title']; ?>" class=" primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
-                                        <?php echo $how_we_are_run_button_icon . '&nbsp;'; ?> <?php echo $how_we_are_run_button; ?>
+                                    <a href="<?php echo $how_we_are_run_button_link['url']; ?>" target="<?php echo $how_we_are_run_button_link['target']; ?>" title="<?php echo $how_we_are_run_button_link['title']; ?>" class="primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
+                                        <?php echo $how_we_are_run_button_icon . ''; ?> <?php echo $how_we_are_run_button; ?>
                                     </a>
                                 </div>
                             </div>
@@ -3048,8 +3126,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 <h2 class="title-and-p-padding"><?php echo $how_we_are_run_title; ?></h2>
                                 <?php echo $how_we_are_run_description; ?>
                                 <div class="mt-40 d-none d-sm-flex meduim-hide ">
-                                    <a href="<?php echo $how_we_are_run_button_link['url']; ?>" target="<?php echo $how_we_are_run_button_link['target']; ?>" title="<?php echo $how_we_are_run_button_link['title']; ?>" class="primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
-                                        <?php echo $how_we_are_run_button_icon . '&nbsp;'; ?> <?php echo $how_we_are_run_button; ?>
+                                    <a href="<?php echo $how_we_are_run_button_link['url']; ?>" target="<?php echo $how_we_are_run_button_link['target']; ?>" title="<?php echo $how_we_are_run_button_link['title']; ?>" class="primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
+                                        <?php echo $how_we_are_run_button_icon . ''; ?> <?php echo $how_we_are_run_button; ?>
                                     </a>
                                 </div>
                             </div>
@@ -3096,7 +3174,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
         $four_column_columns_3 = get_field("4_columns_columns_3", $post_id);
         $four_column_columns_4 = get_field("4_columns_columns_4", $post_id);
 
-        $button_color = !$four_column_button_color ? "primary-bg-orrange primary-button" : "";
+        $button_color = !$four_column_button_color ? "primary-bg-orrange custom-btn" : "";
         $custom_button = $four_column_button_color ? 'style="background:' . $four_column_button_color . '"' : "";
 
         $four_column_background = $four_column_background ? 'style="background:' . $four_column_background . '"' : '';
@@ -3123,15 +3201,15 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     </p>
                                 </div>
                             </div>
-                            <div class="row mb-20">
+                            <div class="row mb-20 box-lists">
                                 <div class="col-lg-3 col-md-12 col-sm-12 flex-column-reverse flex-sm-row" data-aos="fade-up">
                                     <?php if ($four_column_columns_1) { ?>
                                         <div class="col-12 d-flex">
-                                            <div class="image-wraper col-md-12 col-sm-9">
+                                            <div class="image-wraper col-md-12 col-sm-11">
                                                 <img src="<?php echo $four_column_columns_1['image']; ?>" class="img-fluid" />
                                             </div>
-                                            <div class="col-3 d-sm-none meduim-show d-flex align-items-end">
-                                                <div class="position-absolute  d-sm-none meduim-show d-flex">
+                                            <div class="col-1 d-sm-none meduim-show d-flex align-items-end">
+                                                <div class="position-absolute icon-arrow  d-sm-none meduim-show d-flex">
                                                     <img src="<?php echo $four_column_columns_1['arrow_icon_mobile']; ?>" class="img-fluid" />
                                                 </div>
                                             </div>
@@ -3146,12 +3224,12 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 <div class="col-lg-3 col-md-12 col-sm-12 flex-column-reverse flex-sm-row" data-aos="fade-up">
                                     <?php if ($four_column_columns_2) { ?>
                                         <div class="col-12 d-flex">
-                                            <div class="col-3 d-flex d-sm-none meduim-show d-flex">
-                                                <div class="position-absolute d-sm-none meduim-show d-flex">
+                                            <div class="col-1 d-flex d-sm-none meduim-show d-flex">
+                                                <div class="position-absolute icon-arrow d-sm-none meduim-show d-flex">
                                                     <img src="<?php echo $four_column_columns_2['arrow_icon_mobile']; ?>" class="img-fluid" />
                                                 </div>
                                             </div>
-                                            <div class="image-wraper col-md-12 col-sm-9">
+                                            <div class="image-wraper col-md-12 col-sm-11">
                                                 <img src="<?php echo $four_column_columns_2['image']; ?>" class="img-fluid" />
                                             </div>
                                         </div>
@@ -3166,11 +3244,11 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 <div class="col-lg-3 col-md-12 col-sm-12 flex-column-reverse flex-sm-row" data-aos="fade-up">
                                     <?php if ($four_column_columns_3) { ?>
                                         <div class="col-12 d-flex">
-                                            <div class="image-wraper col-md-12 col-sm-9">
+                                            <div class="image-wraper col-md-12 col-sm-11">
                                                 <img src="<?php echo $four_column_columns_3['image']; ?>" class="img-fluid" />
                                             </div>
-                                            <div class="col-3 d-sm-none meduim-show d-flex">
-                                                <div class="position-absolute d-sm-none meduim-show d-flex">
+                                            <div class="col-1 d-sm-none meduim-show d-flex">
+                                                <div class="position-absolute icon-arrow d-sm-none meduim-show d-flex">
                                                     <img src="<?php echo $four_column_columns_3['arrow_icon_mobile']; ?>" class="img-fluid" />
                                                 </div>
                                             </div>
@@ -3185,12 +3263,12 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 <div class="col-lg-3 col-md-12 col-sm-12 flex-column-reverse flex-sm-row" data-aos="fade-up">
                                     <?php if ($four_column_columns_4) { ?>
                                         <div class="col-12 d-flex">
-                                            <div class="col-3 d-sm-none meduim-show d-flex">
-                                                <div class="position-absolute  d-sm-none meduim-show d-flex">
+                                            <div class="col-1 d-sm-none meduim-show d-flex">
+                                                <div class="position-absolute icon-arrow  d-sm-none meduim-show d-flex">
                                                     <img src="<?php echo $four_column_columns_4['arrow_icon_mobile']; ?>" class="img-fluid" />
                                                 </div>
                                             </div>
-                                            <div class="image-wraper col-md-12 col-sm-9">
+                                            <div class="image-wraper col-md-12 col-sm-11">
                                                 <img src="<?php echo $four_column_columns_4['image']; ?>" class="img-fluid" />
                                             </div>
                                         </div>
@@ -3204,8 +3282,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                             </div>
                             <div class="col-12" data-aos="fade-up">
                                 <div class="d-flex mt-40">
-                                    <a href="<?php echo $four_column_button_link['url']; ?>" target="<?php echo $four_column_button_link['target']; ?>" title="<?php echo $four_column_button_link['title']; ?>" class="m-auto primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
-                                        <?php echo $four_column_button_icon ? $four_column_button_icon . '&nbsp;' : ''; ?> <?php echo $four_column_button; ?>
+                                    <a href="<?php echo $four_column_button_link['url']; ?>" target="<?php echo $four_column_button_link['target']; ?>" title="<?php echo $four_column_button_link['title']; ?>" class="m-auto primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
+                                        <?php echo $four_column_button_icon ? $four_column_button_icon . '' : ''; ?> <?php echo $four_column_button; ?>
                                     </a>
                                 </div>
                             </div>
@@ -3217,7 +3295,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
         }
     }
 
-    function isf_partnership_section($post_id, $class = '', $mobile = '', $logo = '')
+    function isf_partnership_section($post_id, $class = '', $mobile = '', $logo = '', $ishome = "")
     {
         $partnership = get_field("partner_section_page", $post_id);
         if ($partnership) {
@@ -3252,12 +3330,14 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                 <div class="content section-adding-x col-12">
                     <div class="fusion-row">
                         <div class="row meduim-reverse align-items-center justify-content-beetween">
-                            <div class="col-lg-5 col-md-5 col-sm-12 meduim-mt-40" data-aos="fade-right">
+                            <div class="col-lg-5 col-md-5 col-sm-12 <?php if (!$ishome) {
+                                                                        echo 'meduim-mt-40';
+                                                                    } ?>" data-aos="fade-right">
                                 <h2 class="title-and-p-padding"><?php echo $title; ?></h2>
                                 <p><?php echo $partnership_description; ?></p>
                                 <div class="mt-40 d-lg-flex d-md-none d-sm-none meduim-show md-partner-btn">
-                                    <a href="<?php echo $partnership_url['url']; ?>" target="<?php echo $partnership_url['target']; ?>" title="<?php echo $partnership_url['title']; ?>" class="primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
-                                        <?php echo $partnership_icon ? $partnership_icon . '&nbsp;' : ''; ?> <?php echo $partnership_button; ?>
+                                    <a href="<?php echo $partnership_url['url']; ?>" target="<?php echo $partnership_url['target']; ?>" title="<?php echo $partnership_url['title']; ?>" class="primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
+                                        <?php echo $partnership_icon ? $partnership_icon . '' : ''; ?> <?php echo $partnership_button; ?>
                                     </a>
                                 </div>
                             </div>
@@ -3267,8 +3347,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 owl_slider_gallery($post_id, $partnership_images, $partnership_gallery_button_color, $partnership_gallery_button_active_color);
                                 ?>
                                 <div class="justify-content-center mt-40 d-none d-lg-none d-md-flex d-sm-flex meduim-hide sm-partner-btn">
-                                    <a href="<?php echo $partnership_url['url']; ?>" target="<?php echo $partnership_url['target']; ?>" title="<?php echo $partnership_url['title']; ?>" class="primary-button mobile-primary-orrang <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
-                                        <?php echo $partnership_icon ? $partnership_icon . '&nbsp;' : ''; ?> <?php echo $partnership_button; ?>
+                                    <a href="<?php echo $partnership_url['url']; ?>" target="<?php echo $partnership_url['target']; ?>" title="<?php echo $partnership_url['title']; ?>" class="primary-btn custom-btn mobile-primary-orrang <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
+                                        <?php echo $partnership_icon ? $partnership_icon . '' : ''; ?> <?php echo $partnership_button; ?>
                                     </a>
                                 </div>
                             </div>
@@ -3375,60 +3455,6 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                 });
             });
         </script>
-    <?php
-    }
-
-    function isf_partnership_slider($post_id = '', $partnership_images = [], $partnership_gallery_button_color = '', $partnership_gallery_button_active_color = '')
-    {
-        $partner = array_chunk($partnership_images, 6);
-    ?>
-        <style>
-            .carousel-indicators .icons.active {
-                background-color: <?php echo $partnership_gallery_button_active_color; ?>
-            }
-
-            .carousel-indicators .icons {
-                background-color: <?php echo $partnership_gallery_button_color; ?>
-            }
-        </style>
-        <div class="d-none d-sm-block">
-            <div id="carouselExampleIndicators<?php echo $post_id; ?>" class="carousel slide" data-bs-ride="true">
-                <div class="carousel-inner">
-                    <?php for ($i = 0; $i < count($partner); $i++) { ?>
-                        <div class="carousel-item <?php echo $i == 0 ? 'active' : '' ?>" data-bs-interval="10000">
-                            <div class="row">
-                                <?php
-                                $items = count($partner[$i]);
-                                $count = count($partner[$i]) < 6 ? 6 : count($partner[$i]);
-                                for ($a = 0; $a < $count; $a++) { ?>
-                                    <div class="col-6 d-flex align-items-center justify-content-center">
-                                        <div class="col-12 p-3 partner-wrapper d-flex align-items-center justify-content-center">
-                                            <?php
-                                            if ($a < $items) {
-                                                if ($partner[$i][$a]) { ?>
-                                                    <img src="<?php echo $partner[$i][$a]; ?>" class="img-fluid" alt="Partner Logo">
-                                            <?php }
-                                            }
-                                            ?>
-                                        </div>
-                                    </div>
-                                <?php } ?>
-                            </div>
-                        </div>
-                    <?php } ?>
-                </div>
-                <div class="carousel-indicators position-relative m-40 mb-0">
-                    <?php for ($i = 0; $i < count($partner); $i++) { ?>
-                        <button type="button" data-bs-target="#carouselExampleIndicators<?php echo $post_id; ?>" data-bs-slide-to="<?php echo $i; ?>" class="icons <?php echo $i == 0 ? 'active' : '' ?>"></button>
-                    <?php } ?>
-                </div>
-            </div>
-        </div>
-        <div class="d-block d-sm-none">
-            <?php
-            partner_logo_lists($partnership_images);
-            ?>
-        </div>
         <?php
     }
 
@@ -3559,7 +3585,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 <?php if ($column_1) { ?>
                                     <div class="col secondary-sand img-border-radius" style="background:<?php echo $column_1['column_background']; ?>" data-aos="fade-up">
                                         <div class="col-12 p-40">
-                                            <h4 class="title-and-p-padding">
+                                            <h4 class="title-and-p-padding contribute-title">
                                                 <?php echo $column_1['icon']; ?> &nbsp;<?php echo $column_1['title']; ?>
                                             </h4>
                                             <p class="m-0"><?php echo $column_1['description']; ?></p>
@@ -3582,7 +3608,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 <?php if ($column_2) { ?>
                                     <div class="col primary-gray img-border-radius" style="background:<?php echo $column_2['column_background']; ?>" data-aos="fade-up">
                                         <div class="col-12 p-40">
-                                            <h4 class="title-and-p-padding">
+                                            <h4 class="title-and-p-padding contribute-title">
                                                 <?php echo $column_2['icon']; ?> &nbsp;<?php echo $column_2['title']; ?>
                                             </h4>
                                             <p class="m-0"><?php echo $column_2['description']; ?></p>
@@ -3604,7 +3630,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 <?php if ($column_3) { ?>
                                     <div class="col primary-gray img-border-radius" style="background:<?php echo $column_3['column_background']; ?>" data-aos="fade-up">
                                         <div class="col-12 p-40">
-                                            <h4 class="title-and-p-padding">
+                                            <h4 class="title-and-p-padding contribute-title">
                                                 <?php echo $column_3['icon']; ?> &nbsp;<?php echo $column_3['title']; ?>
                                             </h4>
                                             <p class="m-0"><?php echo $column_3['description']; ?></p>
@@ -3653,7 +3679,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
             $image = get_field('image', $form_id);
 
             $section_background = $section_color ? 'style="background:' . $section_color . '"' : '';
-            $button_class = !$button_color ? "primary-bg-orrange text-white primary-button" : "";
+            $button_class = !$button_color ? "primary-bg-orrange text-white custom-btn" : "";
 
             $custom_button_text_color = $button_text_color ? 'color:' . $button_text_color . '"' : "";
             $custom_button = $button_color ? 'style="background:' . $button_color . ';' . $custom_button_text_color . '"' : "";
@@ -3666,7 +3692,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                 $custom_button = '';
             }
         ?>
-            <section class="section-padding <?php echo $class; ?>" <?php echo $section_background; ?>>
+            <section class="section-padding subscribe <?php echo $class; ?>" <?php echo $section_background; ?>>
                 <div class="content section-adding-x col-12">
                     <div class="fusion-row">
                         <div class="row meduim-reverse flex-column-reverse flex-md-row align-items-center">
@@ -3681,7 +3707,9 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                             </div>
                             <div class="col-lg-2 col-md-1 col-sm-12"></div>
                             <div class="col-md-6 col-sm-12 mb-sm-40" data-aos="fade-up">
-                                <img src="<?php echo $image; ?>" class="img-fluid img-border-radius" />
+                                <div class="subscibe-image">
+                                    <img src="<?php echo $image; ?>" class="img-fluid img-border-radius" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3721,7 +3749,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 <div class="mt-40 socail-media-link">
                                     <?php
                                     for ($i = 0; $i < count($social_medias); $i++) {
-                                        $button_color = $social_medias[$i]['button_color'];
+                                        $button_color = strtolower(str_replace(' ', '', $social_medias[$i]['button_color']));
+
                                         $custom_button =
                                             $button_color ? 'style="background:' . $button_color . '"' : '';
                                         if ($button_color == '#05357b') {
@@ -3730,11 +3759,15 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                         } else if ($button_color == '#f25b2a') {
                                             $button_color = 'primary-bg-orrange';
                                             $custom_button = '';
+                                        } else if ($button_color == '#01295c') {
+                                            $button_color = 'secondary-bg-blue';
+                                        } else {
+                                            $button_color = '';
                                         }
                                     ?>
-                                        <div class="d-flex">
-                                            <a class="mb-3 btn-read-more primary-button <?php echo $button_color; ?>" <?php echo $custom_button; ?> href="<?php echo $social_medias[$i]['url']['url']; ?>" title="<?php echo $social_medias[$i]['url']['title']; ?>" target="<?php echo $social_medias[$i]['url']['target']; ?>">
-                                                <?php echo $social_medias[$i]['icon'] ? $social_medias[$i]['icon'] . '&nbsp;' : '' ?><?php echo $social_medias[$i]['name']; ?>
+                                        <div class="d-flex specific-width-btn-mb">
+                                            <a class="specific-width-btn primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?> href="<?php echo $social_medias[$i]['url']['url']; ?>" title="<?php echo $social_medias[$i]['url']['title']; ?>" target="<?php echo $social_medias[$i]['url']['target']; ?>">
+                                                <?php echo $social_medias[$i]['icon'] ? $social_medias[$i]['icon'] . '' : '' ?><?php echo $social_medias[$i]['name']; ?>
                                             </a>
                                         </div>
                                     <?php
@@ -3784,9 +3817,14 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
             $button_url = get_field('money_button_url', $money_section_id);
             $button_color = get_field('money_button_color', $money_section_id);
 
+
             //image
             $image = get_field('money_image', $money_section_id);
             $money_svg_image = get_field('money_svg_image', $money_section_id);
+            $number_counting = get_field('number_counting', $money_section_id);
+            $number_symbol = get_field('number_symbol', $money_section_id);
+            $number_description = get_field('number_description', $money_section_id);
+
 
 
 
@@ -3806,7 +3844,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                 $section_background = '';
             }
         ?>
-            <section class="section-padding where-money-go" <?php echo $section_background; ?>>
+            <section id="number_state" class="section-padding where-money-go state-number" <?php echo $section_background; ?>>
                 <div class="content section-adding-x col-12">
                     <div class="fusion-row">
                         <div class="row meduim-reverse align-items-center flex-column-reverse flex-sm-row">
@@ -3818,18 +3856,26 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     <?php echo $description; ?>
                                 </p>
                                 <div class="d-flex mt-40">
-                                    <a class="donat-btn primary-button <?php echo $custom_button ? '' : 'primary-bg-orrange text-white'; ?>" <?php echo $custom_button; ?> href="<?php echo $button_url['url']; ?>" title="<?php echo $button_url['title']; ?>" target="<?php echo $button_url['target']; ?>">
+                                    <a class="donat-btn primary-btn custom-btn <?php echo $custom_button ? '' : 'primary-bg-orrange'; ?>" <?php echo $custom_button; ?> href="<?php echo $button_url['url']; ?>" title="<?php echo $button_url['title']; ?>" target="<?php echo $button_url['target']; ?>">
                                         <?php echo $button_icon; ?><?php echo $button_text; ?>
                                     </a>
                                 </div>
                             </div>
                             <div class="col-lg-1 col-md-1 col-sm-12"></div>
                             <div class="col-md-6 col-sm-12 d-flex justify-content-center" data-aos="fade-up">
-                                <div class="col-lg-8 col-md-12 col-sm-12 p-0 svg-image-wrapper mb-sm-40">
-                                    <?php if ($money_svg_image) {
-                                        echo $money_svg_image;
-                                    } else {
-                                        echo  '<img src="' . $image . '" class="img-fluid img-border-radius" />';
+                                <div class="col-lg-8 col-md-12 col-sm-12 p-0 money-chat-box svg-image-wrapper mb-sm-40">
+                                    <?php if ($image) {
+                                        echo '<div class="money-go-wrapper">';
+                                        if ($number_counting) {
+                                            echo '<h1 class="where-money-go-number primary-teal mb-0 number" data-aos="fade-up" data-count="' . $number_counting . '" data-symbol="' . $number_symbol . '">0</h1>';
+                                        }
+                                        if ($number_description) {
+                                            echo "<p data-aos='fade-up' class='mb-0 primary-teal money-go-description'>";
+                                            echo $number_description;
+                                            echo "</p>";
+                                        }
+                                        echo '</div>';
+                                        echo  '<img data-aos="fade-up" src="' . $image . '" class="img-fluid img-border-radius" />';
                                     }
                                     ?>
                                 </div>
@@ -3923,7 +3969,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
 
         return $headers;
     }
-    add_filter('wp_headers', 'mad_security_hsts_plugin_get_headers');
+    // add_filter('wp_headers', 'mad_security_hsts_plugin_get_headers');
 
     function mad_security_hsts_plugin_get_hsts_header(): string
     {
@@ -3946,3 +3992,53 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
         $csp = 'upgrade-insecure-requests;';
         return $csp;
     }
+
+    function more_stories_post_ajax()
+    {
+        $per_page = (isset($_POST["per_page"])) ? $_POST["per_page"] : 6;
+        $pageNumber = (isset($_POST['pageNumber'])) ? $_POST['pageNumber'] : 0;
+        header("Content-Type: text/html");
+        $args = array(
+            'suppress_filters' => true,
+            'post_type' => 'post',
+            'posts_per_page' => $per_page,
+            'paged'    => $pageNumber,
+            'post_status' => 'publish',
+        );
+        $loop = new WP_Query($args);
+        $out = '';
+        if ($loop->have_posts()) :  while ($loop->have_posts()) : $loop->the_post();
+                $out .= get_template_part('/templates/isf/story-list');
+            endwhile;
+        endif;
+        wp_reset_postdata();
+        die($out);
+    }
+
+    add_action('wp_ajax_nopriv_more_stories_post_ajax', 'more_stories_post_ajax');
+    add_action('wp_ajax_more_stories_post_ajax', 'more_stories_post_ajax');
+
+    function more_video_post_ajax()
+    {
+        $per_page = (isset($_POST["per_page"])) ? $_POST["per_page"] : 6;
+        $pageNumber = (isset($_POST['pageNumber'])) ? $_POST['pageNumber'] : 0;
+        header("Content-Type: text/html");
+        $args = array(
+            'suppress_filters' => true,
+            'posts_per_page' => $per_page,
+            'post_type' => 'video-library',
+            'post_status' => 'publish',
+            'paged'    => $pageNumber,
+        );
+        $loop = new WP_Query($args);
+        $out = '';
+        if ($loop->have_posts()) :  while ($loop->have_posts()) : $loop->the_post();
+                $out .= get_template_part('/templates/isf/video-list');
+            endwhile;
+        endif;
+        wp_reset_postdata();
+        die($out);
+    }
+
+    add_action('wp_ajax_nopriv_more_video_post_ajax', 'more_video_post_ajax');
+    add_action('wp_ajax_more_video_post_ajax', 'more_video_post_ajax');

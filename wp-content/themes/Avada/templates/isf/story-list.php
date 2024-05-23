@@ -8,14 +8,15 @@
             ?>
         </div>
     </a>
-    <h3 class="mt-20">
+    <h4 class="mt-20 story-title">
         <?php
         echo get_the_title(get_the_ID());
         ?>
-    </h3>
+    </h4>
+    <div class="post-date">
+        <?php echo get_the_date('d F Y', get_the_ID()); ?>
+    </div>
     <?php
-    echo '<h4 class="title-and-p-padding">' . get_field('people_position', get_the_ID()) . ' </h4>';
-    // the_excerpt();
     do_action('avada_blog_post_content');
     ?>
     <div class="d-flex justify-content-between">
@@ -28,9 +29,6 @@
                     <div class=" custom-styles w-embed"></div>
                 </div>
             </a>
-        </div>
-        <div class="post-date">
-            <?php echo get_the_date('d F Y', get_the_ID()); ?>
         </div>
     </div>
 </div>

@@ -119,14 +119,15 @@ if (fusion_get_option('footer_widgets')) : ?>
 	<div class="modal-dialog modal-dialog-centered modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="videoModalTitle"></h5>
-				<button type="button" class="btn-close close_modal_custome" data-bs-dismiss="modal" aria-label="Close"></button>
+				<h5 class="modal-title mb-0" id="videoModalTitle"></h5>
+				<button type="button" class="close close_modal_custome" data-bs-dismiss="modal" aria-label="Close">
+					<span class="primary-gray" aria-hidden="true">×</span>
+				</button>
 			</div>
-			<div class="modal-body d-flex justify-content-center" id="videoModalContentYouTube">
-
+			<div class="modal-body d-flex justify-content-center" id="videoModalContentYouTube" data-class="">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary close_modal_custome" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="custom-btn primary-btn primary-bg-orrange close_modal_custome" data-bs-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>

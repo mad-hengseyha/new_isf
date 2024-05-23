@@ -1,4 +1,23 @@
 /* ipad pro  */
+@media screen and (min-width: 1024px) and (max-width: 1238px) {
+  .box-lists .col-lg-3 {
+    width: 25% !important;
+  }
+  .people-lists.col-lg-3 {
+    width: 33.333% !important;
+  }
+  /* .three-box-lists .col-lg-4 {
+    width: 33.333%;
+  } */
+}
+@media screen and (max-width: 1024px) {
+  .youtube-modal .modal-dialog.modal-xl {
+    min-width: 98% !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 @media screen and (min-width: 992px) and (max-width: 1024px) {
   .hero-desktop {
     margin-top: 95px;
@@ -23,7 +42,7 @@
     .fusion-flyout-menu-icons
     .fusion-flyout-search-toggle:hover
     .fusion-toggle-icon-line {
-    background: #333333 !important;
+    background: #05357b !important;
   }
   .home .header-section-wraper .fusion-mobile-logo {
     display: none !important;
@@ -257,8 +276,46 @@
   }
 }
 
+@media screen and (min-width: 768px) and (max-width: 859px) {
+  .readmore h5 {
+    text-align: center;
+  }
+  h4.title-and-p-padding.contribute-title {
+    display: flex !important;
+    flex-direction: column;
+    flex-wrap: wrap !important;
+  }
+  .subscibe-image,
+  .money-chat-box {
+    width: 50% !important;
+    margin: auto;
+  }
+}
 /* // big tablet */
 @media screen and (min-width: 768px) and (max-width: 991px) {
+  .fusion-mobile-menu
+    .fusion-mobile-nav-item.menu-item-has-children
+    .sub-menu
+    a::before,
+  .mobile_footer_option_one #menu-mobile-menu-1 li .sub-menu li a::after,
+  .mobile_footer_option_one #menu-mobile-menu-1 li a::after,
+  .fusion-mobile-menu .fusion-mobile-nav-item a::before {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    line-height: 27px;
+  }
+
+  h1.where-money-go-number {
+    font-size: 46px !important;
+    font-family: Intro-Rust !important;
+  }
+  p.money-go-description {
+    font-size: 10px !important;
+    font-family: Intro-Rust !important;
+  }
+  .section-padding {
+    padding: 60px 0;
+  }
   h3.team-header {
     font-weight: 700 !important;
     font-family: "LATO-700";
@@ -293,7 +350,7 @@
     .fusion-flyout-menu-icons
     .fusion-flyout-search-toggle:hover
     .fusion-toggle-icon-line {
-    background: #333333 !important;
+    background: #05357b !important;
   }
   .home .header-section-wraper .fusion-mobile-logo {
     display: none !important;
@@ -370,6 +427,7 @@
     font-size: 24px !important;
     line-height: 130% !important;
     font-family: Lato-700 !important;
+    font-weight: 700 !important;
   }
   h3 {
     font-size: 20px !important;
@@ -685,6 +743,31 @@
 
 /* small table  */
 @media screen and (min-width: 567px) and (max-width: 767px) {
+  .readmore h5 {
+    text-align: center;
+  }
+  .fusion-header {
+    padding-top: 20px;
+  }
+  .fusion-mobile-menu
+    .fusion-mobile-nav-item.menu-item-has-children
+    .sub-menu
+    a::before,
+  .mobile_footer_option_one #menu-mobile-menu-1 li .sub-menu li a::after,
+  .mobile_footer_option_one #menu-mobile-menu-1 li a::after,
+  .fusion-mobile-menu .fusion-mobile-nav-item a::before {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    line-height: 27px;
+  }
+  h1.where-money-go-number {
+    font-size: 46px !important;
+    font-family: Intro-Rust !important;
+  }
+  p.money-go-description {
+    font-size: 10px !important;
+    font-family: Intro-Rust !important;
+  }
   /* .pt-40.sm-pt-0 {
     padding-top: 0 !important;
   } */
@@ -720,28 +803,29 @@
     font-size: 24px !important;
     line-height: 130% !important;
     font-family: Lato-700 !important;
+    font-weight: 700;
   }
   h3 {
     font-size: 20px !important;
     line-height: 130% !important;
-    font-weight: 500 !important;
-    font-family: Lato !important;
+    font-weight: 700 !important;
+    font-family: Lato-700 !important;
   }
   h4 {
-    font-weight: 500 !important;
+    font-weight: 700 !important;
     font-size: 18px !important;
     line-height: 130% !important;
-    font-family: Lato !important;
+    font-family: Lato-700 !important;
   }
   p {
     font-weight: 300 !important;
     font-size: 16px !important;
-    line-height: 130% !important;
+    line-height: 150% !important;
     font-family: Lato-300 !important;
   }
   button {
     font-weight: 400 !important;
-    font-size: 18px !important;
+    font-size: 16px !important;
     line-height: 120% !important;
     font-family: Lato-400 !important;
   }
@@ -765,7 +849,7 @@
     .fusion-flyout-menu-icons
     .fusion-flyout-search-toggle:hover
     .fusion-toggle-icon-line {
-    background: #333333 !important;
+    background: #05357b !important;
   }
   .home .header-section-wraper .fusion-mobile-logo {
     display: none !important;
@@ -1198,10 +1282,112 @@
   .no-meduim-space .meduim-mb-20 {
     margin-bottom: 0 !important;
   }
+  #isfModal .modal-dialog {
+    width: 90% !important;
+  }
+  .section-padding {
+    padding: 60px 0;
+  }
+  .img-border-radius {
+    border-radius: 8px !important;
+  }
+  .money-chat-box {
+    max-width: 272px;
+  }
+  .mt-sm-20 {
+    margin-top: 20px;
+  }
+  .icon-arrow {
+    top: 0;
+  }
+  .state-number_field {
+    font-family: Lato !important;
+    font-size: 36px !important;
+    font-weight: 800 !important;
+    line-height: 43.2px !important;
+  }
+  .story-title {
+    margin-bottom: 10px !important;
+  }
+  .btn-read-more {
+    width: auto !important;
+  }
 }
 
 /* phone  */
 @media screen and (max-width: 575px) {
+  .btn-read-more {
+    width: auto !important;
+  }
+  .story-title {
+    margin-bottom: 10px !important;
+  }
+  .state-number_field {
+    font-family: Lato !important;
+    font-size: 36px !important;
+    font-weight: 800 !important;
+    line-height: 43.2px !important;
+  }
+  .icon-arrow {
+    top: 0;
+  }
+  .mobile-footer img {
+    height: 72px !important;
+    width: auto;
+  }
+  .meduim-mt-40 {
+    margin-top: 40 !important;
+  }
+  .mt-sm-20 {
+    margin-top: 20px;
+  }
+  .img-border-radius {
+    border-radius: 8px !important;
+  }
+  .money-chat-box {
+    max-width: 272px;
+  }
+  .readmore h5 {
+    text-align: center;
+  }
+  .fusion-header {
+    padding-top: 20px;
+  }
+  .fusion-mobile-menu
+    .fusion-mobile-nav-item.menu-item-has-children
+    .sub-menu
+    a::before,
+  .mobile_footer_option_one #menu-mobile-menu-1 li .sub-menu li a::after,
+  .mobile_footer_option_one #menu-mobile-menu-1 li a::after,
+  .fusion-mobile-menu .fusion-mobile-nav-item a::before {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    line-height: 27px;
+  }
+  h1.where-money-go-number {
+    font-size: 46px !important;
+    font-family: Intro-Rust !important;
+  }
+  p.money-go-description {
+    font-size: 10px !important;
+    font-family: Intro-Rust !important;
+  }
+  .section-padding {
+    padding: 60px 0;
+  }
+  #isfModal .modal-dialog {
+    width: 90% !important;
+  }
+  .custom-btn {
+    font-family: Lato-700;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 120% !important;
+    width: 100%;
+  }
+  .specific-width-btn {
+    width: 100% !important;
+  }
   h3.team-header {
     font-weight: 700 !important;
     font-family: "LATO-700";
@@ -1255,24 +1441,31 @@
     font-size: 24px !important;
     line-height: 130% !important;
     font-family: Lato-700 !important;
+    font-weight: 700;
   }
   h3 {
     font-size: 20px !important;
     line-height: 130% !important;
-    font-weight: 500 !important;
-    font-family: Lato !important;
+    font-weight: 700 !important;
+    font-family: Lato-700 !important;
   }
   h4 {
-    font-weight: 500 !important;
+    font-weight: 700 !important;
     font-size: 18px !important;
     line-height: 130% !important;
-    font-family: Lato !important;
+    font-family: Lato-700 !important;
   }
   p {
     font-weight: 300 !important;
     font-size: 16px !important;
-    line-height: 130% !important;
+    line-height: 150% !important;
     font-family: Lato-300 !important;
+  }
+  button {
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    line-height: 120% !important;
+    font-family: Lato-400 !important;
   }
   div#playvideo_hero_mobile {
     margin-top: 166px !important;
@@ -1317,7 +1510,7 @@
     .fusion-flyout-menu-icons
     .fusion-flyout-search-toggle:hover
     .fusion-toggle-icon-line {
-    background: #333333 !important;
+    background: #05357b !important;
   }
   .home .header-section-wraper .fusion-mobile-logo {
     display: block !important;
