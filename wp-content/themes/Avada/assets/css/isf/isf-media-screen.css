@@ -1312,10 +1312,32 @@
   .btn-read-more {
     width: auto !important;
   }
+  .gap-26 {
+    gap: 18px !important;
+  }
+  .custom-amount-field input[type="text"],
+  .column_template .gfield_radio li label h2 {
+    min-width: 72px !important;
+  }
+  .recieve-newsletter li,
+  .pay-for-transaction-fee li {
+    display: flex;
+  }
 }
 
 /* phone  */
 @media screen and (max-width: 575px) {
+  .recieve-newsletter li,
+  .pay-for-transaction-fee li {
+    display: flex;
+  }
+  .custom-amount-field input[type="text"],
+  .column_template .gfield_radio li label h2 {
+    min-width: 72px !important;
+  }
+  .gap-26 {
+    gap: 18px !important;
+  }
   .btn-read-more {
     width: auto !important;
   }
@@ -1485,10 +1507,10 @@
   }
 
   button {
-    font-weight: 400 !important;
-    font-size: 18px !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
     line-height: 120% !important;
-    font-family: Lato-400 !important;
+    font-family: Lato-700 !important;
   }
   .home
     .home-header

@@ -206,15 +206,15 @@ add_action("gform_after_submission", "get_unique", 10, 2);
 add_filter("gform_field_value_uuid", "get_unique");
 function get_unique($entry, $form)
 {
-	$gender = $entry["2"]; // Update Field ID of Gender Field
-	$year = $entry["3"]; // Update Field ID of Year of Registration Field
-	$prefix = "$gender$year"; // update the prefix here
-	do {
-		$unique = mt_rand();
-		$unique = substr($unique, 0, 5); // I changed this to 5 for your random 5 digits
-		$unique = $prefix . $unique;
-	} while (!check_unique($unique));
-	return $unique;
+	// $gender = $entry["2"]; // Update Field ID of Gender Field
+	// $year = $entry["3"]; // Update Field ID of Year of Registration Field
+	// $prefix = "$gender$year"; // update the prefix here
+	// do {
+	// 	$unique = mt_rand();
+	// 	$unique = substr($unique, 0, 5); // I changed this to 5 for your random 5 digits
+	// 	$unique = $prefix . $unique;
+	// } while (!check_unique($unique));
+	// return $unique;
 }
 function check_unique($unique)
 {
@@ -238,18 +238,18 @@ function http_request_args_basic_auth($args, $url)
 	return $args;
 }
 
-add_filter('gform_currencies', function ($currencies) {
-	$currencies['EUR'] = array(
-		'name'               => esc_html__('Euro', 'gravityforms'),
-		'symbol_left'        => '&#8364;',
-		'symbol_right'       => '',
-		'symbol_padding'     => ' ',
-		'thousand_separator' => '.',
-		'decimal_separator'  => ',',
-		'decimals'           => 2,
-	);
-	return $currencies;
-});
+// add_filter('gform_currencies', function ($currencies) {
+// 	$currencies['EUR'] = array(
+// 		'name'               => esc_html__('Euro', 'gravityforms'),
+// 		'symbol_left'        => '&#8364;',
+// 		'symbol_right'       => '',
+// 		'symbol_padding'     => ' ',
+// 		'thousand_separator' => '.',
+// 		'decimal_separator'  => ',',
+// 		'decimals'           => 2,
+// 	);
+// 	return $currencies;
+// });
 
 
 // 2. Add existing taxonomies to post type

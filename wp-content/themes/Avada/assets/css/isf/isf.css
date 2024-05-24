@@ -486,6 +486,18 @@ input[type="time"],
   border-radius: 4px !important;
   border: 0 !important;
 }
+.donation-btn {
+  background: #aaaaaa;
+  color: #ffffff;
+  width: 290px;
+}
+.gap-26 {
+  gap: 26px;
+}
+.donation-btn.active {
+  background: #f25b2a;
+  color: #ffffff;
+}
 h2.accordion-header button {
   font-size: 18px !important;
   font-weight: 500 !important;
@@ -1163,7 +1175,7 @@ li.menu-call-action {
   font-family: Lato-400;
   font-size: 18px !important;
   font-weight: 700 !important;
-  min-width: 134px !important;
+  min-width: 128px !important;
   height: 58px;
   padding: 12px 14px;
   border-radius: 6px;
@@ -1172,8 +1184,6 @@ li.menu-call-action {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  font-weight: 700 !important;
 }
 .arrow,
 .custom-amount-field input[type="text"] {
@@ -1253,6 +1263,37 @@ li.menu-call-action {
   input[type="text"] {
   border: 1px solid #790000 !important;
 }
+.recieve-newsletter input[type="checkbox"],
+.pay-for-transaction-fee input[type="checkbox"],
+.donat_on_behalf_of_company input[type="checkbox"] {
+  accent-color: #fffff6;
+}
+.recieve-newsletter input[type="checkbox"]::after,
+.pay-for-transaction-fee input[type="checkbox"]::after,
+.donat_on_behalf_of_company input[type="checkbox"]::after {
+  height: 24px !important;
+  width: 24px !important;
+  content: "\00a0\00a0\00a0\00a0";
+  background-color: #fffff6;
+  border: 1px solid black;
+  border-radius: 2px;
+  display: block;
+}
+/* The magic below */
+.recieve-newsletter input[type="checkbox"]:checked::after,
+.pay-for-transaction-fee input[type="checkbox"]:checked::after,
+.donat_on_behalf_of_company input[type="checkbox"]:checked::after {
+  height: 24px !important;
+  width: 24px !important;
+  background-color: #fffff6;
+  content: url("../../images/checkbox.svg");
+  border: 1px solid black;
+  border-radius: 2px;
+  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .donat_on_behalf_of_company li label,
 .user-information-form.phone-number .gfield_label,
@@ -1321,6 +1362,16 @@ span.ginput_total {
   gap: 20px;
   border-radius: 6px;
   border: 1px solid #aaaaaa !important;
+  background: #fffff6;
+}
+.payment_template ul.gfield_radio li input[type="radio"] + label:focus .arrow,
+.payment_template ul.gfield_radio li input[type="radio"] + label:hover .arrow {
+  color: #f25b2a !important;
+}
+.payment_template ul.gfield_radio li input[type="radio"] + label:focus,
+.payment_template ul.gfield_radio li input[type="radio"] + label:hover {
+  border: 1px solid #f25b2a !important;
+  background: #f3683b1a;
 }
 .payment_template ul.gfield_radio li input[type="radio"]:checked + label {
   padding: 12px 14px !important;
@@ -1368,7 +1419,9 @@ span.ginput_total {
   div:last-of-type {
   margin-left: auto;
 }
-
+.gform_footer {
+  display: none;
+}
 .gform_footer .gform_button.button {
   height: 60px !important;
   padding: 13px 57px;
@@ -1385,11 +1438,17 @@ span.ginput_total {
 .gform_footer .gform_button.button:hover {
   background: #c84b22 !important;
 }
+/* .gform_validation_error {
+  display: block !important;
+} */
 .gfield_price div.ginput_container {
   margin-top: 8px;
   display: flex;
   align-items: center;
   gap: 20px;
+}
+.donation_form input.error {
+  border: 1px solid #790000 !important;
 }
 
 .gfield_price div.ginput_container span {

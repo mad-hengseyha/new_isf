@@ -1,12 +1,13 @@
 <?php
 
-defined( 'ABSPATH' ) || die();
+defined('ABSPATH') || die();
 
-add_action( 'wp', array( 'GFABA', 'maybe_thankyou_page' ), 5 );
+add_action('wp', array('GFABA', 'maybe_thankyou_page'), 5);
 
 GFForms::include_payment_addon_framework();
 
-class GFABA extends GFPaymentAddOn {
+class GFABA extends GFPaymentAddOn
+{
 
 	protected $_version = GF_ABA_VERSION;
 	protected $_min_gravityforms_version = '1.9.3';
@@ -19,7 +20,7 @@ class GFABA extends GFPaymentAddOn {
 	protected $_supports_callbacks = true;
 
 	// Members plugin integration
-	protected $_capabilities = array( 'gravityforms_aba', 'gravityforms_aba_uninstall' );
+	protected $_capabilities = array('gravityforms_aba', 'gravityforms_aba_uninstall');
 
 	// Permissions
 	protected $_capabilities_settings_page = 'gravityforms_aba';
@@ -31,43 +32,48 @@ class GFABA extends GFPaymentAddOn {
 
 	private static $_instance = null;
 
-	public static function get_instance() {
-		if ( self::$_instance == null ) {
+	public static function get_instance()
+	{
+		if (self::$_instance == null) {
 			self::$_instance = new GFABA();
 		}
 
 		return self::$_instance;
 	}
 
-	private function __clone() {
+	private function __clone()
+	{
 	} /* do nothing */
 
-	public function init_frontend() {
+	public function init_frontend()
+	{
 		parent::init_frontend();
 		//production
-		add_filter( 'gform_disable_post_creation', array( $this, 'delay_post' ), 10, 3 );
-		add_filter( 'gform_disable_notification', array( $this, 'delay_notification' ), 10, 4 );
+		add_filter('gform_disable_post_creation', array($this, 'delay_post'), 10, 3);
+		add_filter('gform_disable_notification', array($this, 'delay_notification'), 10, 4);
 	}
 
-	public function delay_post( $is_disabled, $form, $entry ) {
-		if ( ! $this->is_payment_gateway ) {
+	public function delay_post($is_disabled, $form, $entry)
+	{
+		if (!$this->is_payment_gateway) {
 			return $is_disabled;
 		}
 
 		$feed = $this->current_feed;
 
-		return ! rgempty( 'delayPost', $feed['meta'] );
+		return !rgempty('delayPost', $feed['meta']);
 	}
 
-	public function delay_notification( $is_disabled, $notification, $form, $entry ) {
-		if ( ! $this->is_payment_gateway || rgar( $notification, 'event' ) != 'form_submission' ) {
+	public function delay_notification($is_disabled, $notification, $form, $entry)
+	{
+		if (!$this->is_payment_gateway || rgar($notification, 'event') != 'form_submission') {
 			return $is_disabled;
 		}
 
 		$feed                   = $this->current_feed;
-		$selected_notifications = is_array( rgar( $feed['meta'], 'selectedNotifications' ) ) ? rgar( $feed['meta'], 'selectedNotifications' ) : array();
+		$selected_notifications = is_array(rgar($feed['meta'], 'selectedNotifications')) ? rgar($feed['meta'], 'selectedNotifications') : array();
 
-		return isset( $feed['meta']['delayNotification'] ) && in_array( $notification['id'], $selected_notifications ) ? true : $is_disabled;
+		return isset($feed['meta']['delayNotification']) && in_array($notification['id'], $selected_notifications) ? true : $is_disabled;
 	}
 
 	/**
@@ -80,32 +86,32 @@ class GFABA extends GFPaymentAddOn {
 	 * @return string
 	 */
 
-	public function get_aba_credentails(){
+	public function get_aba_credentails()
+	{
 		//get aba credentails
 
-		$production_url = $this->get_plugin_setting( 'gf_aba_url');
-		$production_merchan_id = $this->get_plugin_setting( 'gf_aba_merchan_id');
-		$production_api_key = $this->get_plugin_setting( 'gf_aba_api_key');
-		$aba_env = $this->get_plugin_setting( 'gf_aba_configured_env');
-		
+		$production_url = $this->get_plugin_setting('gf_aba_url');
+		$production_merchan_id = $this->get_plugin_setting('gf_aba_merchan_id');
+		$production_api_key = $this->get_plugin_setting('gf_aba_api_key');
+		$aba_env = $this->get_plugin_setting('gf_aba_configured_env');
+
 
 		//staging
-		$staging_url = $this->get_plugin_setting( 'gf_aba_url_staging');
-		$staging_merchan_id = $this->get_plugin_setting( 'gf_aba_merchan_id_staging');
-		$staging_api_key = $this->get_plugin_setting( 'gf_aba_api_key_staging');
-		
-		$aba_pushback = $this->get_plugin_setting( 'gf_aba_return_url');
-		$success_url = $this->get_plugin_setting( 'gf_aba_success_url');
+		$staging_url = $this->get_plugin_setting('gf_aba_url_staging');
+		$staging_merchan_id = $this->get_plugin_setting('gf_aba_merchan_id_staging');
+		$staging_api_key = $this->get_plugin_setting('gf_aba_api_key_staging');
+
+		$aba_pushback = $this->get_plugin_setting('gf_aba_return_url');
+		$success_url = $this->get_plugin_setting('gf_aba_success_url');
 
 		$data = [];
 
-		if($aba_env=='production'){
+		if ($aba_env == 'production') {
 			$data['aba_url'] = $production_url;
 			$data['aba_merchan_id'] = $production_merchan_id;
 			$data['aba_api_key'] = $production_api_key;
 			$data['aba_env'] = $aba_env;
-		}
-		else{
+		} else {
 			$data['aba_url'] = $staging_url;
 			$data['aba_merchan_id'] = $staging_merchan_id;
 			$data['aba_api_key'] = $staging_api_key;
@@ -113,12 +119,13 @@ class GFABA extends GFPaymentAddOn {
 		}
 		$data['return_url'] = $aba_pushback;
 		$data['success_url'] = $success_url;
-		
+
 		return $data;
 	}
 
-	public function get_payment_field( $feed ) {
-		switch ( rgars( $feed, 'meta/transactionType' ) ) {
+	public function get_payment_field($feed)
+	{
+		switch (rgars($feed, 'meta/transactionType')) {
 			case 'subscription':
 				$key = 'recurringAmount';
 				break;
@@ -127,8 +134,8 @@ class GFABA extends GFPaymentAddOn {
 			case 'donation':
 				$key = 'paymentAmount';
 				break;
-		} 
-		return rgars( $feed, 'meta/' . $key, 'form_total' );
+		}
+		return rgars($feed, 'meta/' . $key, 'form_total');
 	}
 
 	//----- SETTINGS PAGES ----------//
@@ -140,8 +147,9 @@ class GFABA extends GFPaymentAddOn {
 	 *
 	 * @return string
 	 */
-	public function get_menu_icon() {
-		return $this->is_gravityforms_supported( '2.5-beta-3.1' ) ? 'gform-icon-aba' : 'dashicons-admin-generic';
+	public function get_menu_icon()
+	{
+		return $this->is_gravityforms_supported('2.5-beta-3.1') ? 'gform-icon-aba' : 'dashicons-admin-generic';
 	}
 
 	/**
@@ -151,8 +159,9 @@ class GFABA extends GFPaymentAddOn {
 	 *
 	 * @return array $styles
 	 */
-	public function styles() {
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
+	public function styles()
+	{
+		$min = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG || isset($_GET['gform_debug']) ? '' : '.min';
 
 		$styles = array(
 			array(
@@ -160,17 +169,17 @@ class GFABA extends GFPaymentAddOn {
 				'src'     => $this->get_base_url() . "/css/form_settings{$min}.css",
 				'version' => $this->_version,
 				'enqueue' => array(
-					array( 'admin_page' => array( 'form_settings' ) ),
+					array('admin_page' => array('form_settings')),
 				),
 			),
 		);
 
-		return array_merge( parent::styles(), $styles );
-
+		return array_merge(parent::styles(), $styles);
 	}
 
-	public function plugin_settings_fields() {
-		
+	public function plugin_settings_fields()
+	{
+
 		return array(
 			array(
 				'title'       => 'Productions Credentails',
@@ -178,19 +187,19 @@ class GFABA extends GFPaymentAddOn {
 				'fields'      => array(
 					array(
 						'name'    => 'gf_aba_merchan_id',
-						'label'   => esc_html__( 'ABA Merchan ID', 'gravityformsaba' ),
+						'label'   => esc_html__('ABA Merchan ID', 'gravityformsaba'),
 						'type'    => 'text',
 					),
 
 					array(
 						'name'    => 'gf_aba_url',
-						'label'   => esc_html__( 'ABA Bank URL', 'gravityformsaba' ),
+						'label'   => esc_html__('ABA Bank URL', 'gravityformsaba'),
 						'type'    => 'text',
 					),
 
 					array(
 						'name'    => 'gf_aba_api_key',
-						'label'   => esc_html__( 'ABA Bank API KEY', 'gravityformsaba' ),
+						'label'   => esc_html__('ABA Bank API KEY', 'gravityformsaba'),
 						'type'    => 'text',
 					),
 				),
@@ -202,19 +211,19 @@ class GFABA extends GFPaymentAddOn {
 				'fields'      => array(
 					array(
 						'name'    => 'gf_aba_merchan_id_staging',
-						'label'   => esc_html__( 'ABA Merchan ID', 'gravityformsaba' ),
+						'label'   => esc_html__('ABA Merchan ID', 'gravityformsaba'),
 						'type'    => 'text',
 					),
 
 					array(
 						'name'    => 'gf_aba_url_staging',
-						'label'   => esc_html__( 'ABA Bank URL', 'gravityformsaba' ),
+						'label'   => esc_html__('ABA Bank URL', 'gravityformsaba'),
 						'type'    => 'text',
 					),
 
 					array(
 						'name'    => 'gf_aba_api_key_staging',
-						'label'   => esc_html__( 'ABA Bank API KEY', 'gravityformsaba' ),
+						'label'   => esc_html__('ABA Bank API KEY', 'gravityformsaba'),
 						'type'    => 'text',
 					),
 				),
@@ -224,131 +233,133 @@ class GFABA extends GFPaymentAddOn {
 				'fields'      => array(
 					array(
 						'name'    => 'gf_aba_return_url',
-						'label'   => esc_html__( 'ABA Bank Pushback URL', 'gravityformsaba' ),
+						'label'   => esc_html__('ABA Bank Pushback URL', 'gravityformsaba'),
 						'type'    => 'text',
 						'value'	  => site_url('aba-payment-pushback')
 					),
 					array(
 						'name'    => 'gf_aba_success_url',
-						'label'   => esc_html__( 'ABA Bank Success URL', 'gravityformsaba' ),
+						'label'   => esc_html__('ABA Bank Success URL', 'gravityformsaba'),
 						'type'    => 'text',
 						'value'	  => site_url('donation-thank-you')
 					),
 					array(
 						'name'    => 'gf_aba_configured_env',
-						'label'   => esc_html__( 'ABA Enviroment', 'gravityformsaba' ),
+						'label'   => esc_html__('ABA Enviroment', 'gravityformsaba'),
 						'type'    => 'radio',
-						'choices' => array( 
-										array( 
-											'label' => esc_html__( 'Staging', 'gravityformsaba' ), 'value'=>'staging', 'name' => 'gf_aba_configured_env' 
-										), 
-										array( 
-											'label' => esc_html__( 'Production', 'gravityformsaba' ), 'value'=>'production', 'name' => 'gf_aba_configured_env' 
-										)
+						'choices' => array(
+							array(
+								'label' => esc_html__('Staging', 'gravityformsaba'), 'value' => 'staging', 'name' => 'gf_aba_configured_env'
+							),
+							array(
+								'label' => esc_html__('Production', 'gravityformsaba'), 'value' => 'production', 'name' => 'gf_aba_configured_env'
+							)
 						)
 					),
 					array(
 						'name'    => 'gf_aba_configured',
-						'label'   => esc_html__( 'Confirm ABA Bank payment settings', 'gravityformsaba' ),
+						'label'   => esc_html__('Confirm ABA Bank payment settings', 'gravityformsaba'),
 						'type'    => 'checkbox',
-						'choices' => array( array( 'label' => esc_html__( 'Confirm that you have configured your ABA Credentails account to enable', 'gravityformsaba' ), 'name' => 'gf_aba_configured' ) )
+						'choices' => array(array('label' => esc_html__('Confirm that you have configured your ABA Credentails account to enable', 'gravityformsaba'), 'name' => 'gf_aba_configured'))
 					),
 				),
 			),
 		);
 	}
 
-	public function feed_list_no_item_message() {
+	public function feed_list_no_item_message()
+	{
 		$settings = $this->get_plugin_settings();
-		if ( ! rgar( $settings, 'gf_aba_configured' ) ) {
-			return sprintf( esc_html__( 'To get started, please configure your %sABA Settings%s!', 'gravityformsaba' ), '<a href="' . admin_url( 'admin.php?page=gf_settings&subview=' . $this->_slug ) . '">', '</a>' );
+		if (!rgar($settings, 'gf_aba_configured')) {
+			return sprintf(esc_html__('To get started, please configure your %sABA Settings%s!', 'gravityformsaba'), '<a href="' . admin_url('admin.php?page=gf_settings&subview=' . $this->_slug) . '">', '</a>');
 		} else {
 			return parent::feed_list_no_item_message();
 		}
 	}
 
-	public function feed_settings_fields() {
+	public function feed_settings_fields()
+	{
 		$default_settings = parent::feed_settings_fields();
 
 		//--add donation to transaction type drop down
-		$transaction_type = parent::get_field( 'transactionType', $default_settings );
+		$transaction_type = parent::get_field('transactionType', $default_settings);
 		$choices          = $transaction_type['choices'];
 		$add_donation     = true;
-		foreach ( $choices as $choice ) {
+		foreach ($choices as $choice) {
 			//add donation option if it does not already exist
-			if ( $choice['value'] == 'donation' ) {
+			if ($choice['value'] == 'donation') {
 				$add_donation = false;
 			}
 		}
-		if ( $add_donation ) {
+		if ($add_donation) {
 			//add donation transaction type
-			$choices[] = array( 'label' => __( 'Donations', 'gravityformsaba' ), 'value' => 'donation' );
+			$choices[] = array('label' => __('Donations', 'gravityformsaba'), 'value' => 'donation');
 		}
 		$transaction_type['choices'] = $choices;
-		$default_settings            = $this->replace_field( 'transactionType', $transaction_type, $default_settings );
+		$default_settings            = $this->replace_field('transactionType', $transaction_type, $default_settings);
 		//-------------------------------------------------------------------------------------------------
 
 		//--add Image URL, Cancel URL
 		$fields = array(
 			array(
 				'name'     => 'imageURL',
-				'label'    => esc_html__( 'Image URL', 'gravityformsaba' ),
+				'label'    => esc_html__('Image URL', 'gravityformsaba'),
 				'type'     => 'text',
 				'class'    => 'medium',
 				'required' => false,
-				'tooltip'  => '<h6>' . esc_html__( 'Image URL', 'gravityformsaba' ) . '</h6>' . esc_html__( 'This option allows you to enter the URL of the 150x50-pixel image displayed as your logo in the upper left corner of the ABA checkout pages. Default is your business name, if you have a ABA Business account or your email address, if you have ABA Premier or Personal account.', 'gravityformsaba' )
+				'tooltip'  => '<h6>' . esc_html__('Image URL', 'gravityformsaba') . '</h6>' . esc_html__('This option allows you to enter the URL of the 150x50-pixel image displayed as your logo in the upper left corner of the ABA checkout pages. Default is your business name, if you have a ABA Business account or your email address, if you have ABA Premier or Personal account.', 'gravityformsaba')
 			),
 			array(
 				'name'     => 'cancelUrl',
-				'label'    => esc_html__( 'Cancel URL', 'gravityformsaba' ),
+				'label'    => esc_html__('Cancel URL', 'gravityformsaba'),
 				'type'     => 'text',
 				'class'    => 'medium',
 				'required' => false,
-				'tooltip'  => '<h6>' . esc_html__( 'Cancel URL', 'gravityformsaba' ) . '</h6>' . esc_html__( 'Enter the URL the user should be sent to should they cancel before completing their ABA payment.', 'gravityformsaba' )
+				'tooltip'  => '<h6>' . esc_html__('Cancel URL', 'gravityformsaba') . '</h6>' . esc_html__('Enter the URL the user should be sent to should they cancel before completing their ABA payment.', 'gravityformsaba')
 			),
 			array(
 				'name'    => 'options',
-				'label'   => esc_html__( 'Options', 'gravityformsaba' ),
+				'label'   => esc_html__('Options', 'gravityformsaba'),
 				'type'    => 'options',
-				'tooltip' => '<h6>' . esc_html__( 'Options', 'gravityformsaba' ) . '</h6>' . esc_html__( 'Turn on or off the available ABA checkout options.', 'gravityformsaba' ),
+				'tooltip' => '<h6>' . esc_html__('Options', 'gravityformsaba') . '</h6>' . esc_html__('Turn on or off the available ABA checkout options.', 'gravityformsaba'),
 				'choices' => array(
 					array(
-						'label' => esc_html__( 'Do not prompt buyer to include a shipping address.', 'gravityformsaba' ),
+						'label' => esc_html__('Do not prompt buyer to include a shipping address.', 'gravityformsaba'),
 						'name'  => 'disableShipping',
 					),
 					array(
-						'label' => esc_html__( 'Do not prompt buyer to include a note with payment.', 'gravityformsaba' ),
+						'label' => esc_html__('Do not prompt buyer to include a note with payment.', 'gravityformsaba'),
 						'name'  => 'disableNote',
 					),
 				),
 			),
 		);
 
-		if ( $this->get_setting( 'delayNotification' ) || ! $this->is_gravityforms_supported( '1.9.12' ) ) {
+		if ($this->get_setting('delayNotification') || !$this->is_gravityforms_supported('1.9.12')) {
 			$fields[] = array(
 				'name'    => 'notifications',
-				'label'   => esc_html__( 'Notifications', 'gravityformsaba' ),
+				'label'   => esc_html__('Notifications', 'gravityformsaba'),
 				'type'    => 'notifications',
-				'tooltip' => '<h6>' . esc_html__( 'Notifications', 'gravityformsaba' ) . '</h6>' . esc_html__( "Enable this option if you would like to only send out this form's notifications for the 'Form is submitted' event after payment has been received. Leaving this option disabled will send these notifications immediately after the form is submitted. Notifications which are configured for other events will not be affected by this option.", 'gravityformsaba' )
+				'tooltip' => '<h6>' . esc_html__('Notifications', 'gravityformsaba') . '</h6>' . esc_html__("Enable this option if you would like to only send out this form's notifications for the 'Form is submitted' event after payment has been received. Leaving this option disabled will send these notifications immediately after the form is submitted. Notifications which are configured for other events will not be affected by this option.", 'gravityformsaba')
 			);
 		}
 
 		//Add post fields if form has a post
 		$form = $this->get_current_form();
-		if ( GFCommon::has_post_field( $form['fields'] ) ) {
+		if (GFCommon::has_post_field($form['fields'])) {
 			$post_settings = array(
 				'name'    => 'post_checkboxes',
-				'label'   => esc_html__( 'Posts', 'gravityformsaba' ),
+				'label'   => esc_html__('Posts', 'gravityformsaba'),
 				'type'    => 'checkbox',
-				'tooltip' => '<h6>' . esc_html__( 'Posts', 'gravityformsaba' ) . '</h6>' . esc_html__( 'Enable this option if you would like to only create the post after payment has been received.', 'gravityformsaba' ),
+				'tooltip' => '<h6>' . esc_html__('Posts', 'gravityformsaba') . '</h6>' . esc_html__('Enable this option if you would like to only create the post after payment has been received.', 'gravityformsaba'),
 				'choices' => array(
-					array( 'label' => esc_html__( 'Create post only when payment is received.', 'gravityformsaba' ), 'name' => 'delayPost' ),
+					array('label' => esc_html__('Create post only when payment is received.', 'gravityformsaba'), 'name' => 'delayPost'),
 				),
 			);
 
-			if ( $this->get_setting( 'transactionType' ) == 'subscription' ) {
+			if ($this->get_setting('transactionType') == 'subscription') {
 				$post_settings['choices'][] = array(
-					'label'    => esc_html__( 'Change post status when subscription is canceled.', 'gravityformsaba' ),
+					'label'    => esc_html__('Change post status when subscription is canceled.', 'gravityformsaba'),
 					'name'     => 'change_post_status',
 					'onChange' => 'var action = this.checked ? "draft" : ""; jQuery("#update_post_action").val(action);',
 				);
@@ -364,60 +375,60 @@ class GFABA extends GFPaymentAddOn {
 			'type'  => 'custom',
 		);
 
-		$default_settings = $this->add_field_after( 'billingInformation', $fields, $default_settings );
+		$default_settings = $this->add_field_after('billingInformation', $fields, $default_settings);
 		//-----------------------------------------------------------------------------------------
 
 		//--get billing info section and add customer first/last name
-		$billing_info   = parent::get_field( 'billingInformation', $default_settings );
+		$billing_info   = parent::get_field('billingInformation', $default_settings);
 		$billing_fields = $billing_info['field_map'];
 		$add_first_name = true;
 		$add_last_name  = true;
-		foreach ( $billing_fields as $mapping ) {
+		foreach ($billing_fields as $mapping) {
 			//add first/last name if it does not already exist in billing fields
-			if ( $mapping['name'] == 'firstName' ) {
+			if ($mapping['name'] == 'firstName') {
 				$add_first_name = false;
-			} else if ( $mapping['name'] == 'lastName' ) {
+			} else if ($mapping['name'] == 'lastName') {
 				$add_last_name = false;
 			}
 		}
 
-		array_unshift( $billing_info['field_map'], array( 'name' => 'phonNummber', 'label' => esc_html__( 'Phone Number', 'gravityformsaba' ), 'required' => false ) );
-		array_unshift( $billing_info['field_map'], array( 'name' => 'paymentOption', 'label' => esc_html__( 'Payment Option', 'gravityformsaba' ), 'required' => false ) );
+		array_unshift($billing_info['field_map'], array('name' => 'phonNummber', 'label' => esc_html__('Phone Number', 'gravityformsaba'), 'required' => false));
+		array_unshift($billing_info['field_map'], array('name' => 'paymentOption', 'label' => esc_html__('Payment Option', 'gravityformsaba'), 'required' => false));
 
-		if ( $add_last_name ) {
+		if ($add_last_name) {
 			//add last name
-			array_unshift( $billing_info['field_map'], array( 'name' => 'lastName', 'label' => esc_html__( 'Last Name', 'gravityformsaba' ), 'required' => false ) );
+			array_unshift($billing_info['field_map'], array('name' => 'lastName', 'label' => esc_html__('Last Name', 'gravityformsaba'), 'required' => false));
 		}
-		if ( $add_first_name ) {
-			array_unshift( $billing_info['field_map'], array( 'name' => 'firstName', 'label' => esc_html__( 'First Name', 'gravityformsaba' ), 'required' => false ) );
+		if ($add_first_name) {
+			array_unshift($billing_info['field_map'], array('name' => 'firstName', 'label' => esc_html__('First Name', 'gravityformsaba'), 'required' => false));
 		}
-		$default_settings = parent::replace_field( 'billingInformation', $billing_info, $default_settings );
+		$default_settings = parent::replace_field('billingInformation', $billing_info, $default_settings);
 		//----------------------------------------------------------------------------------------------------
 
 		//hide default display of setup fee, not used by ABA
-		$default_settings = parent::remove_field( 'setupFee', $default_settings );
+		$default_settings = parent::remove_field('setupFee', $default_settings);
 
 		//--add trial period
 		$trial_period     = array(
 			'name'    => 'trialPeriod',
-			'label'   => esc_html__( 'Trial Period', 'gravityformsaba' ),
+			'label'   => esc_html__('Trial Period', 'gravityformsaba'),
 			'type'    => 'trial_period',
-			'hidden'  => ! $this->get_setting( 'trial_enabled' ),
-			'tooltip' => '<h6>' . esc_html__( 'Trial Period', 'gravityformsaba' ) . '</h6>' . esc_html__( 'Select the trial period length.', 'gravityformsaba' )
+			'hidden'  => !$this->get_setting('trial_enabled'),
+			'tooltip' => '<h6>' . esc_html__('Trial Period', 'gravityformsaba') . '</h6>' . esc_html__('Select the trial period length.', 'gravityformsaba')
 		);
-		$default_settings = parent::add_field_after( 'trial', $trial_period, $default_settings );
+		$default_settings = parent::add_field_after('trial', $trial_period, $default_settings);
 		//-----------------------------------------------------------------------------------------
 
 		//--Add Try to bill again after failed attempt.
 		$recurring_retry  = array(
 			'name'       => 'recurringRetry',
-			'label'      => esc_html__( 'Recurring Retry', 'gravityformsaba' ),
+			'label'      => esc_html__('Recurring Retry', 'gravityformsaba'),
 			'type'       => 'checkbox',
 			'horizontal' => true,
-			'choices'    => array( array( 'label' => esc_html__( 'Try to bill again after failed attempt.', 'gravityformsaba' ), 'name' => 'recurringRetry', 'value' => '1' ) ),
-			'tooltip'    => '<h6>' . esc_html__( 'Recurring Retry', 'gravityformsaba' ) . '</h6>' . esc_html__( 'Turn on or off whether to try to bill again after failed attempt.', 'gravityformsaba' )
+			'choices'    => array(array('label' => esc_html__('Try to bill again after failed attempt.', 'gravityformsaba'), 'name' => 'recurringRetry', 'value' => '1')),
+			'tooltip'    => '<h6>' . esc_html__('Recurring Retry', 'gravityformsaba') . '</h6>' . esc_html__('Turn on or off whether to try to bill again after failed attempt.', 'gravityformsaba')
 		);
-		$default_settings = parent::add_field_after( 'recurringTimes', $recurring_retry, $default_settings );
+		$default_settings = parent::add_field_after('recurringTimes', $recurring_retry, $default_settings);
 
 		//-----------------------------------------------------------------------------------------------------
 
@@ -427,30 +438,33 @@ class GFABA extends GFPaymentAddOn {
 		 * @param array $default_settings The Default feed settings
 		 * @param array $form The Form object to filter through
 		 */
-		return apply_filters( 'gform_aba_feed_settings_fields', $default_settings, $form );
+		return apply_filters('gform_aba_feed_settings_fields', $default_settings, $form);
 	}
 
-	public function supported_billing_intervals() {
+	public function supported_billing_intervals()
+	{
 
 		$billing_cycles = array(
-			'day'   => array( 'label' => esc_html__( 'day(s)', 'gravityformsaba' ), 'min' => 1, 'max' => 90 ),
-			'week'  => array( 'label' => esc_html__( 'week(s)', 'gravityformsaba' ), 'min' => 1, 'max' => 52 ),
-			'month' => array( 'label' => esc_html__( 'month(s)', 'gravityformsaba' ), 'min' => 1, 'max' => 24 ),
-			'year'  => array( 'label' => esc_html__( 'year(s)', 'gravityformsaba' ), 'min' => 1, 'max' => 5 )
+			'day'   => array('label' => esc_html__('day(s)', 'gravityformsaba'), 'min' => 1, 'max' => 90),
+			'week'  => array('label' => esc_html__('week(s)', 'gravityformsaba'), 'min' => 1, 'max' => 52),
+			'month' => array('label' => esc_html__('month(s)', 'gravityformsaba'), 'min' => 1, 'max' => 24),
+			'year'  => array('label' => esc_html__('year(s)', 'gravityformsaba'), 'min' => 1, 'max' => 5)
 		);
 
 		return $billing_cycles;
 	}
 
-	public function field_map_title() {
-		return esc_html__( 'ABA Field', 'gravityformsaba' );
+	public function field_map_title()
+	{
+		return esc_html__('ABA Field', 'gravityformsaba');
 	}
 
-	public function settings_trial_period( $field, $echo = true ) {
+	public function settings_trial_period($field, $echo = true)
+	{
 		//use the parent billing cycle function to make the drop down for the number and type
-		$html = parent::settings_billing_cycle( $field, false );
+		$html = parent::settings_billing_cycle($field, false);
 
-		if ( $echo ) {
+		if ($echo) {
 			echo $html;
 		}
 
@@ -466,8 +480,9 @@ class GFABA extends GFPaymentAddOn {
 	 *
 	 * @return string
 	 */
-	public function set_trial_onchange( $field ) {
-		$row_id = $this->is_gravityforms_supported( '2.5-dev-1' ) ? '#gform_setting_trialPeriod' : '#gaddon-setting-row-trialPeriod';
+	public function set_trial_onchange($field)
+	{
+		$row_id = $this->is_gravityforms_supported('2.5-dev-1') ? '#gform_setting_trialPeriod' : '#gaddon-setting-row-trialPeriod';
 		return "
 		if(jQuery(this).prop('checked')){
 			jQuery('#{$field['name']}_product').show();
@@ -486,30 +501,32 @@ class GFABA extends GFPaymentAddOn {
 		}";
 	}
 
-	public function settings_options( $field, $echo = true ) {
-		$html = $this->settings_checkbox( $field, false );
+	public function settings_options($field, $echo = true)
+	{
+		$html = $this->settings_checkbox($field, false);
 
 		//--------------------------------------------------------
 		//For backwards compatibility.
 		ob_start();
-		do_action( 'gform_aba_action_fields', $this->get_current_feed(), $this->get_current_form() );
+		do_action('gform_aba_action_fields', $this->get_current_feed(), $this->get_current_form());
 		$html .= ob_get_clean();
 		//--------------------------------------------------------
 
-		if ( $echo ) {
+		if ($echo) {
 			echo $html;
 		}
 
 		return $html;
 	}
 
-	public function settings_custom( $field, $echo = true ) {
+	public function settings_custom($field, $echo = true)
+	{
 
 		ob_start();
-		?>
+?>
 		<div id='gf_aba_custom_settings'>
 			<?php
-			do_action( 'gform_aba_add_option_group', $this->get_current_feed(), $this->get_current_form() );
+			do_action('gform_aba_add_option_group', $this->get_current_feed(), $this->get_current_form());
 			?>
 		</div>
 
@@ -517,53 +534,54 @@ class GFABA extends GFPaymentAddOn {
 
 		$html = ob_get_clean();
 
-		if ( $echo ) {
+		if ($echo) {
 			echo $html;
 		}
 
 		return $html;
 	}
 
-	public function settings_notifications( $field, $echo = true ) {
+	public function settings_notifications($field, $echo = true)
+	{
 		$checkboxes = array(
 			'name'    => 'delay_notification',
 			'type'    => 'checkboxes',
 			'onclick' => 'ToggleNotifications();',
 			'choices' => array(
 				array(
-					'label' => esc_html__( "Send notifications for the 'Form is submitted' event only when payment is received.", 'gravityformsaba' ),
+					'label' => esc_html__("Send notifications for the 'Form is submitted' event only when payment is received.", 'gravityformsaba'),
 					'name'  => 'delayNotification',
 				),
 			)
 		);
 
-		$html = $this->settings_checkbox( $checkboxes, false );
+		$html = $this->settings_checkbox($checkboxes, false);
 
-		$html .= $this->settings_hidden( array( 'name' => 'selectedNotifications', 'id' => 'selectedNotifications' ), false );
+		$html .= $this->settings_hidden(array('name' => 'selectedNotifications', 'id' => 'selectedNotifications'), false);
 
 		$form                      = $this->get_current_form();
-		$has_delayed_notifications = $this->get_setting( 'delayNotification' );
+		$has_delayed_notifications = $this->get_setting('delayNotification');
 		ob_start();
 		?>
 		<ul id="gf_aba_notification_container" style="padding-left:20px; margin-top:10px; <?php echo $has_delayed_notifications ? '' : 'display:none;' ?>">
 			<?php
-			if ( ! empty( $form ) && is_array( $form['notifications'] ) ) {
-				$selected_notifications = $this->get_setting( 'selectedNotifications' );
-				if ( ! is_array( $selected_notifications ) ) {
+			if (!empty($form) && is_array($form['notifications'])) {
+				$selected_notifications = $this->get_setting('selectedNotifications');
+				if (!is_array($selected_notifications)) {
 					$selected_notifications = array();
 				}
 
 				//$selected_notifications = empty($selected_notifications) ? array() : json_decode($selected_notifications);
 
-				$notifications = GFCommon::get_notifications( 'form_submission', $form );
+				$notifications = GFCommon::get_notifications('form_submission', $form);
 
-				foreach ( $notifications as $notification ) {
-					?>
+				foreach ($notifications as $notification) {
+			?>
 					<li class="gf_aba_notification">
-						<input type="checkbox" class="notification_checkbox" value="<?php echo $notification['id'] ?>" onclick="SaveNotifications();" <?php checked( true, in_array( $notification['id'], $selected_notifications ) ) ?> />
+						<input type="checkbox" class="notification_checkbox" value="<?php echo $notification['id'] ?>" onclick="SaveNotifications();" <?php checked(true, in_array($notification['id'], $selected_notifications)) ?> />
 						<label class="inline" for="gf_aba_selected_notifications"><?php echo $notification['name']; ?></label>
 					</li>
-				<?php
+			<?php
 				}
 			}
 			?>
@@ -571,7 +589,7 @@ class GFABA extends GFPaymentAddOn {
 		<script type='text/javascript'>
 			function SaveNotifications() {
 				var notifications = [];
-				jQuery('.notification_checkbox').each(function () {
+				jQuery('.notification_checkbox').each(function() {
 					if (jQuery(this).is(':checked')) {
 						notifications.push(jQuery(this).val());
 					}
@@ -587,8 +605,7 @@ class GFABA extends GFPaymentAddOn {
 				if (isChecked) {
 					container.slideDown();
 					jQuery('.gf_aba_notification input').prop('checked', true);
-				}
-				else {
+				} else {
 					container.slideUp();
 					jQuery('.gf_aba_notification input').prop('checked', false);
 				}
@@ -596,30 +613,31 @@ class GFABA extends GFPaymentAddOn {
 				SaveNotifications();
 			}
 		</script>
-		<?php
+<?php
 
 		$html .= ob_get_clean();
 
-		if ( $echo ) {
+		if ($echo) {
 			echo $html;
 		}
 		return $html;
 	}
 
-	public function checkbox_input_change_post_status( $choice, $attributes, $value, $tooltip ) {
-		$markup = $this->checkbox_input( $choice, $attributes, $value, $tooltip );
+	public function checkbox_input_change_post_status($choice, $attributes, $value, $tooltip)
+	{
+		$markup = $this->checkbox_input($choice, $attributes, $value, $tooltip);
 
 		$dropdown_field = array(
 			'name'     => 'update_post_action',
 			'choices'  => array(
-				array( 'label' => '' ),
-				array( 'label' => esc_html__( 'Mark Post as Draft', 'gravityformsaba' ), 'value' => 'draft' ),
-				array( 'label' => esc_html__( 'Delete Post', 'gravityformsaba' ), 'value' => 'delete' ),
+				array('label' => ''),
+				array('label' => esc_html__('Mark Post as Draft', 'gravityformsaba'), 'value' => 'draft'),
+				array('label' => esc_html__('Delete Post', 'gravityformsaba'), 'value' => 'delete'),
 
 			),
 			'onChange' => "var checked = jQuery(this).val() ? 'checked' : false; jQuery('#change_post_status').attr('checked', checked);",
 		);
-		$markup .= '&nbsp;&nbsp;' . $this->settings_select( $dropdown_field, false );
+		$markup .= '&nbsp;&nbsp;' . $this->settings_select($dropdown_field, false);
 
 		return $markup;
 	}
@@ -629,30 +647,32 @@ class GFABA extends GFPaymentAddOn {
 	 *
 	 * @return bool
 	 */
-	public function option_choices() {
+	public function option_choices()
+	{
 
 		return false;
 	}
 
-	public function save_feed_settings( $feed_id, $form_id, $settings ) {
+	public function save_feed_settings($feed_id, $form_id, $settings)
+	{
 
 		//--------------------------------------------------------
 		//For backwards compatibility
-		$feed = $this->get_feed( $feed_id );
+		$feed = $this->get_feed($feed_id);
 
 		//Saving new fields into old field names to maintain backwards compatibility for delayed payments
 		$settings['type'] = $settings['transactionType'];
 
-		if ( isset( $settings['recurringAmount'] ) ) {
+		if (isset($settings['recurringAmount'])) {
 			$settings['recurring_amount_field'] = $settings['recurringAmount'];
 		}
 
 		$feed['meta'] = $settings;
-		$feed         = apply_filters( 'gform_aba_save_config', $feed );
+		$feed         = apply_filters('gform_aba_save_config', $feed);
 
 		//call hook to validate custom settings/meta added using gform_aba_action_fields or gform_aba_add_option_group action hooks
-		$is_validation_error = apply_filters( 'gform_aba_config_validation', false, $feed );
-		if ( $is_validation_error ) {
+		$is_validation_error = apply_filters('gform_aba_config_validation', false, $feed);
+		if ($is_validation_error) {
 			//fail save
 			return false;
 		}
@@ -660,64 +680,66 @@ class GFABA extends GFPaymentAddOn {
 		$settings = $feed['meta'];
 
 
-		
+
 		//--------------------------------------------------------
 
-		$custom_feed = parent::save_feed_settings( $feed_id, $form_id, $settings );
+		$custom_feed = parent::save_feed_settings($feed_id, $form_id, $settings);
 		return $custom_feed;
 	}
 
-	public function init_ajax() {
-        parent::init_ajax();
-
-    }
+	public function init_ajax()
+	{
+		parent::init_ajax();
+	}
 
 	//------ SENDING TO ABA -----------//
-	public function plugin_page() {
+	public function plugin_page()
+	{
 		echo 'This page appears in the Forms menu';
 	}
 
-	public function redirect_url( $feed, $submission_data, $form, $entry ) {
+	public function redirect_url($feed, $submission_data, $form, $entry)
+	{
 
 		//Don't process redirect url if request is a ABA return
-		if ( ! rgempty( 'gf_aba_return', $_GET ) ) {
+		if (!rgempty('gf_aba_return', $_GET)) {
 			return false;
 		}
 
 		//get aba credentails
 		//production
-		$production_url = $this->get_plugin_setting( 'gf_aba_url');
-		$production_merchan_id = $this->get_plugin_setting( 'gf_aba_merchan_id');
-		$production_api_key = $this->get_plugin_setting( 'gf_aba_api_key');
+		$production_url = $this->get_plugin_setting('gf_aba_url');
+		$production_merchan_id = $this->get_plugin_setting('gf_aba_merchan_id');
+		$production_api_key = $this->get_plugin_setting('gf_aba_api_key');
 
 
 		//staging
-		$staging_url = $this->get_plugin_setting( 'gf_aba_url_staging');
-		$staging_merchan_id = $this->get_plugin_setting( 'gf_aba_merchan_id_staging');
-		$staging_api_key = $this->get_plugin_setting( 'gf_aba_api_key_staging');
+		$staging_url = $this->get_plugin_setting('gf_aba_url_staging');
+		$staging_merchan_id = $this->get_plugin_setting('gf_aba_merchan_id_staging');
+		$staging_api_key = $this->get_plugin_setting('gf_aba_api_key_staging');
 
-		$aba_env = $this->get_plugin_setting( 'gf_aba_configured_env');
-		$aba_pushback = $this->get_plugin_setting( 'gf_aba_return_url');
-		$success_url = $this->get_plugin_setting( 'gf_aba_success_url');
+		$aba_env = $this->get_plugin_setting('gf_aba_configured_env');
+		$aba_pushback = $this->get_plugin_setting('gf_aba_return_url');
+		$success_url = $this->get_plugin_setting('gf_aba_success_url');
 
-		if($aba_env =='production'){
+		if ($aba_env == 'production') {
 			$url = $production_url;
 			$api = $production_api_key;
 			$merchant_id = $production_merchan_id;
-		}else{
+		} else {
 			$url = $staging_url;
 			$api = $staging_api_key;
 			$merchant_id = $staging_merchan_id;
 		}
 
-		$invoice_id = apply_filters( 'gform_aba_invoice', '', $form, $entry );
+		$invoice_id = apply_filters('gform_aba_invoice', '', $form, $entry);
 		$form_id = $form['id'];
 
 		//Current Currency
-		$currency = rgar( $entry, 'currency' );
+		$currency = rgar($entry, 'currency');
 
-		$email = rgar($submission_data, 'email' );
-		$amount = rgar($submission_data, 'payment_amount' );
+		$email = rgar($submission_data, 'email');
+		$amount = rgar($submission_data, 'payment_amount');
 
 		$transactionId = rgar($entry, 'id');
 
@@ -726,43 +748,42 @@ class GFABA extends GFPaymentAddOn {
 		$billing_phone = $feed['meta']['billingInformation_phonNummber'];
 		$payment_option = $feed['meta']['billingInformation_paymentOption'];
 
-		$return_url = $aba_pushback; 
-		
+		$return_url = $aba_pushback;
+
 
 		$firstName = rgar($entry, $billing_firstname);
 		$lastName = rgar($entry, $billing_lastname);
 		$phone = rgar($entry, $billing_phone);
 		$payment_method = rgar($entry, $payment_option);
 		$req_time = time();
-
 		$hash = $this->getHash($req_time . $merchant_id . $transactionId . $amount . $firstName . $lastName . $email . $phone . $payment_method . $return_url . $success_url, $api);
-		
 		$hash = urlencode($hash);
 		$phone = urlencode($phone);
-		
-		$url = home_url('aba-payment-method').'?first_name='.$firstName.'&last_name='.$lastName.'&phone='.$phone.'&time='.$req_time.'&id='.$hash.'&email='.$email.'&tran_id='.$transactionId.'&type='.$payment_method.'&amount='.$amount.'&merchant_id='.$merchant_id.'&form_id='.$form_id;
-		
-		//updating lead's payment_status to Processing
-		GFAPI::update_entry_property( $entry['id'], 'payment_status', 'Processing' );
-		GFAPI::update_entry_property( $entry['id'], 'is_fulfilled', 1 );
-		GFAPI::update_entry_property( $entry['id'], 'payment_amount', $amount.'.00' );
 
-		$this->log_debug( __METHOD__ . "(): Sending to ABA: {$url}" );
+		$url = home_url('aba-payment-method') . '?firstname=' . $firstName . '&lastname=' . $lastName . '&phone=' . $phone . '&req_time=' . $req_time . '&hash=' . $hash . '&email=' . $email . '&tran_id=' . $transactionId . '&payment_option=' . $payment_method . '&amount=' . $amount . '&merchant_id=' . $merchant_id . '&form_id=' . $form_id;
+
+		//updating lead's payment_status to Processing
+		// GFAPI::update_entry_property($entry['id'], 'payment_status', 'Processing');
+		GFAPI::update_entry_property($entry['id'], 'is_fulfilled', 1);
+		GFAPI::update_entry_property($entry['id'], 'payment_amount', $amount . '.00');
+
+		$this->log_debug(__METHOD__ . "(): Sending to ABA: {$url}");
 		return $url;
 	}
 
-	public function get_product_query_string( $submission_data, $entry_id ) {
+	public function get_product_query_string($submission_data, $entry_id)
+	{
 
-		if ( empty( $submission_data ) ) {
+		if (empty($submission_data)) {
 			return false;
 		}
 
 		$query_string   = '';
-		$payment_amount = rgar( $submission_data, 'payment_amount' );
-		$setup_fee      = rgar( $submission_data, 'setup_fee' );
-		$trial_amount   = rgar( $submission_data, 'trial' );
-		$line_items     = rgar( $submission_data, 'line_items' );
-		$discounts      = rgar( $submission_data, 'discounts' );
+		$payment_amount = rgar($submission_data, 'payment_amount');
+		$setup_fee      = rgar($submission_data, 'setup_fee');
+		$trial_amount   = rgar($submission_data, 'trial');
+		$line_items     = rgar($submission_data, 'line_items');
+		$discounts      = rgar($submission_data, 'discounts');
 
 		$product_index = 1;
 		$shipping      = '';
@@ -771,46 +792,46 @@ class GFABA extends GFPaymentAddOn {
 		$extra_qs      = '&upload=1';
 
 		//work on products
-		if ( is_array( $line_items ) ) {
-			foreach ( $line_items as $item ) {
-				$product_name = urlencode( $item['name'] );
+		if (is_array($line_items)) {
+			foreach ($line_items as $item) {
+				$product_name = urlencode($item['name']);
 				$quantity     = $item['quantity'];
 				$unit_price   = $item['unit_price'];
-				$options      = rgar( $item, 'options' );
+				$options      = rgar($item, 'options');
 				$product_id   = $item['id'];
-				$is_shipping  = rgar( $item, 'is_shipping' );
+				$is_shipping  = rgar($item, 'is_shipping');
 
-				if ( $is_shipping ) {
+				if ($is_shipping) {
 					//populate shipping info
-					$shipping .= ! empty( $unit_price ) ? "&shipping_1={$unit_price}" : '';
+					$shipping .= !empty($unit_price) ? "&shipping_1={$unit_price}" : '';
 				} else {
 					//add product info to querystring
 					$query_string .= "&item_name_{$product_index}={$product_name}&amount_{$product_index}={$unit_price}&quantity_{$product_index}={$quantity}";
 				}
 				//add options
-				if ( ! empty( $options ) ) {
-					if ( is_array( $options ) ) {
+				if (!empty($options)) {
+					if (is_array($options)) {
 						$option_index = 1;
-						foreach ( $options as $option ) {
+						foreach ($options as $option) {
 							// Trim option label to prevent ABA displaying an error instead of the cart.
-							$option_label = urlencode( substr( $option['field_label'], 0, 64 ) );
-							$option_name  = urlencode( $option['option_name'] );
+							$option_label = urlencode(substr($option['field_label'], 0, 64));
+							$option_name  = urlencode($option['option_name']);
 							$query_string .= "&on{$option_index}_{$product_index}={$option_label}&os{$option_index}_{$product_index}={$option_name}";
-							$option_index ++;
+							$option_index++;
 						}
 					}
 				}
-				$product_index ++;
+				$product_index++;
 			}
 		}
 
 		//look for discounts
-		if ( is_array( $discounts ) ) {
-			foreach ( $discounts as $discount ) {
-				$discount_full = abs( $discount['unit_price'] ) * $discount['quantity'];
+		if (is_array($discounts)) {
+			foreach ($discounts as $discount) {
+				$discount_full = abs($discount['unit_price']) * $discount['quantity'];
 				$discount_amt += $discount_full;
 			}
-			if ( $discount_amt > 0 ) {
+			if ($discount_amt > 0) {
 				$query_string .= "&discount_amount_cart={$discount_amt}";
 			}
 		}
@@ -818,42 +839,42 @@ class GFABA extends GFPaymentAddOn {
 		$query_string .= "{$shipping}&cmd={$cmd}{$extra_qs}";
 
 		//save payment amount to lead meta
-		gform_update_meta( $entry_id, 'payment_amount', $payment_amount );
+		gform_update_meta($entry_id, 'payment_amount', $payment_amount);
 
 		return $payment_amount > 0 ? $query_string : false;
-
 	}
 
-	public function get_donation_query_string( $submission_data, $entry_id ) {
-		if ( empty( $submission_data ) ) {
+	public function get_donation_query_string($submission_data, $entry_id)
+	{
+		if (empty($submission_data)) {
 			return false;
 		}
 
 		$query_string   = '';
-		$payment_amount = rgar( $submission_data, 'payment_amount' );
-		$line_items     = rgar( $submission_data, 'line_items' );
+		$payment_amount = rgar($submission_data, 'payment_amount');
+		$line_items     = rgar($submission_data, 'line_items');
 		$purpose        = '';
 		$cmd            = '_donations';
 
 		//work on products
-		if ( is_array( $line_items ) ) {
-			foreach ( $line_items as $item ) {
+		if (is_array($line_items)) {
+			foreach ($line_items as $item) {
 				$product_name    = $item['name'];
 				$quantity        = $item['quantity'];
 				$quantity_label  = $quantity > 1 ? $quantity . ' ' : '';
-				$options         = rgar( $item, 'options' );
-				$is_shipping     = rgar( $item, 'is_shipping' );
+				$options         = rgar($item, 'options');
+				$is_shipping     = rgar($item, 'is_shipping');
 				$product_options = '';
 
-				if ( ! $is_shipping ) {
+				if (!$is_shipping) {
 					//add options
-					if ( ! empty( $options ) ) {
-						if ( is_array( $options ) ) {
+					if (!empty($options)) {
+						if (is_array($options)) {
 							$product_options = ' (';
-							foreach ( $options as $option ) {
+							foreach ($options as $option) {
 								$product_options .= $option['option_name'] . ', ';
 							}
-							$product_options = substr( $product_options, 0, strlen( $product_options ) - 2 ) . ')';
+							$product_options = substr($product_options, 0, strlen($product_options) - 2) . ')';
 						}
 					}
 					$purpose .= $quantity_label . $product_name . $product_options . ', ';
@@ -861,39 +882,39 @@ class GFABA extends GFPaymentAddOn {
 			}
 		}
 
-		if ( ! empty( $purpose ) ) {
-			$purpose = substr( $purpose, 0, strlen( $purpose ) - 2 );
+		if (!empty($purpose)) {
+			$purpose = substr($purpose, 0, strlen($purpose) - 2);
 		}
 
-		$purpose = urlencode( $purpose );
+		$purpose = urlencode($purpose);
 
 		//truncating to maximum length allowed by ABA
-		if ( strlen( $purpose ) > 127 ) {
-			$purpose = substr( $purpose, 0, 124 ) . '...';
+		if (strlen($purpose) > 127) {
+			$purpose = substr($purpose, 0, 124) . '...';
 		}
 
 		$query_string = "&amount={$payment_amount}&item_name={$purpose}&cmd={$cmd}";
 
 		//save payment amount to lead meta
-		gform_update_meta( $entry_id, 'payment_amount', $payment_amount );
+		gform_update_meta($entry_id, 'payment_amount', $payment_amount);
 
 		return $payment_amount > 0 ? $query_string : false;
-
 	}
 
-	public function get_subscription_query_string( $feed, $submission_data, $entry_id ) {
+	public function get_subscription_query_string($feed, $submission_data, $entry_id)
+	{
 
-		if ( empty( $submission_data ) ) {
+		if (empty($submission_data)) {
 			return false;
 		}
 
 		$query_string         = '';
-		$payment_amount       = rgar( $submission_data, 'payment_amount' );
-		$setup_fee            = rgar( $submission_data, 'setup_fee' );
-		$trial_enabled        = rgar( $feed['meta'], 'trial_enabled' );
-		$line_items           = rgar( $submission_data, 'line_items' );
-		$discounts            = rgar( $submission_data, 'discounts' );
-		$recurring_field      = rgar( $submission_data, 'payment_amount' ); //will be field id or the text 'form_total'
+		$payment_amount       = rgar($submission_data, 'payment_amount');
+		$setup_fee            = rgar($submission_data, 'setup_fee');
+		$trial_enabled        = rgar($feed['meta'], 'trial_enabled');
+		$line_items           = rgar($submission_data, 'line_items');
+		$discounts            = rgar($submission_data, 'discounts');
+		$recurring_field      = rgar($submission_data, 'payment_amount'); //will be field id or the text 'form_total'
 		$product_index        = 1;
 		$shipping             = '';
 		$discount_amt         = 0;
@@ -903,28 +924,28 @@ class GFABA extends GFPaymentAddOn {
 		$item_name            = '';
 
 		//work on products
-		if ( is_array( $line_items ) ) {
-			foreach ( $line_items as $item ) {
+		if (is_array($line_items)) {
+			foreach ($line_items as $item) {
 				$product_id     = $item['id'];
 				$product_name   = $item['name'];
 				$quantity       = $item['quantity'];
 				$quantity_label = $quantity > 1 ? $quantity . ' ' : '';
 
 				$unit_price  = $item['unit_price'];
-				$options     = rgar( $item, 'options' );
+				$options     = rgar($item, 'options');
 				$product_id  = $item['id'];
-				$is_shipping = rgar( $item, 'is_shipping' );
+				$is_shipping = rgar($item, 'is_shipping');
 
 				$product_options = '';
-				if ( ! $is_shipping ) {
+				if (!$is_shipping) {
 					//add options
 
-					if ( ! empty( $options ) && is_array( $options ) ) {
+					if (!empty($options) && is_array($options)) {
 						$product_options = ' (';
-						foreach ( $options as $option ) {
+						foreach ($options as $option) {
 							$product_options .= $option['option_name'] . ', ';
 						}
-						$product_options = substr( $product_options, 0, strlen( $product_options ) - 2 ) . ')';
+						$product_options = substr($product_options, 0, strlen($product_options) - 2) . ')';
 					}
 
 					$item_name .= $quantity_label . $product_name . $product_options . ', ';
@@ -933,8 +954,8 @@ class GFABA extends GFPaymentAddOn {
 			}
 
 			//look for discounts to pass in the item_name
-			if ( is_array( $discounts ) ) {
-				foreach ( $discounts as $discount ) {
+			if (is_array($discounts)) {
+				foreach ($discounts as $discount) {
 					$product_name   = $discount['name'];
 					$quantity       = $discount['quantity'];
 					$quantity_label = $quantity > 1 ? $quantity . ' ' : '';
@@ -943,85 +964,85 @@ class GFABA extends GFPaymentAddOn {
 				}
 			}
 
-			if ( ! empty( $item_name ) ) {
-				$item_name = substr( $item_name, 0, strlen( $item_name ) - 2 );
+			if (!empty($item_name)) {
+				$item_name = substr($item_name, 0, strlen($item_name) - 2);
 			}
 
 			//if name is larger than max, remove options from it.
-			if ( strlen( $item_name ) > 127 ) {
-				$item_name = substr( $name_without_options, 0, strlen( $name_without_options ) - 2 );
+			if (strlen($item_name) > 127) {
+				$item_name = substr($name_without_options, 0, strlen($name_without_options) - 2);
 
 				//truncating name to maximum allowed size
-				if ( strlen( $item_name ) > 127 ) {
-					$item_name = substr( $item_name, 0, 124 ) . '...';
+				if (strlen($item_name) > 127) {
+					$item_name = substr($item_name, 0, 124) . '...';
 				}
 			}
-			$item_name = urlencode( $item_name );
-
+			$item_name = urlencode($item_name);
 		}
 
 		$trial = '';
 		//see if a trial exists
-		if ( $trial_enabled ) {
-			$trial_amount        = rgar( $submission_data, 'trial' ) ? rgar( $submission_data, 'trial' ) : 0;
-			$trial_period_number = rgar( $feed['meta'], 'trialPeriod_length' );
-			$trial_period_type   = $this->convert_interval( rgar( $feed['meta'], 'trialPeriod_unit' ), 'char' );
+		if ($trial_enabled) {
+			$trial_amount        = rgar($submission_data, 'trial') ? rgar($submission_data, 'trial') : 0;
+			$trial_period_number = rgar($feed['meta'], 'trialPeriod_length');
+			$trial_period_type   = $this->convert_interval(rgar($feed['meta'], 'trialPeriod_unit'), 'char');
 			$trial               = "&a1={$trial_amount}&p1={$trial_period_number}&t1={$trial_period_type}";
 		}
 
 		//check for recurring times
-		$recurring_times = rgar( $feed['meta'], 'recurringTimes' ) ? '&srt=' . rgar( $feed['meta'], 'recurringTimes' ) : '';
-		$recurring_retry = rgar( $feed['meta'], 'recurringRetry' ) ? '1' : '0';
+		$recurring_times = rgar($feed['meta'], 'recurringTimes') ? '&srt=' . rgar($feed['meta'], 'recurringTimes') : '';
+		$recurring_retry = rgar($feed['meta'], 'recurringRetry') ? '1' : '0';
 
-		$billing_cycle_number = rgar( $feed['meta'], 'billingCycle_length' );
-		$billing_cycle_type   = $this->convert_interval( rgar( $feed['meta'], 'billingCycle_unit' ), 'char' );
+		$billing_cycle_number = rgar($feed['meta'], 'billingCycle_length');
+		$billing_cycle_type   = $this->convert_interval(rgar($feed['meta'], 'billingCycle_unit'), 'char');
 
 		$query_string = "&cmd={$cmd}&item_name={$item_name}{$trial}&a3={$payment_amount}&p3={$billing_cycle_number}&t3={$billing_cycle_type}&src=1&sra={$recurring_retry}{$recurring_times}";
 
 		//save payment amount to lead meta
-		gform_update_meta( $entry_id, 'payment_amount', $payment_amount );
+		gform_update_meta($entry_id, 'payment_amount', $payment_amount);
 
 		return $payment_amount > 0 ? $query_string : false;
-
 	}
 
-	public function customer_query_string( $feed, $entry ) {
+	public function customer_query_string($feed, $entry)
+	{
 		$fields = '';
-		foreach ( $this->get_customer_fields() as $field ) {
-			$field_id = $feed['meta'][ $field['meta_name'] ];
-			$value    = rgar( $entry, $field_id );
+		foreach ($this->get_customer_fields() as $field) {
+			$field_id = $feed['meta'][$field['meta_name']];
+			$value    = rgar($entry, $field_id);
 
-			if ( $field['name'] == 'country' ) {
-				$value = class_exists( 'GF_Field_Address' ) ? GF_Fields::get( 'address' )->get_country_code( $value ) : GFCommon::get_country_code( $value );
-			} elseif ( $field['name'] == 'state' ) {
-				$value = class_exists( 'GF_Field_Address' ) ? GF_Fields::get( 'address' )->get_us_state_code( $value ) : GFCommon::get_us_state_code( $value );
+			if ($field['name'] == 'country') {
+				$value = class_exists('GF_Field_Address') ? GF_Fields::get('address')->get_country_code($value) : GFCommon::get_country_code($value);
+			} elseif ($field['name'] == 'state') {
+				$value = class_exists('GF_Field_Address') ? GF_Fields::get('address')->get_us_state_code($value) : GFCommon::get_us_state_code($value);
 			}
 
-			if ( ! empty( $value ) ) {
-				$fields .= "&{$field['name']}=" . urlencode( $value );
+			if (!empty($value)) {
+				$fields .= "&{$field['name']}=" . urlencode($value);
 			}
 		}
 
 		return $fields;
 	}
 
-	public function return_url( $form_id, $lead_id ) {
+	public function return_url($form_id, $lead_id)
+	{
 		$pageURL = GFCommon::is_ssl() ? 'https://' : 'http://';
 
-		$server_port = apply_filters( 'gform_aba_return_url_port', $_SERVER['SERVER_PORT'] );
+		$server_port = apply_filters('gform_aba_return_url_port', $_SERVER['SERVER_PORT']);
 
-		if ( $server_port != '80' ) {
+		if ($server_port != '80') {
 			$pageURL .= $_SERVER['SERVER_NAME'] . ':' . $server_port . $_SERVER['REQUEST_URI'];
 		} else {
 			$pageURL .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 		}
 
 		$ids_query = "ids={$form_id}|{$lead_id}";
-		$ids_query .= '&hash=' . wp_hash( $ids_query );
+		$ids_query .= '&hash=' . wp_hash($ids_query);
 
-		$url = add_query_arg( 'gf_aba_return', base64_encode( $ids_query ), $pageURL );
+		$url = add_query_arg('gf_aba_return', base64_encode($ids_query), $pageURL);
 
-		$query = 'gf_aba_return=' . base64_encode( $ids_query );
+		$query = 'gf_aba_return=' . base64_encode($ids_query);
 		/**
 		 * Filters ABA's return URL, which is the URL that users will be sent to after completing the payment on ABA's site.
 		 * Useful when URL isn't created correctly (could happen on some server configurations using PROXY servers).
@@ -1033,100 +1054,102 @@ class GFABA extends GFPaymentAddOn {
 		 * @param int $entry_id	The ID of the entry that was just created.
 		 * @param string $query	The query string portion of the URL.
 		 */
-		return apply_filters( 'gform_aba_return_url', $url, $form_id, $lead_id, $query  );
-
+		return apply_filters('gform_aba_return_url', $url, $form_id, $lead_id, $query);
 	}
 
-	public static function maybe_thankyou_page() {
+	public static function maybe_thankyou_page()
+	{
 		$instance = self::get_instance();
 
-		if ( ! $instance->is_gravityforms_supported() ) {
+		if (!$instance->is_gravityforms_supported()) {
 			return;
 		}
 
-		if ( $str = rgget( 'gf_aba_return' ) ) {
-			$str = base64_decode( $str );
+		if ($str = rgget('gf_aba_return')) {
+			$str = base64_decode($str);
 
-			parse_str( $str, $query );
-			if ( wp_hash( 'ids=' . $query['ids'] ) == $query['hash'] ) {
-				list( $form_id, $lead_id ) = explode( '|', $query['ids'] );
+			parse_str($str, $query);
+			if (wp_hash('ids=' . $query['ids']) == $query['hash']) {
+				list($form_id, $lead_id) = explode('|', $query['ids']);
 
-				$form = GFAPI::get_form( $form_id );
-				$lead = GFAPI::get_entry( $lead_id );
+				$form = GFAPI::get_form($form_id);
+				$lead = GFAPI::get_entry($lead_id);
 
-				if ( ! class_exists( 'GFFormDisplay' ) ) {
-					require_once( GFCommon::get_base_path() . '/form_display.php' );
+				if (!class_exists('GFFormDisplay')) {
+					require_once(GFCommon::get_base_path() . '/form_display.php');
 				}
 
-				$confirmation = GFFormDisplay::handle_confirmation( $form, $lead, false );
+				$confirmation = GFFormDisplay::handle_confirmation($form, $lead, false);
 
-				if ( is_array( $confirmation ) && isset( $confirmation['redirect'] ) ) {
-					header( "Location: {$confirmation['redirect']}" );
+				if (is_array($confirmation) && isset($confirmation['redirect'])) {
+					header("Location: {$confirmation['redirect']}");
 					exit;
 				}
-				GFFormDisplay::$submission[ $form_id ] = array( 'is_confirmation' => true, 'confirmation_message' => $confirmation, 'form' => $form, 'lead' => $lead );
+				GFFormDisplay::$submission[$form_id] = array('is_confirmation' => true, 'confirmation_message' => $confirmation, 'form' => $form, 'lead' => $lead);
 			}
 		}
 	}
 
-	public function get_customer_fields() {
+	public function get_customer_fields()
+	{
 		return array(
-			array( 'name' => 'first_name', 'label' => 'First Name', 'meta_name' => 'billingInformation_firstName' ),
-			array( 'name' => 'last_name', 'label' => 'Last Name', 'meta_name' => 'billingInformation_lastName' ),
-			array( 'name' => 'email', 'label' => 'Email', 'meta_name' => 'billingInformation_email' ),
-			array( 'name' => 'phone', 'label' => 'Phone', 'meta_name' => 'billingInformation_phone' ),
-			array( 'name' => 'address1', 'label' => 'Address', 'meta_name' => 'billingInformation_address' ),
-			array( 'name' => 'address2', 'label' => 'Address 2', 'meta_name' => 'billingInformation_address2' ),
-			array( 'name' => 'city', 'label' => 'City', 'meta_name' => 'billingInformation_city' ),
-			array( 'name' => 'state', 'label' => 'State', 'meta_name' => 'billingInformation_state' ),
-			array( 'name' => 'zip', 'label' => 'Zip', 'meta_name' => 'billingInformation_zip' ),
-			array( 'name' => 'country', 'label' => 'Country', 'meta_name' => 'billingInformation_country' ),
+			array('name' => 'first_name', 'label' => 'First Name', 'meta_name' => 'billingInformation_firstName'),
+			array('name' => 'last_name', 'label' => 'Last Name', 'meta_name' => 'billingInformation_lastName'),
+			array('name' => 'email', 'label' => 'Email', 'meta_name' => 'billingInformation_email'),
+			array('name' => 'phone', 'label' => 'Phone', 'meta_name' => 'billingInformation_phone'),
+			array('name' => 'address1', 'label' => 'Address', 'meta_name' => 'billingInformation_address'),
+			array('name' => 'address2', 'label' => 'Address 2', 'meta_name' => 'billingInformation_address2'),
+			array('name' => 'city', 'label' => 'City', 'meta_name' => 'billingInformation_city'),
+			array('name' => 'state', 'label' => 'State', 'meta_name' => 'billingInformation_state'),
+			array('name' => 'zip', 'label' => 'Zip', 'meta_name' => 'billingInformation_zip'),
+			array('name' => 'country', 'label' => 'Country', 'meta_name' => 'billingInformation_country'),
 		);
 	}
 
-	public function convert_interval( $interval, $to_type ) {
+	public function convert_interval($interval, $to_type)
+	{
 		//convert single character into long text for new feed settings or convert long text into single character for sending to ABA
 		//$to_type: text (change character to long text), OR char (change long text to character)
-		if ( empty( $interval ) ) {
+		if (empty($interval)) {
 			return '';
 		}
 
 		$new_interval = '';
-		if ( $to_type == 'text' ) {
+		if ($to_type == 'text') {
 			//convert single char to text
-			switch ( strtoupper( $interval ) ) {
-				case 'D' :
+			switch (strtoupper($interval)) {
+				case 'D':
 					$new_interval = 'day';
 					break;
-				case 'W' :
+				case 'W':
 					$new_interval = 'week';
 					break;
-				case 'M' :
+				case 'M':
 					$new_interval = 'month';
 					break;
-				case 'Y' :
+				case 'Y':
 					$new_interval = 'year';
 					break;
-				default :
+				default:
 					$new_interval = $interval;
 					break;
 			}
 		} else {
 			//convert text to single char
-			switch ( strtolower( $interval ) ) {
-				case 'day' :
+			switch (strtolower($interval)) {
+				case 'day':
 					$new_interval = 'D';
 					break;
-				case 'week' :
+				case 'week':
 					$new_interval = 'W';
 					break;
-				case 'month' :
+				case 'month':
 					$new_interval = 'M';
 					break;
-				case 'year' :
+				case 'year':
 					$new_interval = 'Y';
 					break;
-				default :
+				default:
 					$new_interval = $interval;
 					break;
 			}
@@ -1136,84 +1159,88 @@ class GFABA extends GFPaymentAddOn {
 	}
 
 
-	public function get_payment_feed( $entry, $form = false ) {
+	public function get_payment_feed($entry, $form = false)
+	{
 
-		$feed = parent::get_payment_feed( $entry, $form );
+		$feed = parent::get_payment_feed($entry, $form);
 
-		if ( empty( $feed ) && ! empty( $entry['id'] ) ) {
+		if (empty($feed) && !empty($entry['id'])) {
 			//looking for feed created by legacy versions
-			$feed = $this->get_aba_feed_by_entry( $entry['id'] );
+			$feed = $this->get_aba_feed_by_entry($entry['id']);
 		}
 
-		$feed = apply_filters( 'gform_aba_get_payment_feed', $feed, $entry, $form ? $form : GFAPI::get_form( $entry['form_id'] ) );
+		$feed = apply_filters('gform_aba_get_payment_feed', $feed, $entry, $form ? $form : GFAPI::get_form($entry['form_id']));
 
 		return $feed;
 	}
 
-	private function get_aba_feed_by_entry( $entry_id ) {
+	private function get_aba_feed_by_entry($entry_id)
+	{
 
-		$feed_id = gform_get_meta( $entry_id, 'aba_feed_id' );
-		$feed    = $this->get_feed( $feed_id );
+		$feed_id = gform_get_meta($entry_id, 'aba_feed_id');
+		$feed    = $this->get_feed($feed_id);
 
-		return ! empty( $feed ) ? $feed : false;
+		return !empty($feed) ? $feed : false;
 	}
 
-	public function post_callback( $callback_action, $callback_result ) {
-		if ( is_wp_error( $callback_action ) || ! $callback_action ) {
+	public function post_callback($callback_action, $callback_result)
+	{
+		if (is_wp_error($callback_action) || !$callback_action) {
 			return false;
 		}
 
 		//run the necessary hooks
-		$entry          = GFAPI::get_entry( $callback_action['entry_id'] );
-		$feed           = $this->get_payment_feed( $entry );
-		$transaction_id = rgar( $callback_action, 'transaction_id' );
-		$amount         = rgar( $callback_action, 'amount' );
-		$subscriber_id  = rgar( $callback_action, 'subscriber_id' );
-		$pending_reason = rgpost( 'pending_reason' );
-		$reason         = rgpost( 'reason_code' );
-		$status         = rgpost( 'payment_status' );
-		$txn_type       = rgpost( 'txn_type' );
-		$parent_txn_id  = rgpost( 'parent_txn_id' );
+		$entry          = GFAPI::get_entry($callback_action['entry_id']);
+		$feed           = $this->get_payment_feed($entry);
+		$transaction_id = rgar($callback_action, 'transaction_id');
+		$amount         = rgar($callback_action, 'amount');
+		$subscriber_id  = rgar($callback_action, 'subscriber_id');
+		$pending_reason = rgpost('pending_reason');
+		$reason         = rgpost('reason_code');
+		$status         = rgpost('payment_status');
+		$txn_type       = rgpost('txn_type');
+		$parent_txn_id  = rgpost('parent_txn_id');
 
 		//run gform_aba_fulfillment only in certain conditions
-		if ( rgar( $callback_action, 'ready_to_fulfill' ) && ! rgar( $callback_action, 'abort_callback' ) ) {
-			$this->fulfill_order( $entry, $transaction_id, $amount, $feed );
+		if (rgar($callback_action, 'ready_to_fulfill') && !rgar($callback_action, 'abort_callback')) {
+			$this->fulfill_order($entry, $transaction_id, $amount, $feed);
 		} else {
-			if ( rgar( $callback_action, 'abort_callback' ) ) {
-				$this->log_debug( __METHOD__ . '(): Callback processing was aborted. Not fulfilling entry.' );
+			if (rgar($callback_action, 'abort_callback')) {
+				$this->log_debug(__METHOD__ . '(): Callback processing was aborted. Not fulfilling entry.');
 			} else {
-				$this->log_debug( __METHOD__ . '(): Entry is already fulfilled or not ready to be fulfilled, not running gform_aba_fulfillment hook.' );
+				$this->log_debug(__METHOD__ . '(): Entry is already fulfilled or not ready to be fulfilled, not running gform_aba_fulfillment hook.');
 			}
 		}
 
-		do_action( 'gform_post_payment_status', $feed, $entry, $status, $transaction_id, $subscriber_id, $amount, $pending_reason, $reason );
-		if ( has_filter( 'gform_post_payment_status' ) ) {
-			$this->log_debug( __METHOD__ . '(): Executing functions hooked to gform_post_payment_status.' );
+		do_action('gform_post_payment_status', $feed, $entry, $status, $transaction_id, $subscriber_id, $amount, $pending_reason, $reason);
+		if (has_filter('gform_post_payment_status')) {
+			$this->log_debug(__METHOD__ . '(): Executing functions hooked to gform_post_payment_status.');
 		}
 	}
 
-	public function get_entry( $custom_field ) {
+	public function get_entry($custom_field)
+	{
 
 		//Getting entry associated with this IPN message (entry id is sent in the 'custom' field)
-		list( $entry_id, $hash ) = explode( '|', $custom_field );
-		$hash_matches = wp_hash( $entry_id ) == $hash;
+		list($entry_id, $hash) = explode('|', $custom_field);
+		$hash_matches = wp_hash($entry_id) == $hash;
 
 		//allow the user to do some other kind of validation of the hash
-		$hash_matches = apply_filters( 'gform_aba_hash_matches', $hash_matches, $entry_id, $hash, $custom_field );
+		$hash_matches = apply_filters('gform_aba_hash_matches', $hash_matches, $entry_id, $hash, $custom_field);
 
 		//Validates that Entry Id wasn't tampered with
-		if ( ! rgpost( 'test_ipn' ) && ! $hash_matches ) {
-			$this->log_error( __METHOD__ . "(): Entry ID verification failed. Hash does not match. Custom field: {$custom_field}. Aborting." );
+		if (!rgpost('test_ipn') && !$hash_matches) {
+			$this->log_error(__METHOD__ . "(): Entry ID verification failed. Hash does not match. Custom field: {$custom_field}. Aborting.");
 
 			return false;
 		}
 
-		$this->log_debug( __METHOD__ . "(): IPN message has a valid custom field: {$custom_field}" );
+		$this->log_debug(__METHOD__ . "(): IPN message has a valid custom field: {$custom_field}");
 
-		$entry = GFAPI::get_entry( $entry_id );
+		$entry = GFAPI::get_entry($entry_id);
 
-		if ( is_wp_error( $entry ) ) {
-			$this->log_error( __METHOD__ . '(): ' . $entry->get_error_message() );
+		if (is_wp_error($entry)) {
+			$this->log_error(__METHOD__ . '(): ' . $entry->get_error_message());
 
 			return false;
 		}
@@ -1221,33 +1248,35 @@ class GFABA extends GFPaymentAddOn {
 		return $entry;
 	}
 
-	public function cancel_subscription( $entry, $feed, $note = null ) {
+	public function cancel_subscription($entry, $feed, $note = null)
+	{
 
-		parent::cancel_subscription( $entry, $feed, $note );
+		parent::cancel_subscription($entry, $feed, $note);
 
-		$this->modify_post( rgar( $entry, 'post_id' ), rgars( $feed, 'meta/update_post_action' ) );
+		$this->modify_post(rgar($entry, 'post_id'), rgars($feed, 'meta/update_post_action'));
 
 		return true;
 	}
 
-	public function modify_post( $post_id, $action ) {
+	public function modify_post($post_id, $action)
+	{
 
 		$result = false;
 
-		if ( ! $post_id ) {
+		if (!$post_id) {
 			return $result;
 		}
 
-		switch ( $action ) {
+		switch ($action) {
 			case 'draft':
-				$post = get_post( $post_id );
+				$post = get_post($post_id);
 				$post->post_status = 'draft';
-				$result = wp_update_post( $post );
-				$this->log_debug( __METHOD__ . "(): Set post (#{$post_id}) status to \"draft\"." );
+				$result = wp_update_post($post);
+				$this->log_debug(__METHOD__ . "(): Set post (#{$post_id}) status to \"draft\".");
 				break;
 			case 'delete':
-				$result = wp_delete_post( $post_id );
-				$this->log_debug( __METHOD__ . "(): Deleted post (#{$post_id})." );
+				$result = wp_delete_post($post_id);
+				$this->log_debug(__METHOD__ . "(): Deleted post (#{$post_id}).");
 				break;
 		}
 
@@ -1264,10 +1293,11 @@ class GFABA extends GFPaymentAddOn {
 	 *
 	 * @return bool
 	 */
-	public function getHash($hash_str, $aba_api_key) {
-        $hash = base64_encode(hash_hmac('sha512', $hash_str, $aba_api_key, true));
-        return $hash;
-    }
+	public function getHash($hash_str, $aba_api_key)
+	{
+		$hash = base64_encode(hash_hmac('sha512', $hash_str, $aba_api_key, true));
+		return $hash;
+	}
 
 	/**
 	 * Returns the URL to be used for IPN processing.
@@ -1279,17 +1309,17 @@ class GFABA extends GFPaymentAddOn {
 
 	//------- ADMIN FUNCTIONS/HOOKS -----------//
 
-	public function init_admin() {
+	public function init_admin()
+	{
 
 		parent::init_admin();
 
 		//add actions to allow the payment status to be modified
-		add_action( 'gform_payment_status', array( $this, 'admin_edit_payment_status' ), 3, 3 );
-		add_action( 'gform_payment_date', array( $this, 'admin_edit_payment_date' ), 3, 3 );
-		add_action( 'gform_payment_transaction_id', array( $this, 'admin_edit_payment_transaction_id' ), 3, 3 );
-		add_action( 'gform_payment_amount', array( $this, 'admin_edit_payment_amount' ), 3, 3 );
-		add_action( 'gform_after_update_entry', array( $this, 'admin_update_payment' ), 4, 2 );
-
+		add_action('gform_payment_status', array($this, 'admin_edit_payment_status'), 3, 3);
+		add_action('gform_payment_date', array($this, 'admin_edit_payment_date'), 3, 3);
+		add_action('gform_payment_transaction_id', array($this, 'admin_edit_payment_transaction_id'), 3, 3);
+		add_action('gform_payment_amount', array($this, 'admin_edit_payment_amount'), 3, 3);
+		add_action('gform_after_update_entry', array($this, 'admin_update_payment'), 4, 2);
 	}
 
 	/**
@@ -1300,32 +1330,34 @@ class GFABA extends GFPaymentAddOn {
 	 * @return array
 	 */
 
-	public function supported_notification_events( $form ) {
-		if ( ! $this->has_feed( $form['id'] ) ) {
+	public function supported_notification_events($form)
+	{
+		if (!$this->has_feed($form['id'])) {
 			return false;
 		}
 
 		return array(
-				'complete_payment'          => esc_html__( 'Payment Completed', 'gravityformsaba' ),
-				'refund_payment'            => esc_html__( 'Payment Refunded', 'gravityformsaba' ),
-				'fail_payment'              => esc_html__( 'Payment Failed', 'gravityformsaba' ),
-				'add_pending_payment'       => esc_html__( 'Payment Pending', 'gravityformsaba' ),
-				'void_authorization'        => esc_html__( 'Authorization Voided', 'gravityformsaba' ),
-				'create_subscription'       => esc_html__( 'Subscription Created', 'gravityformsaba' ),
-				'cancel_subscription'       => esc_html__( 'Subscription Canceled', 'gravityformsaba' ),
-				'expire_subscription'       => esc_html__( 'Subscription Expired', 'gravityformsaba' ),
-				'add_subscription_payment'  => esc_html__( 'Subscription Payment Added', 'gravityformsaba' ),
-				'fail_subscription_payment' => esc_html__( 'Subscription Payment Failed', 'gravityformsaba' ),
+			'complete_payment'          => esc_html__('Payment Completed', 'gravityformsaba'),
+			'refund_payment'            => esc_html__('Payment Refunded', 'gravityformsaba'),
+			'fail_payment'              => esc_html__('Payment Failed', 'gravityformsaba'),
+			'add_pending_payment'       => esc_html__('Payment Pending', 'gravityformsaba'),
+			'void_authorization'        => esc_html__('Authorization Voided', 'gravityformsaba'),
+			'create_subscription'       => esc_html__('Subscription Created', 'gravityformsaba'),
+			'cancel_subscription'       => esc_html__('Subscription Canceled', 'gravityformsaba'),
+			'expire_subscription'       => esc_html__('Subscription Expired', 'gravityformsaba'),
+			'add_subscription_payment'  => esc_html__('Subscription Payment Added', 'gravityformsaba'),
+			'fail_subscription_payment' => esc_html__('Subscription Payment Failed', 'gravityformsaba'),
 		);
 	}
 
-	public function admin_edit_payment_status( $payment_status, $form, $entry ) {
-		if ( $this->payment_details_editing_disabled( $entry ) ) {
+	public function admin_edit_payment_status($payment_status, $form, $entry)
+	{
+		if ($this->payment_details_editing_disabled($entry)) {
 			return $payment_status;
 		}
 
 		//create drop down for payment status
-		$payment_string = gform_tooltip( 'aba_edit_payment_status', '', true );
+		$payment_string = gform_tooltip('aba_edit_payment_status', '', true);
 		$payment_string .= '<select id="payment_status" name="payment_status">';
 		$payment_string .= '<option value="' . $payment_status . '" selected>' . $payment_status . '</option>';
 		$payment_string .= '<option value="Paid">Paid</option>';
@@ -1334,14 +1366,15 @@ class GFABA extends GFPaymentAddOn {
 		return $payment_string;
 	}
 
-	public function admin_edit_payment_date( $payment_date, $form, $entry ) {
-		if ( $this->payment_details_editing_disabled( $entry ) ) {
+	public function admin_edit_payment_date($payment_date, $form, $entry)
+	{
+		if ($this->payment_details_editing_disabled($entry)) {
 			return $payment_date;
 		}
 
 		$payment_date = $entry['payment_date'];
-		if ( empty( $payment_date ) ) {
-			$payment_date = gmdate( 'y-m-d H:i:s' );
+		if (empty($payment_date)) {
+			$payment_date = gmdate('y-m-d H:i:s');
 		}
 
 		$input = '<input type="text" id="payment_date" name="payment_date" value="' . $payment_date . '">';
@@ -1349,8 +1382,9 @@ class GFABA extends GFPaymentAddOn {
 		return $input;
 	}
 
-	public function admin_edit_payment_transaction_id( $transaction_id, $form, $entry ) {
-		if ( $this->payment_details_editing_disabled( $entry ) ) {
+	public function admin_edit_payment_transaction_id($transaction_id, $form, $entry)
+	{
+		if ($this->payment_details_editing_disabled($entry)) {
 			return $transaction_id;
 		}
 
@@ -1359,13 +1393,14 @@ class GFABA extends GFPaymentAddOn {
 		return $input;
 	}
 
-	public function admin_edit_payment_amount( $payment_amount, $form, $entry ) {
-		if ( $this->payment_details_editing_disabled( $entry ) ) {
+	public function admin_edit_payment_amount($payment_amount, $form, $entry)
+	{
+		if ($this->payment_details_editing_disabled($entry)) {
 			return $payment_amount;
 		}
 
-		if ( empty( $payment_amount ) ) {
-			$payment_amount = GFCommon::get_order_total( $form, $entry );
+		if (empty($payment_amount)) {
+			$payment_amount = GFCommon::get_order_total($form, $entry);
 		}
 
 		$input = '<input type="text" id="payment_amount" name="payment_amount" class="gform_currency" value="' . $payment_amount . '">';
@@ -1373,73 +1408,76 @@ class GFABA extends GFPaymentAddOn {
 		return $input;
 	}
 
-	public function aba_custom_check_entry_status($entry_id){
-		$entry = GFFormsModel::get_lead( $entry_id );
+	public function aba_custom_check_entry_status($entry_id)
+	{
+		$entry = GFFormsModel::get_lead($entry_id);
 		$status = true;
-		if($entry['payment_status'] == 'Approved'){
+		if ($entry['payment_status'] == 'Approved') {
 			$status = false;
 		}
-		
+
 		return $status;
 	}
 
-	public function custome_update_send_email( $entry_id ){
-		$entry = GFFormsModel::get_lead( $entry_id );
+	public function custome_update_send_email($entry_id)
+	{
+		$entry = GFFormsModel::get_lead($entry_id);
 
-		$form = GFFormsModel::get_form_meta( $entry['form_id'] );
+		$form = GFFormsModel::get_form_meta($entry['form_id']);
 
-		$feed='';
-		if ( ! $feed ) {
-			$feed = $this->get_payment_feed( $entry, $form );
+		$feed = '';
+		if (!$feed) {
+			$feed = $this->get_payment_feed($entry, $form);
 		}
 
 
 		$notifications = $this->get_aba_notifications_to_send($form, $feed);
 
-		GFCommon::send_notifications( $notifications, $form, $entry, true, 'complete_payment' );
+		GFCommon::send_notifications($notifications, $form, $entry, true, 'complete_payment');
 	}
 
-	public function admin_update_payment( $form, $entry_id ) {
-		check_admin_referer( 'gforms_save_entry', 'gforms_save_entry' );
+	public function admin_update_payment($form, $entry_id)
+	{
+		check_admin_referer('gforms_save_entry', 'gforms_save_entry');
 
 		//update payment information in admin, need to use this function so the lead data is updated before displayed in the sidebar info section
-		$entry = GFFormsModel::get_lead( $entry_id );
+		$entry = GFFormsModel::get_lead($entry_id);
 
-		if ( $this->payment_details_editing_disabled( $entry, 'update' ) ) {
+		if ($this->payment_details_editing_disabled($entry, 'update')) {
 			return;
 		}
 
 		//get payment fields to update
-		$payment_status = rgpost( 'payment_status' );
+		$payment_status = rgpost('payment_status');
 		//when updating, payment status may not be editable, if no value in post, set to lead payment status
-		if ( empty( $payment_status ) ) {
+		if (empty($payment_status)) {
 			$payment_status = $entry['payment_status'];
 		}
 
-		$payment_amount      = GFCommon::to_number( rgpost( 'payment_amount' ) );
-		$payment_transaction = rgpost( 'aba_transaction_id' );
-		$payment_date        = rgpost( 'payment_date' );
+		$payment_amount      = GFCommon::to_number(rgpost('payment_amount'));
+		$payment_transaction = rgpost('aba_transaction_id');
+		$payment_date        = rgpost('payment_date');
 
 		$status_unchanged = $entry['payment_status'] == $payment_status;
 		$amount_unchanged = $entry['payment_amount'] == $payment_amount;
 		$id_unchanged     = $entry['transaction_id'] == $payment_transaction;
 		$date_unchanged   = $entry['payment_date'] == $payment_date;
 
-		if ( $status_unchanged && $amount_unchanged && $id_unchanged && $date_unchanged ) {
+		if ($status_unchanged && $amount_unchanged && $id_unchanged && $date_unchanged) {
 			return;
 		}
 
-		if ( empty( $payment_date ) ) {
-			$payment_date = gmdate( 'y-m-d H:i:s' );
+		if (empty($payment_date)) {
+			$payment_date = gmdate('y-m-d H:i:s');
 		} else {
 			//format date entered by user
-			$payment_date = date( 'Y-m-d H:i:s', strtotime( $payment_date ) );
+			$payment_date = date('Y-m-d H:i:s', strtotime($payment_date));
 		}
 
 		global $current_user;
 		$user_id   = 0;
 		$user_name = 'System';
-		if ( $current_user && $user_data = get_userdata( $current_user->ID ) ) {
+		if ($current_user && $user_data = get_userdata($current_user->ID)) {
 			$user_id   = $current_user->ID;
 			$user_name = $user_data->display_name;
 		}
@@ -1450,44 +1488,45 @@ class GFABA extends GFPaymentAddOn {
 		$entry['transaction_id'] = $payment_transaction;
 
 		// if payment status does not equal approved/paid or the lead has already been fulfilled, do not continue with fulfillment
-		if ( ( $payment_status == 'Approved' || $payment_status == 'Paid' ) && ! $entry['is_fulfilled'] ) {
+		if (($payment_status == 'Approved' || $payment_status == 'Paid') && !$entry['is_fulfilled']) {
 			$action['id']             = $payment_transaction;
 			$action['type']           = 'complete_payment';
 			$action['transaction_id'] = $payment_transaction;
 			$action['amount']         = $payment_amount;
 			$action['entry_id']       = $entry['id'];
 
-			$this->complete_payment( $entry, $action );
-			$this->fulfill_order( $entry, $payment_transaction, $payment_amount );
+			$this->complete_payment($entry, $action);
+			$this->fulfill_order($entry, $payment_transaction, $payment_amount);
 		}
 		//update lead, add a note
-		GFAPI::update_entry( $entry );
-		GFFormsModel::add_note( $entry['id'], $user_id, $user_name, sprintf( esc_html__( 'Payment information was manually updated. Status: %s. Amount: %s. Transaction ID: %s. Date: %s', 'gravityformsaba' ), $entry['payment_status'], GFCommon::to_money( $entry['payment_amount'], $entry['currency'] ), $payment_transaction, $entry['payment_date'] ) );
+		GFAPI::update_entry($entry);
+		GFFormsModel::add_note($entry['id'], $user_id, $user_name, sprintf(esc_html__('Payment information was manually updated. Status: %s. Amount: %s. Transaction ID: %s. Date: %s', 'gravityformsaba'), $entry['payment_status'], GFCommon::to_money($entry['payment_amount'], $entry['currency']), $payment_transaction, $entry['payment_date']));
 	}
 
-	public function fulfill_order( &$entry, $transaction_id, $amount, $feed = null ) {
+	public function fulfill_order(&$entry, $transaction_id, $amount, $feed = null)
+	{
 
-		if ( ! $feed ) {
-			$feed = $this->get_payment_feed( $entry );
+		if (!$feed) {
+			$feed = $this->get_payment_feed($entry);
 		}
 
-		$form = GFFormsModel::get_form_meta( $entry['form_id'] );
-		if ( rgars( $feed, 'meta/delayPost' ) ) {
-			$this->log_debug( __METHOD__ . '(): Creating post.' );
-			$entry['post_id'] = GFFormsModel::create_post( $form, $entry );
-			$this->log_debug( __METHOD__ . '(): Post created.' );
+		$form = GFFormsModel::get_form_meta($entry['form_id']);
+		if (rgars($feed, 'meta/delayPost')) {
+			$this->log_debug(__METHOD__ . '(): Creating post.');
+			$entry['post_id'] = GFFormsModel::create_post($form, $entry);
+			$this->log_debug(__METHOD__ . '(): Post created.');
 		}
 
-		if ( rgars( $feed, 'meta/delayNotification' ) ) {
+		if (rgars($feed, 'meta/delayNotification')) {
 			//sending delayed notifications
-			$notifications = $this->get_notifications_to_send( $form, $feed );
-			GFCommon::send_notifications( $notifications, $form, $entry, true, 'form_submission' );
+			$notifications = $this->get_notifications_to_send($form, $feed);
+			GFCommon::send_notifications($notifications, $form, $entry, true, 'form_submission');
 		}
 
-		do_action( 'gform_aba_fulfillment', $entry, $feed, $transaction_id, $amount );
+		do_action('gform_aba_fulfillment', $entry, $feed, $transaction_id, $amount);
 
-		if ( has_filter( 'gform_aba_fulfillment' ) ) {
-			$this->log_debug( __METHOD__ . '(): Executing functions hooked to gform_aba_fulfillment.' );
+		if (has_filter('gform_aba_fulfillment')) {
+			$this->log_debug(__METHOD__ . '(): Executing functions hooked to gform_aba_fulfillment.');
 		}
 	}
 
@@ -1500,22 +1539,24 @@ class GFABA extends GFPaymentAddOn {
 	 * @return array
 	 */
 
-	public function get_aba_notifications_to_send( $form, $feed ) {
+	public function get_aba_notifications_to_send($form, $feed)
+	{
 		$notifications_to_send  = array();
-		foreach ( $form['notifications'] as $notification ) {
+		foreach ($form['notifications'] as $notification) {
 			$notifications_to_send[] = $notification['id'];
 		}
 		return $notifications_to_send;
 	}
 
-	public function get_notifications_to_send( $form, $feed ) {
+	public function get_notifications_to_send($form, $feed)
+	{
 		$notifications_to_send  = array();
-		$selected_notifications = rgars( $feed, 'meta/selectedNotifications' );
+		$selected_notifications = rgars($feed, 'meta/selectedNotifications');
 
-		if ( is_array( $selected_notifications ) ) {
+		if (is_array($selected_notifications)) {
 			// Make sure that the notifications being sent belong to the form submission event, just in case the notification event was changed after the feed was configured.
-			foreach ( $form['notifications'] as $notification ) {
-				if ( rgar( $notification, 'event' ) != 'form_submission' || ! in_array( $notification['id'], $selected_notifications ) ) {
+			foreach ($form['notifications'] as $notification) {
+				if (rgar($notification, 'event') != 'form_submission' || !in_array($notification['id'], $selected_notifications)) {
 					continue;
 				}
 
@@ -1526,7 +1567,8 @@ class GFABA extends GFPaymentAddOn {
 		return $notifications_to_send;
 	}
 
-	public function aba_fulfillment( $entry, $aba_config, $transaction_id, $amount ) {
+	public function aba_fulfillment($entry, $aba_config, $transaction_id, $amount)
+	{
 		//no need to do anything for ABA when it runs this function, ignore
 		return false;
 	}
@@ -1538,24 +1580,25 @@ class GFABA extends GFPaymentAddOn {
 	 *
 	 * @return bool
 	 */
-	public function payment_details_editing_disabled( $entry, $action = 'edit' ) {
-		if ( ! $this->is_payment_gateway( $entry['id'] ) ) {
+	public function payment_details_editing_disabled($entry, $action = 'edit')
+	{
+		if (!$this->is_payment_gateway($entry['id'])) {
 			// Entry was not processed by this add-on, don't allow editing.
 			return true;
 		}
 
-		$payment_status = rgar( $entry, 'payment_status' );
-		if ( $payment_status == 'Approved' || $payment_status == 'Paid' || rgar( $entry, 'transaction_type' ) == 2 ) {
+		$payment_status = rgar($entry, 'payment_status');
+		if ($payment_status == 'Approved' || $payment_status == 'Paid' || rgar($entry, 'transaction_type') == 2) {
 			// Editing not allowed for this entries transaction type or payment status.
 			return true;
 		}
 
-		if ( $action == 'edit' && rgpost( 'screen_mode' ) == 'edit' ) {
+		if ($action == 'edit' && rgpost('screen_mode') == 'edit') {
 			// Editing is allowed for this entry.
 			return false;
 		}
 
-		if ( $action == 'update' && rgpost( 'screen_mode' ) == 'view' && rgpost( 'action' ) == 'update' ) {
+		if ($action == 'update' && rgpost('screen_mode') == 'view' && rgpost('action') == 'update') {
 			// Updating the payment details for this entry is allowed.
 			return false;
 		}
@@ -1572,19 +1615,20 @@ class GFABA extends GFPaymentAddOn {
 	 *
 	 * @param $previous_version
 	 */
-	public function upgrade( $previous_version ) {
+	public function upgrade($previous_version)
+	{
 
-		if ( empty( $previous_version ) ) {
-			$previous_version = get_option( 'gf_aba_version' );
+		if (empty($previous_version)) {
+			$previous_version = get_option('gf_aba_version');
 		}
 
-		if ( empty( $previous_version ) ) {
-			update_option( 'gform_aba_sslverify', true );
+		if (empty($previous_version)) {
+			update_option('gform_aba_sslverify', true);
 		}
 
-		$previous_is_pre_addon_framework = ! empty( $previous_version ) && version_compare( $previous_version, '2.0.dev1', '<' );
+		$previous_is_pre_addon_framework = !empty($previous_version) && version_compare($previous_version, '2.0.dev1', '<');
 
-		if ( $previous_is_pre_addon_framework ) {
+		if ($previous_is_pre_addon_framework) {
 
 			//copy plugin settings
 			$this->copy_settings();
@@ -1600,32 +1644,34 @@ class GFABA extends GFPaymentAddOn {
 
 			//updating entry status from 'Approved' to 'Paid'
 			$this->update_lead();
-
 		}
 
 		// Remove TLS 1.2 warning.
-		if ( ! empty( $previous_version ) && version_compare( $previous_version, '3.2', '<' ) ) {
-			delete_transient( 'gravityformsaba_tlstest_response' );
+		if (!empty($previous_version) && version_compare($previous_version, '3.2', '<')) {
+			delete_transient('gravityformsaba_tlstest_response');
 		}
-
 	}
 
-	public function uninstall(){
+	public function uninstall()
+	{
 		parent::uninstall();
-		delete_option( 'gform_aba_sslverify' );
+		delete_option('gform_aba_sslverify');
 	}
 
-	public static function get_entry_table_name() {
-		return version_compare( self::get_gravityforms_db_version(), '2.3-dev-1', '<' ) ? GFFormsModel::get_lead_table_name() : GFFormsModel::get_entry_table_name();
- 	}
+	public static function get_entry_table_name()
+	{
+		return version_compare(self::get_gravityforms_db_version(), '2.3-dev-1', '<') ? GFFormsModel::get_lead_table_name() : GFFormsModel::get_entry_table_name();
+	}
 
-	public static function get_entry_meta_table_name() {
-		return version_compare( self::get_gravityforms_db_version(), '2.3-dev-1', '<' ) ? GFFormsModel::get_lead_meta_table_name() : GFFormsModel::get_entry_meta_table_name();
- 	}
+	public static function get_entry_meta_table_name()
+	{
+		return version_compare(self::get_gravityforms_db_version(), '2.3-dev-1', '<') ? GFFormsModel::get_lead_meta_table_name() : GFFormsModel::get_entry_meta_table_name();
+	}
 
-	public static function get_gravityforms_db_version() {
+	public static function get_gravityforms_db_version()
+	{
 
-		if ( method_exists( 'GFFormsModel', 'get_database_version' ) ) {
+		if (method_exists('GFFormsModel', 'get_database_version')) {
 			$db_version = GFFormsModel::get_database_version();
 		} else {
 			$db_version = GFForms::$version;
@@ -1636,43 +1682,47 @@ class GFABA extends GFPaymentAddOn {
 
 	//------ FOR BACKWARDS COMPATIBILITY ----------------------//
 
-	public function update_feed_id( $old_feed_id, $new_feed_id ) {
+	public function update_feed_id($old_feed_id, $new_feed_id)
+	{
 		global $wpdb;
 		$entry_meta_table = self::get_entry_meta_table_name();
-		$sql = $wpdb->prepare( "UPDATE {$entry_meta_table} SET meta_value=%s WHERE meta_key='aba_feed_id' AND meta_value=%s", $new_feed_id, $old_feed_id );
-		$wpdb->query( $sql );
+		$sql = $wpdb->prepare("UPDATE {$entry_meta_table} SET meta_value=%s WHERE meta_key='aba_feed_id' AND meta_value=%s", $new_feed_id, $old_feed_id);
+		$wpdb->query($sql);
 	}
 
-	public function add_legacy_meta( $new_meta, $old_feed ) {
+	public function add_legacy_meta($new_meta, $old_feed)
+	{
 
 		$known_meta_keys = array(
-								'email', 'mode', 'type', 'style', 'continue_text', 'cancel_url', 'disable_note', 'disable_shipping', 'recurring_amount_field', 'recurring_times',
-								'recurring_retry', 'billing_cycle_number', 'billing_cycle_type', 'trial_period_enabled', 'trial_amount', 'trial_period_number', 'trial_period_type', 'delay_post',
-								'update_post_action', 'delay_notifications', 'selected_notifications', 'aba_conditional_enabled', 'aba_conditional_field_id',
-								'aba_conditional_operator', 'aba_conditional_value', 'customer_fields',
-								);
+			'email', 'mode', 'type', 'style', 'continue_text', 'cancel_url', 'disable_note', 'disable_shipping', 'recurring_amount_field', 'recurring_times',
+			'recurring_retry', 'billing_cycle_number', 'billing_cycle_type', 'trial_period_enabled', 'trial_amount', 'trial_period_number', 'trial_period_type', 'delay_post',
+			'update_post_action', 'delay_notifications', 'selected_notifications', 'aba_conditional_enabled', 'aba_conditional_field_id',
+			'aba_conditional_operator', 'aba_conditional_value', 'customer_fields',
+		);
 
-		foreach ( $old_feed['meta'] as $key => $value ) {
-			if ( ! in_array( $key, $known_meta_keys ) ) {
-				$new_meta[ $key ] = $value;
+		foreach ($old_feed['meta'] as $key => $value) {
+			if (!in_array($key, $known_meta_keys)) {
+				$new_meta[$key] = $value;
 			}
 		}
 
 		return $new_meta;
 	}
 
-	public function update_payment_gateway() {
+	public function update_payment_gateway()
+	{
 		global $wpdb;
 		$entry_meta_table = self::get_entry_meta_table_name();
-		$sql = $wpdb->prepare( "UPDATE {$entry_meta_table} SET meta_value=%s WHERE meta_key='payment_gateway' AND meta_value='aba'", $this->_slug );
-		$wpdb->query( $sql );
+		$sql = $wpdb->prepare("UPDATE {$entry_meta_table} SET meta_value=%s WHERE meta_key='payment_gateway' AND meta_value='aba'", $this->_slug);
+		$wpdb->query($sql);
 	}
 
-	public function update_lead() {
+	public function update_lead()
+	{
 		global $wpdb;
 		$entry_table = self::get_entry_table_name();
 		$entry_meta_table = self::get_entry_meta_table_name();
-		$entry_id_column = version_compare( self::get_gravityforms_db_version(), '2.3-dev-1', '<' ) ? 'lead_id' : 'entry_id';
+		$entry_id_column = version_compare(self::get_gravityforms_db_version(), '2.3-dev-1', '<') ? 'lead_id' : 'entry_id';
 		$sql = $wpdb->prepare(
 			"UPDATE {$entry_table}
 			 SET payment_status='Paid', payment_method='ABA'
@@ -1680,26 +1730,29 @@ class GFABA extends GFPaymentAddOn {
 		     		AND ID IN (
 					  	SELECT {$entry_id_column} FROM {$entry_meta_table} WHERE meta_key='payment_gateway' AND meta_value=%s
 				   	)",
-			$this->_slug);
+			$this->_slug
+		);
 
-		$wpdb->query( $sql );
+		$wpdb->query($sql);
 	}
 
-	public function copy_settings() {
+	public function copy_settings()
+	{
 		//copy plugin settings
-		$old_settings = get_option( 'gf_aba_configured' );
-		$new_settings = array( 'gf_aba_configured' => $old_settings );
-		$this->update_plugin_settings( $new_settings );
+		$old_settings = get_option('gf_aba_configured');
+		$new_settings = array('gf_aba_configured' => $old_settings);
+		$this->update_plugin_settings($new_settings);
 	}
 
-	public function copy_feeds() {
+	public function copy_feeds()
+	{
 		//get feeds
 		$old_feeds = $this->get_old_feeds();
 
-		if ( $old_feeds ) {
+		if ($old_feeds) {
 
 			$counter = 1;
-			foreach ( $old_feeds as $old_feed ) {
+			foreach ($old_feeds as $old_feed) {
 				$feed_name       = 'Feed ' . $counter;
 				$form_id         = $old_feed['form_id'];
 				$is_active       = $old_feed['is_active'];
@@ -1707,114 +1760,118 @@ class GFABA extends GFPaymentAddOn {
 
 				$new_meta = array(
 					'feedName'                     => $feed_name,
-					'abaEmail'                  => rgar( $old_feed['meta'], 'email' ),
-					'mode'                         => rgar( $old_feed['meta'], 'mode' ),
-					'transactionType'              => rgar( $old_feed['meta'], 'type' ),
-					'type'                         => rgar( $old_feed['meta'], 'type' ), //For backwards compatibility of the delayed payment feature
-					'cancelUrl'                    => rgar( $old_feed['meta'], 'cancel_url' ),
-					'disableNote'                  => rgar( $old_feed['meta'], 'disable_note' ),
-					'disableShipping'              => rgar( $old_feed['meta'], 'disable_shipping' ),
+					'abaEmail'                  => rgar($old_feed['meta'], 'email'),
+					'mode'                         => rgar($old_feed['meta'], 'mode'),
+					'transactionType'              => rgar($old_feed['meta'], 'type'),
+					'type'                         => rgar($old_feed['meta'], 'type'), //For backwards compatibility of the delayed payment feature
+					'cancelUrl'                    => rgar($old_feed['meta'], 'cancel_url'),
+					'disableNote'                  => rgar($old_feed['meta'], 'disable_note'),
+					'disableShipping'              => rgar($old_feed['meta'], 'disable_shipping'),
 
-					'recurringAmount'              => rgar( $old_feed['meta'], 'recurring_amount_field' ) == 'all' ? 'form_total' : rgar( $old_feed['meta'], 'recurring_amount_field' ),
-					'recurring_amount_field'       => rgar( $old_feed['meta'], 'recurring_amount_field' ), //For backwards compatibility of the delayed payment feature
-					'recurringTimes'               => rgar( $old_feed['meta'], 'recurring_times' ),
-					'recurringRetry'               => rgar( $old_feed['meta'], 'recurring_retry' ),
+					'recurringAmount'              => rgar($old_feed['meta'], 'recurring_amount_field') == 'all' ? 'form_total' : rgar($old_feed['meta'], 'recurring_amount_field'),
+					'recurring_amount_field'       => rgar($old_feed['meta'], 'recurring_amount_field'), //For backwards compatibility of the delayed payment feature
+					'recurringTimes'               => rgar($old_feed['meta'], 'recurring_times'),
+					'recurringRetry'               => rgar($old_feed['meta'], 'recurring_retry'),
 					'paymentAmount'                => 'form_total',
-					'billingCycle_length'          => rgar( $old_feed['meta'], 'billing_cycle_number' ),
-					'billingCycle_unit'            => $this->convert_interval( rgar( $old_feed['meta'], 'billing_cycle_type' ), 'text' ),
+					'billingCycle_length'          => rgar($old_feed['meta'], 'billing_cycle_number'),
+					'billingCycle_unit'            => $this->convert_interval(rgar($old_feed['meta'], 'billing_cycle_type'), 'text'),
 
-					'trial_enabled'                => rgar( $old_feed['meta'], 'trial_period_enabled' ),
+					'trial_enabled'                => rgar($old_feed['meta'], 'trial_period_enabled'),
 					'trial_product'                => 'enter_amount',
-					'trial_amount'                 => rgar( $old_feed['meta'], 'trial_amount' ),
-					'trialPeriod_length'           => rgar( $old_feed['meta'], 'trial_period_number' ),
-					'trialPeriod_unit'             => $this->convert_interval( rgar( $old_feed['meta'], 'trial_period_type' ), 'text' ),
+					'trial_amount'                 => rgar($old_feed['meta'], 'trial_amount'),
+					'trialPeriod_length'           => rgar($old_feed['meta'], 'trial_period_number'),
+					'trialPeriod_unit'             => $this->convert_interval(rgar($old_feed['meta'], 'trial_period_type'), 'text'),
 
-					'delayPost'                    => rgar( $old_feed['meta'], 'delay_post' ),
-					'change_post_status'           => rgar( $old_feed['meta'], 'update_post_action' ) ? '1' : '0',
-					'update_post_action'           => rgar( $old_feed['meta'], 'update_post_action' ),
+					'delayPost'                    => rgar($old_feed['meta'], 'delay_post'),
+					'change_post_status'           => rgar($old_feed['meta'], 'update_post_action') ? '1' : '0',
+					'update_post_action'           => rgar($old_feed['meta'], 'update_post_action'),
 
-					'delayNotification'            => rgar( $old_feed['meta'], 'delay_notifications' ),
-					'selectedNotifications'        => rgar( $old_feed['meta'], 'selected_notifications' ),
+					'delayNotification'            => rgar($old_feed['meta'], 'delay_notifications'),
+					'selectedNotifications'        => rgar($old_feed['meta'], 'selected_notifications'),
 
-					'billingInformation_firstName' => rgar( $customer_fields, 'first_name' ),
-					'billingInformation_lastName'  => rgar( $customer_fields, 'last_name' ),
-					'billingInformation_email'     => rgar( $customer_fields, 'email' ),
-					'billingInformation_address'   => rgar( $customer_fields, 'address1' ),
-					'billingInformation_address2'  => rgar( $customer_fields, 'address2' ),
-					'billingInformation_city'      => rgar( $customer_fields, 'city' ),
-					'billingInformation_state'     => rgar( $customer_fields, 'state' ),
-					'billingInformation_zip'       => rgar( $customer_fields, 'zip' ),
-					'billingInformation_country'   => rgar( $customer_fields, 'country' ),
+					'billingInformation_firstName' => rgar($customer_fields, 'first_name'),
+					'billingInformation_lastName'  => rgar($customer_fields, 'last_name'),
+					'billingInformation_email'     => rgar($customer_fields, 'email'),
+					'billingInformation_address'   => rgar($customer_fields, 'address1'),
+					'billingInformation_address2'  => rgar($customer_fields, 'address2'),
+					'billingInformation_city'      => rgar($customer_fields, 'city'),
+					'billingInformation_state'     => rgar($customer_fields, 'state'),
+					'billingInformation_zip'       => rgar($customer_fields, 'zip'),
+					'billingInformation_country'   => rgar($customer_fields, 'country'),
 
 				);
 
-				$new_meta = $this->add_legacy_meta( $new_meta, $old_feed );
+				$new_meta = $this->add_legacy_meta($new_meta, $old_feed);
 
 				//add conditional logic
-				$conditional_enabled = rgar( $old_feed['meta'], 'aba_conditional_enabled' );
-				if ( $conditional_enabled ) {
+				$conditional_enabled = rgar($old_feed['meta'], 'aba_conditional_enabled');
+				if ($conditional_enabled) {
 					$new_meta['feed_condition_conditional_logic']        = 1;
 					$new_meta['feed_condition_conditional_logic_object'] = array(
 						'conditionalLogic' =>
-							array(
-								'actionType' => 'show',
-								'logicType'  => 'all',
-								'rules'      => array(
-									array(
-										'fieldId'  => rgar( $old_feed['meta'], 'aba_conditional_field_id' ),
-										'operator' => rgar( $old_feed['meta'], 'aba_conditional_operator' ),
-										'value'    => rgar( $old_feed['meta'], 'aba_conditional_value' )
-									),
-								)
+						array(
+							'actionType' => 'show',
+							'logicType'  => 'all',
+							'rules'      => array(
+								array(
+									'fieldId'  => rgar($old_feed['meta'], 'aba_conditional_field_id'),
+									'operator' => rgar($old_feed['meta'], 'aba_conditional_operator'),
+									'value'    => rgar($old_feed['meta'], 'aba_conditional_value')
+								),
 							)
+						)
 					);
 				} else {
 					$new_meta['feed_condition_conditional_logic'] = 0;
 				}
 
 
-				$new_feed_id = $this->insert_feed( $form_id, $is_active, $new_meta );
-				$this->update_feed_id( $old_feed['id'], $new_feed_id );
+				$new_feed_id = $this->insert_feed($form_id, $is_active, $new_meta);
+				$this->update_feed_id($old_feed['id'], $new_feed_id);
 
-				$counter ++;
+				$counter++;
 			}
 		}
 	}
 
-	public function copy_transactions() {
+	public function copy_transactions()
+	{
 		//copy transactions from the ABA transaction table to the add payment transaction table
 		global $wpdb;
 		$old_table_name = $this->get_old_transaction_table_name();
-		if ( ! $this->table_exists( $old_table_name ) ) {
+		if (!$this->table_exists($old_table_name)) {
 			return false;
 		}
-		$this->log_debug( __METHOD__ . '(): Copying old ABA transactions into new table structure.' );
+		$this->log_debug(__METHOD__ . '(): Copying old ABA transactions into new table structure.');
 
 		$new_table_name = $this->get_new_transaction_table_name();
 
 		$sql = "INSERT INTO {$new_table_name} (lead_id, transaction_type, transaction_id, is_recurring, amount, date_created)
 					SELECT entry_id, transaction_type, transaction_id, is_renewal, amount, date_created FROM {$old_table_name}";
 
-		$wpdb->query( $sql );
+		$wpdb->query($sql);
 
-		$this->log_debug( __METHOD__ . "(): transactions: {$wpdb->rows_affected} rows were added." );
+		$this->log_debug(__METHOD__ . "(): transactions: {$wpdb->rows_affected} rows were added.");
 	}
 
-	public function get_old_transaction_table_name() {
+	public function get_old_transaction_table_name()
+	{
 		global $wpdb;
 		return $wpdb->prefix . 'rg_aba_transaction';
 	}
 
-	public function get_new_transaction_table_name() {
+	public function get_new_transaction_table_name()
+	{
 		global $wpdb;
 		return $wpdb->prefix . 'gf_addon_payment_transaction';
 	}
 
-	public function get_old_feeds() {
+	public function get_old_feeds()
+	{
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'rg_aba';
 
-		if ( ! $this->table_exists( $table_name ) ) {
+		if (!$this->table_exists($table_name)) {
 			return false;
 		}
 
@@ -1823,31 +1880,32 @@ class GFABA extends GFPaymentAddOn {
 					FROM {$table_name} s
 					INNER JOIN {$form_table_name} f ON s.form_id = f.id";
 
-		$this->log_debug( __METHOD__ . "(): getting old feeds: {$sql}" );
+		$this->log_debug(__METHOD__ . "(): getting old feeds: {$sql}");
 
-		$results = $wpdb->get_results( $sql, ARRAY_A );
+		$results = $wpdb->get_results($sql, ARRAY_A);
 
-		$this->log_debug( __METHOD__ . "(): error?: {$wpdb->last_error}" );
+		$this->log_debug(__METHOD__ . "(): error?: {$wpdb->last_error}");
 
-		$count = sizeof( $results );
+		$count = sizeof($results);
 
-		$this->log_debug( __METHOD__ . "(): count: {$count}" );
+		$this->log_debug(__METHOD__ . "(): count: {$count}");
 
-		for ( $i = 0; $i < $count; $i ++ ) {
-			$results[ $i ]['meta'] = maybe_unserialize( $results[ $i ]['meta'] );
+		for ($i = 0; $i < $count; $i++) {
+			$results[$i]['meta'] = maybe_unserialize($results[$i]['meta']);
 		}
 
 		return $results;
 	}
 
 	//This function kept static for backwards compatibility
-	public static function get_config_by_entry( $entry ) {
+	public static function get_config_by_entry($entry)
+	{
 
 		$aba = GFABA::get_instance();
 
-		$feed = $aba->get_payment_feed( $entry );
+		$feed = $aba->get_payment_feed($entry);
 
-		if ( empty( $feed ) ) {
+		if (empty($feed)) {
 			return false;
 		}
 
@@ -1856,13 +1914,14 @@ class GFABA extends GFPaymentAddOn {
 
 	//This function kept static for backwards compatibility
 	//This needs to be here until all add-ons are on the framework, otherwise they look for this function
-	public static function get_config( $form_id ) {
+	public static function get_config($form_id)
+	{
 
 		$aba = GFABA::get_instance();
-		$feed   = $aba->get_feeds( $form_id );
+		$feed   = $aba->get_feeds($form_id);
 
 		//Ignore IPN messages from forms that are no longer configured with the ABA add-on
-		if ( ! $feed ) {
+		if (!$feed) {
 			return false;
 		}
 
