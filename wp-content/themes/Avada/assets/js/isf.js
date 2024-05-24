@@ -422,7 +422,7 @@ jQuery(document).ready(function ($) {
     }
   });
   function validation() {
-    let status = false;
+    let status = true;
     let message = [];
     let required = $(".donation_form").find("[aria-required='true']");
     for (let i = 0; i < required.length; i++) {
