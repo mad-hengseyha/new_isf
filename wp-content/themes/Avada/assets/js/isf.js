@@ -344,4 +344,101 @@ jQuery(document).ready(function ($) {
     });
     return false;
   }
+  $(".donation-btn").on("click", function (event) {
+    event.preventDefault();
+    $(".donation-btn").removeClass("active");
+    $(this).addClass("active");
+    let data = $(this).attr("data");
+    let oneoffOrMonthly = $(".monthly-or-one-of").find("input[type=radio]");
+    if (oneoffOrMonthly.length > 0) {
+      for (let i = 0; i < oneoffOrMonthly.length; i++) {
+        if (data == $(oneoffOrMonthly[i]).val()) {
+          $(oneoffOrMonthly[i]).attr("checked", true);
+        } else {
+          $(oneoffOrMonthly[i]).attr("checked", false);
+        }
+      }
+    }
+  });
+
+  function convertStringToArray(data) {
+    let arrayData = data.split("=");
+    return arrayData;
+  }
+
+  // submit donation
+  $(".payment_template").on("click", "li label", function (event) {
+    // let validation = $("#gform_39").checkValidity();
+    // console.log(validation);
+    let ajaxurl = $(".gravity-form-ajax-url").attr("ajaxurl");
+    let input = $("#payment_template").find("input[type=radio]");
+    if (input.length > 0) {
+      for (let i = 0; i < input.length; i++) {
+        $(input[i]).attr("checked", false);
+      }
+    }
+    let checked = $(this).attr("for");
+    $("#" + checked).attr("checked", true);
+    var form = $(".donation_form").serialize();
+    if (validation()) {
+      try {
+        $.ajax({
+          type: "POST",
+          url: ajaxurl,
+          data: form + "&action=custom_add_entry_to_gravity_form_ajax",
+          success: function (data) {
+            let newData = data;
+            if (newData.toLowerCase().indexOf("gformredirect()") >= 0) {
+              let arrayData = newData.split("aba-payment-method?");
+              let secondSplit = arrayData[1].split('";}');
+              let arrayParam = secondSplit[0].split("&");
+              let newFieldArray = [];
+              let hash = "";
+              for (let i = 0; i < arrayParam.length; i++) {
+                let dataArray = convertStringToArray(arrayParam[i]);
+                newFieldArray.push(dataArray);
+              }
+              for (let a = 0; a < newFieldArray.length; a++) {
+                $("#" + newFieldArray[a][0]).val(newFieldArray[a][1]);
+                if (newFieldArray[a][0] == "hash") {
+                  hash = newFieldArray[a][1];
+                }
+              }
+              hash = decodeURIComponent(hash);
+              $("#hash").val(hash);
+              AbaPayway.checkout();
+            } else {
+              data = data.replace("display: none", "");
+              $(".donation_form_wrapper").html($(data));
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR + " :: " + textStatus + " :: " + errorThrown);
+          },
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  });
+  function validation() {
+    let status = false;
+    let message = [];
+    let required = $(".donation_form").find("[aria-required='true']");
+    for (let i = 0; i < required.length; i++) {
+      if (!$(required[i]).attr("disabled")) {
+        if (!$(required[i]).val()) {
+          status = false;
+          message.push({ index: i, status: false });
+          $(required[i]).attr("aria-invalid", true);
+          $(required[i]).addClass("error");
+          let wrapper = $(required[i]).attr("id");
+          let errorhtml =
+            '<div class="gfield_description validation_message gfield_validation_message">This field is required.</div>';
+          $("#" + wrapper + "_container").append(errorhtml);
+        }
+      }
+    }
+    return status;
+  }
 });
