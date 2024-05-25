@@ -65,9 +65,9 @@ class Avada_Blog
 	{
 
 		if (is_search()) {
-			echo fusion_get_post_content('', 'search'); // phpcs:ignore WordPress.Security.EscapeOutput
+			echo str_replace('[...]', '...', fusion_get_post_content('', 'search')); // phpcs:ignore WordPress.Security.EscapeOutput
 		} else {
-			echo fusion_get_post_content(); // phpcs:ignore WordPress.Security.EscapeOutput
+			echo str_replace('[...]', '...', fusion_get_post_content()); // phpcs:ignore WordPress.Security.EscapeOutput
 		}
 	}
 

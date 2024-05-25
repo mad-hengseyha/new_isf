@@ -755,11 +755,15 @@ function isf_video_sectioni_list($post_id = '', $bg = '')
                         }
                         ?>
                     </div>
-                    <div class="mt-40 d-flex justify-content-center" data-aos="fade-up">
-                        <a class="m-auto custom-btn primary-btn btn-read-more primary-bg-orrange" disabled="false" ajaxurl='<?php echo admin_url('admin-ajax.php'); ?>' href="#" data-perpage="<?php echo $per_page; ?>" id="load-more-video">
-                            See more video
-                        </a>
-                    </div>
+                    <?php
+                    if ($per_page <= $posts->found_posts) {
+                    ?>
+                        <div class="mt-40 d-flex justify-content-center" data-aos="fade-up">
+                            <a class="m-auto custom-btn primary-btn btn-read-more primary-bg-orrange" disabled="false" ajaxurl='<?php echo admin_url('admin-ajax.php'); ?>' href="#" data-perpage="<?php echo $per_page; ?>" id="load-more-video">
+                                See more video
+                            </a>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
         </section>
@@ -1937,7 +1941,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                     </div>
                     <?php
                     if ($state_button) { ?>
-                        <div class="d-flex meduim-show isf-mt <?php echo $btn_class; ?>" data-aos="fade-up">
+                        <div class="d-flex meduim-show isf-mt <?php echo $btn_class; ?>">
                             <a href="<?php echo $state_button_link['url']; ?>" target="<?php echo $state_button_link['target']; ?>" title="<?php echo $state_button_link['title']; ?>" class="m-auto primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
                                 <?php echo $state_button_icon ? $state_button_icon . '' : ''; ?> <?php echo $state_button; ?>
                             </a>
@@ -3121,7 +3125,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                 </div>
                             </div>
                             <div class="col-md-1"></div>
-                            <div class="col-md-5 col-sm-12" data-aos="fade-up-left">
+                            <div class="col-md-5 col-sm-12">
                                 <h2 class="title-and-p-padding"><?php echo $how_we_are_run_title; ?></h2>
                                 <?php echo $how_we_are_run_description; ?>
                                 <div class="mt-40 d-none d-sm-flex meduim-hide ">
@@ -3279,7 +3283,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     <?php } ?>
                                 </div>
                             </div>
-                            <div class="col-12" data-aos="fade-up">
+                            <div class="col-12">
                                 <div class="d-flex mt-40">
                                     <a href="<?php echo $four_column_button_link['url']; ?>" target="<?php echo $four_column_button_link['target']; ?>" title="<?php echo $four_column_button_link['title']; ?>" class="m-auto primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
                                         <?php echo $four_column_button_icon ? $four_column_button_icon . '' : ''; ?> <?php echo $four_column_button; ?>
@@ -3331,8 +3335,10 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                         <div class="row meduim-reverse align-items-center justify-content-beetween">
                             <div class="col-lg-5 col-md-5 col-sm-12 <?php if (!$ishome) {
                                                                         echo 'meduim-mt-40';
-                                                                    } ?>" data-aos="fade-right">
-                                <h2 class="title-and-p-padding"><?php echo $title; ?></h2>
+                                                                    } ?>">
+                                <h2 class="title-and-p-padding">
+                                    <?php echo $title; ?>
+                                </h2>
                                 <p><?php echo $partnership_description; ?></p>
                                 <div class="mt-40 d-lg-flex d-md-none d-sm-none meduim-show md-partner-btn">
                                     <a href="<?php echo $partnership_url['url']; ?>" target="<?php echo $partnership_url['target']; ?>" title="<?php echo $partnership_url['title']; ?>" class="primary-btn custom-btn <?php echo $button_color; ?>" <?php echo $custom_button; ?>>
@@ -4006,6 +4012,14 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
         );
         $loop = new WP_Query($args);
         $out = '';
+        if ($pageNumber == $loop->max_num_pages) {
+            $out .= '
+        <style>
+        #load-more-stories{
+            display:none!important;
+        }
+        </style>';
+        }
         if ($loop->have_posts()) :  while ($loop->have_posts()) : $loop->the_post();
                 $out .= get_template_part('/templates/isf/story-list');
             endwhile;
@@ -4031,6 +4045,15 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
         );
         $loop = new WP_Query($args);
         $out = '';
+        if ($pageNumber == $loop->max_num_pages) {
+            $out .= '
+        <style>
+        #load-more-video{
+            display:none!important;
+        }
+        </style>';
+        }
+
         if ($loop->have_posts()) :  while ($loop->have_posts()) : $loop->the_post();
                 $out .= get_template_part('/templates/isf/video-list');
             endwhile;

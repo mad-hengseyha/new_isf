@@ -9,6 +9,16 @@
   font-weight: 400;
   font-family: Lato-400;
 }
+#mega-menu-wrap-main_navigation
+  #mega-menu-main_navigation
+  > li.mega-menu-megamenu
+  > ul.mega-sub-menu
+  li.mega-menu-column
+  > ul.mega-sub-menu
+  > li.mega-menu-item
+  > a.mega-menu-link:hover {
+  color: #f25b2a !important;
+}
 .fusion-is-sticky .fusion-sticky-menu-1 .fusion-main-menu {
   display: block !important;
 }

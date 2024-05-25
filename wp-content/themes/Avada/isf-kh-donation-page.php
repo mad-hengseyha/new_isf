@@ -89,7 +89,7 @@ $post_id = "";
             <input type="hidden" name="firstname" id="firstname" value="" />
             <input type="hidden" name="lastname" id="lastname" value="" />
             <input type="hidden" name="phone" id="phone" value="" />
-            <input type="hidden" name="email" id="email" value="" />
+            <!-- <input type="hidden" name="email" id="email" value="" /> -->
             <input type="hidden" name="req_time" id="req_time" value="" />
             <input type="hidden" name="merchant_id" id="merchant_id" value="" />
             <input type="hidden" name="return_url" value="<?php echo $return_url; ?>" />

@@ -756,14 +756,16 @@ class GFABA extends GFPaymentAddOn
 		$phone = rgar($entry, $billing_phone);
 		$payment_method = rgar($entry, $payment_option);
 		$req_time = time();
-		$hash = $this->getHash($req_time . $merchant_id . $transactionId . $amount . $firstName . $lastName . $email . $phone . $payment_method . $return_url . $success_url, $api);
+		// $hash = $this->getHash($req_time . $merchant_id . $transactionId . $amount . $firstName . $lastName . $email . $phone . $payment_method . $return_url . $success_url, $api);
+		$hash = $this->getHash($req_time . $merchant_id . $transactionId . $amount . $firstName . $lastName . $phone . $payment_method . $return_url . $success_url, $api);
 		$hash = urlencode($hash);
 		$phone = urlencode($phone);
 
-		$url = home_url('aba-payment-method') . '?firstname=' . $firstName . '&lastname=' . $lastName . '&phone=' . $phone . '&req_time=' . $req_time . '&hash=' . $hash . '&email=' . $email . '&tran_id=' . $transactionId . '&payment_option=' . $payment_method . '&amount=' . $amount . '&merchant_id=' . $merchant_id . '&form_id=' . $form_id;
+		$url = home_url('aba-payment-method') . '?firstname=' . $firstName . '&lastname=' . $lastName . '&phone=' . $phone . '&req_time=' . $req_time . '&hash=' . $hash . '&tran_id=' . $transactionId . '&payment_option=' . $payment_method . '&amount=' . $amount . '&merchant_id=' . $merchant_id . '&form_id=' . $form_id;
+		// $url = home_url('aba-payment-method') . '?firstname=' . $firstName . '&lastname=' . $lastName . '&phone=' . $phone . '&req_time=' . $req_time . '&hash=' . $hash . '&email=' . $email . '&tran_id=' . $transactionId . '&payment_option=' . $payment_method . '&amount=' . $amount . '&merchant_id=' . $merchant_id . '&form_id=' . $form_id;
 
 		//updating lead's payment_status to Processing
-		// GFAPI::update_entry_property($entry['id'], 'payment_status', 'Processing');
+		GFAPI::update_entry_property($entry['id'], 'payment_status', 'Pending');
 		GFAPI::update_entry_property($entry['id'], 'is_fulfilled', 1);
 		GFAPI::update_entry_property($entry['id'], 'payment_amount', $amount . '.00');
 

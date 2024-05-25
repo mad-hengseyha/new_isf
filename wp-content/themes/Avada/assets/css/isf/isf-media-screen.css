@@ -1323,10 +1323,16 @@
   .pay-for-transaction-fee li {
     display: flex;
   }
+  .partner-wrapper {
+    padding: 0 !important;
+  }
 }
 
 /* phone  */
 @media screen and (max-width: 575px) {
+  .partner-wrapper {
+    padding: 0 !important;
+  }
   .recieve-newsletter li,
   .pay-for-transaction-fee li {
     display: flex;
