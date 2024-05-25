@@ -3974,7 +3974,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
 
         return $headers;
     }
-    // add_filter('wp_headers', 'mad_security_hsts_plugin_get_headers');
+    add_filter('wp_headers', 'mad_security_hsts_plugin_get_headers');
 
     function mad_security_hsts_plugin_get_hsts_header(): string
     {
