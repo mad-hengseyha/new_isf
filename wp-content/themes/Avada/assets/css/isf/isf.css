@@ -1544,9 +1544,9 @@ input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not(
 }
 #wrapper .product-category a h2.woocommerce-loop-category__title,
 .fusion-main-menu > ul > li > a .fusion-menu-description,
-a,
-a:after,
-a:before {
+a
+/* a:after,
+a:before { */ {
   transition-property: unset !important;
   transition-duration: unset !important;
   transition-timing-function: unset !important;
