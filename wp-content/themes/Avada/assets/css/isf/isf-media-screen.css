@@ -739,6 +739,9 @@
   .no-meduim-space .meduim-mb-20 {
     margin-bottom: 0 !important;
   }
+  .people-max-height {
+    max-height: 65px !important;
+  }
 }
 
 /* small table  */
@@ -1326,10 +1329,16 @@
   .partner-wrapper {
     padding: 0 !important;
   }
+  /* .people-max-height {
+    max-height: 120px;
+  } */
 }
 
 /* phone  */
 @media screen and (max-width: 575px) {
+  .people-max-height {
+    max-height: 120px;
+  }
   .partner-wrapper {
     padding: 0 !important;
   }
