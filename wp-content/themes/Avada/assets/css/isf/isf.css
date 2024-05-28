@@ -1530,3 +1530,6 @@ a:before { */ {
   transition-duration: unset !important;
   transition-timing-function: unset !important;
 }
+.vimeo_video_ifram {
+  width: 100% !important;
+}

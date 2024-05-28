@@ -133,6 +133,11 @@ if (fusion_get_option('footer_widgets')) : ?>
 	</div>
 </div>
 <?php
+// iframe video 
+// if (function_exists('video_component')) {
+// 	video_component('', '');
+// }
+
 // Displays WPML language switcher inside footer if parallax effect is used.
 if ((defined('WPML_PLUGIN_FILE') || defined('ICL_PLUGIN_FILE')) && 'footer_parallax_effect' === Avada()->settings->get('footer_special_effects')) {
 	global $wpml_language_switcher;

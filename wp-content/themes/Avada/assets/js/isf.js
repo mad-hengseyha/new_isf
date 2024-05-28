@@ -243,7 +243,7 @@ jQuery(document).ready(function ($) {
     ).val();
     let donationTypeText = "One time donation";
     let htmlText = "";
-    if (donationType == "Once-off") {
+    if (donationType == "One-off") {
       htmlText =
         "<span id='label-donation-option'>" + donationTypeText + "</span>";
     } else {
@@ -261,7 +261,7 @@ jQuery(document).ready(function ($) {
     let inputID = $(this).attr("for");
     let donationType = $("#" + inputID).val();
     let donationTypeText = "One time donation";
-    if (donationType == "Once-off") {
+    if (donationType == "One-off") {
     } else {
       donationTypeText = "Monthly donation";
     }

@@ -152,7 +152,8 @@ if (!function_exists("mad_theme_styles")) {
 
 		wp_register_script(
 			'custom-vimeo',
-			get_template_directory_uri() . '/assets/js/player.js',
+			'https://player.vimeo.com/api/player.js',
+			// get_template_directory_uri() . '/assets/js/player.js',
 			array(),
 			'1.0.0',
 			array(
