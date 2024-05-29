@@ -2648,8 +2648,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                             if (buttonname == 'playvideo_hero' || buttonname == 'playvideo_hero_mobile') {
                                 showModalCallAction("isfModal");
                             }
-                            // buttonname = '';
-                            //player.destroy();
+                            buttonname = '';
+                            player.off();
                         });
 
                         player.on("fullscreenchange", function(e) {
@@ -2658,8 +2658,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     showModalCallAction("isfModal");
                                 }
                                 player.pause();
-                                // buttonname = '';
-                                //player.destroy();
+                                buttonname = '';
+                                player.off();
                             }
                         })
                     }
