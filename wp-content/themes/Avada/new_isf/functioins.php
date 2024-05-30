@@ -2407,7 +2407,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
             </div>
             <!-- <div class="col"> -->
             <?php
-            echo video_component($hero_video, $id = "playvideo_hero", $mobile = '#playvideo_hero_mobile');
+            echo video_hero_component($hero_video);
+            //echo video_component($hero_video, $id = "playvideo_hero_mobile");
             ?>
             <!-- </div> -->
         <?php
@@ -2589,12 +2590,12 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
         </div>
     <?php
     }
-    function video_component($video, $button, $mobilebtn = '')
+    function video_hero_component($video)
     {
-        echo '<div id="' . $button . '-wrapper" class="custom-video-wrapper">';
+        echo '<div id="playvideo_hero-wrapper" class="custom-video-wrapper">';
     ?>
         <div style="padding:56.25% 0 0 0;position:relative;">
-            <iframe class="vimeo_video_ifram" src="<?php echo $video; ?>?muted=0&loop=0&controls=1&autoplay=0&autopause=0&playsinline=0" width="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen allowfullscreen="true" id="<?php echo $button; ?>" data-ready="true">
+            <iframe class="vimeo_video_ifram" src="<?php echo $video; ?>?muted=0&loop=0&controls=1&autoplay=0&autopause=0&playsinline=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" width="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen allowfullscreen="true" id="playvideo_hero" data-ready="true">
             </iframe>
         </div>
         <?php
@@ -2602,21 +2603,84 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
         ?>
         <script>
             jQuery(document).ready(function($) {
-                //call video bg play
-                // showModalCallAction("isfModal");
-                var isSafari = window.safari !== undefined;
-                var button = '#<?php echo $button; ?>';
-                var buttonname = '';
-                var mobilebtn = '<?php echo $mobilebtn; ?>';
-                if (mobilebtn) {
-                    button = button + ', ' + mobilebtn;
+                $("#playvideo_hero_mobile , #playvideo_hero").on('click', function() {
+                    // buttonname = $(this).attr('id');
+
+                    var iframe = document.querySelector('#playvideo_hero-wrapper iframe');
+                    if (iframe) {
+                        var player = new Vimeo.Player(iframe);
+                        player.play();
+                        if (isFullScreen()) {
+                            return false;
+                        }
+                        if (player.requestFullscreen) {
+                            player.requestFullscreen();
+                        } else if (player.msRequestFullscreen) {
+                            player.msRequestFullscreen();
+                        } else if (player.mozRequestFullScreen) {
+                            player.mozRequestFullScreen();
+                        } else if (player.webkitRequestFullscreen) {
+                            player.webkitRequestFullscreen();
+                        }
+
+                        player.on("ended", function(e) {
+                            if (document.exitFullscreen) {
+                                document.exitFullscreen();
+                            } else if (document.msExitFullscreen) {
+                                document.msExitFullscreen();
+                            } else if (document.mozCancelFullScreen) {
+                                document.mozCancelFullScreen();
+                            } else if (document.webkitExitFullscreen) {
+                                document.webkitExitFullscreen();
+                            }
+                            showModalCallAction("isfModal");
+                            player.off();
+                        });
+
+                        player.on("fullscreenchange", function(e) {
+                            if (!e.fullscreen) {
+                                showModalCallAction("isfModal");
+                                player.pause();
+                                player.off();
+                            }
+                        })
+                    }
+                });
+
+                function isFullScreen() {
+                    return Boolean(
+                        document.fullscreenElement ||
+                        document.webkitFullscreenElement ||
+                        document.mozFullScreenElement ||
+                        document.msFullscreenElement
+                    );
                 }
 
+                function showModalCallAction(data) {
+                    $('#' + data).addClass("show");
+                    $('#' + data).toggle();
+                }
+            });
+        </script>
+    <?php
+    }
+    function video_component($video, $button, $mobilebtn = '')
+    {
+        echo '<div id="' . $button . '-wrapper" class="custom-video-wrapper">';
+    ?>
+        <div style="padding:56.25% 0 0 0;position:relative;">
+            <iframe class="vimeo_video_ifram" src="<?php echo $video; ?>?muted=0&loop=0&controls=1&autoplay=0&autopause=0&playsinline=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" width="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen allowfullscreen="true" id="<?php echo $button; ?>" data-ready="true">
+            </iframe>
+        </div>
+        <?php
+        echo '</div>';
+        ?>
+        <script>
+            jQuery(document).ready(function($) {
+                var button = '#<?php echo $button; ?>';
+                var buttonname = '';
                 $(button).on('click', function() {
                     buttonname = $(this).attr('id');
-                    if (buttonname == 'playvideo_hero_mobile') {
-                        buttonname = 'playvideo_hero';
-                    }
                     var iframe = document.querySelector('#' + buttonname + '-wrapper iframe');
                     if (iframe) {
                         var player = new Vimeo.Player(iframe);
@@ -2644,19 +2708,11 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                             } else if (document.webkitExitFullscreen) {
                                 document.webkitExitFullscreen();
                             }
-
-                            if (buttonname == 'playvideo_hero' || buttonname == 'playvideo_hero_mobile') {
-                                showModalCallAction("isfModal");
-                            }
-                            buttonname = '';
                             player.off();
                         });
 
                         player.on("fullscreenchange", function(e) {
                             if (!e.fullscreen) {
-                                if (buttonname == 'playvideo_hero' || buttonname == 'playvideo_hero_mobile') {
-                                    showModalCallAction("isfModal");
-                                }
                                 player.pause();
                                 buttonname = '';
                                 player.off();
@@ -2673,14 +2729,8 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                         document.msFullscreenElement
                     );
                 }
-
-                function showModalCallAction(data) {
-                    $('#' + data).addClass("show");
-                    $('#' + data).toggle();
-                }
             });
         </script>
-
     <?php
     }
 
