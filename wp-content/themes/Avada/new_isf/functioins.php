@@ -2595,7 +2595,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
         echo '<div id="playvideo_hero-wrapper" class="custom-video-wrapper">';
     ?>
         <div style="padding:56.25% 0 0 0;position:relative;">
-            <iframe class="vimeo_video_ifram" src="<?php echo $video; ?>?muted=0&loop=0&controls=1&autoplay=0&autopause=0&playsinline=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" width="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen allowfullscreen="true" id="playvideo_hero" data-ready="true">
+            <iframe class="vimeo_video_ifram" src="<?php echo $video; ?>?muted=0&loop=0&controls=1&autoplay=0&autopause=0&playsinline=0" width="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen allowfullscreen="true" id="playvideo_hero_full" data-ready="true">
             </iframe>
         </div>
         <?php
@@ -2604,7 +2604,6 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
         <script>
             jQuery(document).ready(function($) {
                 $("#playvideo_hero_mobile , #playvideo_hero").on('click', function() {
-                    // buttonname = $(this).attr('id');
 
                     var iframe = document.querySelector('#playvideo_hero-wrapper iframe');
                     if (iframe) {
@@ -2669,7 +2668,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
         echo '<div id="' . $button . '-wrapper" class="custom-video-wrapper">';
     ?>
         <div style="padding:56.25% 0 0 0;position:relative;">
-            <iframe class="vimeo_video_ifram" src="<?php echo $video; ?>?muted=0&loop=0&controls=1&autoplay=0&autopause=0&playsinline=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" width="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen allowfullscreen="true" id="<?php echo $button; ?>" data-ready="true">
+            <iframe class="vimeo_video_ifram" src="<?php echo $video; ?>?muted=0&loop=0&controls=1&autoplay=0&autopause=0&playsinline=0" width="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen allowfullscreen="true" id="<?php echo $button; ?>" data-ready="true">
             </iframe>
         </div>
         <?php
@@ -2714,7 +2713,6 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                         player.on("fullscreenchange", function(e) {
                             if (!e.fullscreen) {
                                 player.pause();
-                                buttonname = '';
                                 player.off();
                             }
                         })
