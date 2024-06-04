@@ -2751,7 +2751,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                     <div class="d-flex justify-content-end">
 
                         <button type="button" class="close close_modal_home" data-dismiss="modal" aria-label="Close">
-                            <span class="primary-gray" aria-hidden="true">&times;</span>
+                            <img src="<?php echo get_template_directory_uri() . '/assets/images/carbon_close-large.svg'; ?>" />
                         </button>
 
                     </div>
@@ -2765,7 +2765,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                             echo $modal_description;
                             ?>
                         </p>
-                        <div class="m-40 d-flex">
+                        <div class="m-40 d-flex mt-40">
                             <!-- style="background:<?php echo $modal_button_color; ?>" -->
                             <a href="<?php echo $modal_url['url']; ?>" title="<?php echo $modal_url['title']; ?>" target="<?php echo $modal_url['target']; ?>" class="btn-donation-modal primary-btn custom-btn m-auto">
                                 <?php

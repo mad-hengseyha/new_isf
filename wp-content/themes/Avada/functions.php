@@ -74,7 +74,7 @@ if (!function_exists("mad_theme_styles")) {
 		// wp_register_style('style', get_template_directory_uri() . '/style.css', array(), null, 'all');
 		// wp_enqueue_style('style');
 
-		wp_register_style('isf-branding', get_template_directory_uri() . '/assets/css/isf/isf.css', array(), null, 'all');
+		wp_register_style('isf-branding', get_template_directory_uri() . '/assets/css/isf/isf.css', array(), "1.0.0", 'all');
 		wp_enqueue_style('isf-branding');
 
 		wp_register_style('isf-media-screen', get_template_directory_uri() . '/assets/css/isf/isf-media-screen.css', array(), null, 'all');
@@ -132,7 +132,7 @@ if (!function_exists("mad_theme_styles")) {
 			'isf-js',
 			get_template_directory_uri() . '/assets/js/isf.js',
 			array(),
-			'1.0.0',
+			'1.0.1',
 			array(
 				'strategy'  => 'defer',
 			)

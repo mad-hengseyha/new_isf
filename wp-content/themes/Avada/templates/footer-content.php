@@ -121,7 +121,7 @@ if (fusion_get_option('footer_widgets')) : ?>
 			<div class="modal-header">
 				<h5 class="modal-title mb-0" id="videoModalTitle"></h5>
 				<button type="button" class="close close_modal_custome" data-bs-dismiss="modal" aria-label="Close">
-					<span class="primary-gray" aria-hidden="true">×</span>
+					<img src="<?php echo get_template_directory_uri() . '/assets/images/carbon_close-large.svg'; ?>" />
 				</button>
 			</div>
 			<div class="modal-body d-flex justify-content-center" id="videoModalContentYouTube" data-class="">

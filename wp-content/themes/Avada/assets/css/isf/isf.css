@@ -392,6 +392,7 @@ h4 {
 .custom-video-wrapper {
   z-index: -1 !important;
   position: absolute !important;
+  opacity: 0;
   /* display: none; */
 }
 .img-border-radius {
@@ -572,13 +573,22 @@ p a {
   background: #000000c4;
   overflow: hidden;
 }
-#videoModal .close,
+#videoModal .close {
+  opacity: 1 !important;
+  /* margin: 30px 30px auto auto; */
+}
 #isfModal .close {
-  margin: 0.4em 1.4em 0 0;
+  margin: 30px 30px auto auto;
   opacity: 1 !important;
   position: absolute;
-  right: 0;
+  /* right: 0; */
   z-index: 9;
+  width: 24px;
+  height: 24px;
+}
+.youtube-modal .modal-header {
+  display: flex;
+  justify-content: space-between;
 }
 .linkedin-name a {
   font-size: 18px;
