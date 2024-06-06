@@ -2758,14 +2758,14 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
 
                     <div class="modal-body text-center">
                         <div class="col-11">
-                            <h2 class="primary-gray mb-40" id="isfModalTitle"><?php echo $modal_title; ?></h2>
+                            <h2 class="primary-gray mb-20" id="isfModalTitle"><?php echo $modal_title; ?></h2>
                         </div>
                         <p class="primary-gray">
                             <?php
                             echo $modal_description;
                             ?>
                         </p>
-                        <div class="m-40 d-flex mt-40">
+                        <div class="d-flex mt-40 modal-donation-btn">
                             <!-- style="background:<?php echo $modal_button_color; ?>" -->
                             <a href="<?php echo $modal_url['url']; ?>" title="<?php echo $modal_url['title']; ?>" target="<?php echo $modal_url['target']; ?>" class="btn-donation-modal primary-btn custom-btn m-auto">
                                 <?php
