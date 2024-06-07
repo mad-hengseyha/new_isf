@@ -2757,7 +2757,7 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                     </div>
 
                     <div class="modal-body text-center">
-                        <div class="col-11">
+                        <div class="col-12">
                             <h2 class="primary-gray mb-20" id="isfModalTitle"><?php echo $modal_title; ?></h2>
                         </div>
                         <p class="primary-gray">
