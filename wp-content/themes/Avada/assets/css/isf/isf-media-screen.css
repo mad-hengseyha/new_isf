@@ -1985,4 +1985,13 @@
   .p-3.partner-wraper {
     padding: 0 !important;
   }
+  h1.secondary-sand {
+    font-size: 28px !important;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  h1.secondary-sand {
+    font-size: 24px !important;
+  }
 }
