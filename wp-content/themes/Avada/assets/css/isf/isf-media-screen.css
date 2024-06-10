@@ -1341,7 +1341,6 @@
     max-height: 120px;
   } */
 }
-
 /* phone  */
 @media screen and (max-width: 575px) {
   .people-max-height {
@@ -1977,5 +1976,13 @@
 @media screen and (max-width: 390px) {
   #isfModal .modal-body {
     padding: 30px !important;
+  }
+}
+@media screen and (max-width: 767px) {
+  .img-fluid.partner-logo {
+    scale: 115%;
+  }
+  .p-3.partner-wraper {
+    padding: 0 !important;
   }
 }

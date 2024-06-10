@@ -5,19 +5,92 @@ jQuery("#donat-icon-footer").append(icon);
 // jQuery("li.menu-call-action").append(icon);
 
 jQuery(document).ready(function ($) {
-  $(".fusion-flyout-menu-toggle").on("click", function () {
+  $(".not-home-burger-menu-wrap-blue").on("click", function () {
+    $(this).toggleClass("d-none");
+    $(".not-home-burger-menu-wrap-close").toggleClass("d-none");
+    $(".not-home-search-icon-wrapper").toggleClass("d-none");
+    // not-home-search-icon-wrapper-close
+
+    //searchbox
+    $("#menu-donation-button-mobile-link").addClass("d-none");
+  });
+
+  //click search icon
+  $(".not-home-search-icon-wrapper").on("click", function () {
+    $(this).toggleClass("d-none");
+    $(".not-home-search-icon-wrapper-close").toggleClass("d-none");
+    $(".not-home-burger-menu-wrap-close").toggleClass("d-none");
+    $(".not-home-burger-menu-wrap-blue").addClass("d-none");
+    $(".not-home-burger-menu-wrap-blue-search").toggleClass("d-none");
+  });
+
+  // click close search icon
+  $(".not-home-search-icon-wrapper-close").on("click", function () {
+    $(this).toggleClass("d-none");
+    $("#menu-donation-button-mobile-link").toggleClass("d-none");
+  });
+
+  //click close burger menu
+  $(".not-home-burger-menu-wrap-close").on("click", function () {
+    $(this).toggleClass("d-none");
+    $("#menu-donation-button-mobile-link").removeClass("d-none");
+    $(".not-home-search-icon-wrapper").toggleClass("d-none");
+    $(".not-home-burger-menu-wrap-blue").toggleClass("d-none");
+  });
+
+  $(".not-home-burger-menu-wrap-blue-search").on("click", function () {
+    $(this).toggleClass("d-none");
+    $(".not-home-burger-menu-wrap-close").removeClass("d-none");
+    $(".not-home-search-icon-wrapper").toggleClass("d-none");
+    $(".not-home-search-icon-wrapper-close").addClass("d-none");
+    $(".not-home-burger-menu-wrap-blue").addClass("d-none");
+    $("#menu-donation-button-mobile-link").addClass("d-none");
+  });
+
+  $(".burger-menu-wrap-white").on("click", function () {
     $(".header-section-wraper").toggleClass("active");
-    $(this).toggleClass("active");
+    $(".burger-menu-wrap-white").toggleClass("d-none");
+    $(".burger-menu-wrap-close").toggleClass("d-none");
+    $(".search-icon-wrapper").toggleClass("d-none");
     addDisplayLogo();
   });
-  $(".fusion-flyout-search-toggle .awb-icon-search").on("click", function () {
-    $(this).addClass("active");
+
+  $(".burger-menu-wrap-blue").on("click", function () {
+    $(this).toggleClass("d-none");
+    $(".burger-menu-wrap-close").toggleClass("d-none");
+    $(".search-icon-wrapper").toggleClass("d-none");
+    $(".search-icon-wrapper-close").toggleClass("d-none");
+    // addDisplayLogo();
   });
-  $(".fusion-toggle-icon").on("click", function () {
+
+  $(".burger-menu-wrap-close").on("click", function () {
     $(".header-section-wraper").removeClass("active");
+    $(this).toggleClass("d-none");
+    $(".burger-menu-wrap-white").toggleClass("d-none");
+    $(".search-icon-wrapper").toggleClass("d-none");
+    // $(".search-icon-wrapper").toggleClass("d-none");
     addDisplayLogo();
-    $(".fusion-flyout-search-toggle .awb-icon-search").removeClass("active");
   });
+
+  // clear search icon
+  $(".search-icon-wrapper").on("click", function () {
+    $(this).toggleClass("d-none");
+    $(".search-icon-wrapper-close").toggleClass("d-none");
+    $(".burger-menu-wrap-close").toggleClass("d-none");
+    $(".burger-menu-wrap-blue").toggleClass("d-none");
+  });
+  // header-section-wraper
+  $(".search-icon-wrapper-close").on("click", function () {
+    $(this).toggleClass("d-none");
+    $(".header-section-wraper").removeClass("active");
+    $(".burger-menu-wrap-white").toggleClass("d-none");
+    $(".burger-menu-wrap-blue").toggleClass("d-none");
+    $(".search-icon-wrapper").toggleClass("d-none");
+    $(".search-icon-wrapper").toggleClass("d-none");
+
+    addDisplayLogo();
+  });
+
   function addDisplayLogo() {
     $(".fusion-flyout-search-toggle").toggleClass("d-block");
     $(".fusion-mobile-logo").toggleClass("d-done");
@@ -49,15 +122,15 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  $(".fusion-flyout-search-toggle.d-block .fusion-toggle-icon").on(
-    "click",
-    function () {
-      $(".fusion-flyout-search-toggle").toggleClass("d-block");
-      $(".fusion-mobile-logo").toggleClass("d-done");
-      $(".fusion-standard-logo").toggleClass("d-block");
-      $("#menu-donation-button-mobile-link").toggleClass("d-none");
-    }
-  );
+  // $(".fusion-flyout-search-toggle.d-block .fusion-toggle-icon").on(
+  //   "click",
+  //   function () {
+  //     $(".fusion-flyout-search-toggle").toggleClass("d-block");
+  //     $(".fusion-mobile-logo").toggleClass("d-done");
+  //     $(".fusion-standard-logo").toggleClass("d-block");
+  //     $("#menu-donation-button-mobile-link").toggleClass("d-none");
+  //   }
+  // );
 
   $(".menu-mobile-menu-container li").on("click", function () {
     // if ($(this).hasClass("active")) {

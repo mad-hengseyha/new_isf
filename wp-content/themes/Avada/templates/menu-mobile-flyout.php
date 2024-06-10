@@ -37,25 +37,79 @@ if (!defined('ABSPATH')) {
 	);
 	?>
 	<?php if (Avada()->settings->get('mobile_menu_search')) : ?>
-		<div class="fusion-flyout-search-toggle">
-			<div class="fusion-toggle-icon">
-				<div class="fusion-toggle-icon-line"></div>
-				<div class="fusion-toggle-icon-line"></div>
-				<div class="fusion-toggle-icon-line"></div>
-			</div>
-			<a class="fusion-icon awb-icon-search" aria-hidden="true" aria-label="<?php esc_attr_e('Toggle Search', 'Avada'); ?>" href="#"></a>
+		<?php
+		$dblock = '';
+		if (!is_home() || !is_front_page()) {
+			$dblock = 'd-block';
+		}
+		?>
+		<div class="fusion-flyout-search-toggle <?php echo $dblock; ?>">
+			<!-- awb-icon-search -->
+			<?php
+			if (is_home() || is_front_page()) {
+			?>
+				<a class="search-icon-wrapper-close d-none" aria-hidden="true" aria-label="<?php esc_attr_e('Toggle Search', 'Avada'); ?>" href="#">
+					<img class="close-search-icon search" src="<?php echo get_template_directory_uri() . '/assets/images/carbon_menu_close.svg'; ?>" />
+				</a>
+				<a class="search-icon-wrapper d-none searchbox" aria-hidden="true" aria-label="<?php esc_attr_e('Toggle Search', 'Avada'); ?>" href="#">
+					<img class="search-icon search" src="<?php echo get_template_directory_uri() . '/assets/images/carbon_search.svg'; ?>" />
+				</a>
+			<?php
+			} else {
+			?>
+				<a class="not-home-search-icon-wrapper-close d-none" aria-hidden="true" aria-label="<?php esc_attr_e('Toggle Search', 'Avada'); ?>" href="#">
+					<img class="close-search-icon search" src="<?php echo get_template_directory_uri() . '/assets/images/carbon_menu_close.svg'; ?>" />
+				</a>
+				<a class="not-home-search-icon-wrapper d-none searchbox " aria-hidden="true" aria-label="<?php esc_attr_e('Toggle Search', 'Avada'); ?>" href="#">
+					<img class="search-icon search" src="<?php echo get_template_directory_uri() . '/assets/images/carbon_search.svg'; ?>" />
+				</a>
+			<?php
+			}
+			?>
 		</div>
 	<?php endif; ?>
 
-	<?php // Make sure mobile menu toggle is not loaded when ubermenu is used. 
+	<?php
+	// Make sure mobile menu toggle is not loaded when ubermenu is used. 
 	?>
 	<?php if (!function_exists('ubermenu_get_menu_instance_by_theme_location') || (function_exists('ubermenu_get_menu_instance_by_theme_location'))) : ?>
-		<a class="fusion-flyout-menu-toggle" aria-hidden="true" aria-label="<?php esc_attr_e('Toggle Menu', 'Avada'); ?>" href="#">
-			<div class="fusion-toggle-icon-line"></div>
-			<div class="fusion-toggle-icon-line"></div>
-			<div class="fusion-toggle-icon-line"></div>
-			<div class="fusion-toggle-icon-line"></div>
-		</a>
+		<!-- menu iocon -->
+		<?php
+		$white_none = '';
+		$blue_none = "";
+		if (is_home() || is_front_page()) {
+			$blue_none = "d-none";
+		} else {
+			$white_none = "d-none";
+		}
+		?>
+		<?php
+		if (is_home() || is_front_page()) {
+		?>
+			<a class="fusion-flyout-menu-toggle burger-menu-wrap-white <?php echo $white_none; ?>" aria-hidden="true" aria-label="<?php esc_attr_e('Toggle Menu', 'Avada'); ?>" href="#">
+				<img class="menu-icon burger-menu white " src="<?php echo get_template_directory_uri() . '/assets/images/carbon_menu_white.svg'; ?>" />
+			</a>
+			<a class="fusion-flyout-menu-toggle burger-menu-wrap-close d-none" aria-hidden="true" aria-label="<?php esc_attr_e('Toggle Menu', 'Avada'); ?>" href="#">
+				<img class="close-icon" src="<?php echo get_template_directory_uri() . '/assets/images/carbon_menu_close.svg'; ?>" />
+			</a>
+			<a class="fusion-flyout-menu-toggle burger-menu-wrap-blue <?php echo $blue_none; ?>" aria-hidden="true" aria-label="<?php esc_attr_e('Toggle Menu', 'Avada'); ?>" href="#">
+				<img class="menu-icon burger-menu blue " src="<?php echo get_template_directory_uri() . '/assets/images/carbon_menu.svg'; ?>" />
+			</a>
+		<?php
+		} else {
+		?>
+			<a class="fusion-flyout-menu-toggle not-home-burger-menu-wrap-close d-none" aria-hidden="true" aria-label="<?php esc_attr_e('Toggle Menu', 'Avada'); ?>" href="#">
+				<img class="close-icon" src="<?php echo get_template_directory_uri() . '/assets/images/carbon_menu_close.svg'; ?>" />
+			</a>
+			<a class="fusion-flyout-menu-toggle not-home-burger-menu-wrap-blue <?php echo $blue_none; ?>" aria-hidden="true" aria-label="<?php esc_attr_e('Toggle Menu', 'Avada'); ?>" href="#">
+				<img class="menu-icon burger-menu blue " src="<?php echo get_template_directory_uri() . '/assets/images/carbon_menu.svg'; ?>" />
+			</a>
+			<a class="fusion-flyout-menu-toggle not-home-burger-menu-wrap-blue-search d-none <?php echo $blue_none; ?>" aria-hidden="true" aria-label="<?php esc_attr_e('Toggle Menu', 'Avada'); ?>" href="#">
+				<img class="menu-icon burger-menu blue " src="<?php echo get_template_directory_uri() . '/assets/images/carbon_menu.svg'; ?>" />
+			</a>
+		<?php
+		}
+		?>
 	<?php endif; ?>
 </div>
 

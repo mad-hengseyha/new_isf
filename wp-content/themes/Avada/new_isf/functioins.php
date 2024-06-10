@@ -3467,11 +3467,11 @@ function isf_football_shedule_section($post_id, $mobile_class = '')
                                     $count = count($partner[$i]) < 6 ? 6 : count($partner[$i]);
                                     for ($a = 0; $a < $count; $a++) { ?>
                                         <div class="col-6 d-flex align-items-center justify-content-center">
-                                            <div class="col-12 p-3 partner-wrapper d-flex align-items-center justify-content-center">
+                                            <div class="col-12 partner-wraper p-3 partner-wrapper d-flex align-items-center justify-content-center">
                                                 <?php
                                                 if ($a < $items) {
                                                     if ($partner[$i][$a]) { ?>
-                                                        <img src="<?php echo $partner[$i][$a]; ?>" class="img-fluid svg" alt="Partner Logo">
+                                                        <img src="<?php echo $partner[$i][$a]; ?>" class="img-fluid partner-logo svg" alt="Partner Logo">
                                                 <?php }
                                                 }
                                                 ?>
